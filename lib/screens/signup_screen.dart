@@ -1,6 +1,5 @@
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/providers/auth.providers.dart';
-import 'package:daily_recipe/services/prefrences.services.dart';
 import 'package:daily_recipe/widgets/applogo.dart';
 import 'package:daily_recipe/widgets/custom_button.dart';
 import 'package:daily_recipe/widgets/custom_textfield.dart';
@@ -22,7 +21,6 @@ class _MyWidgetState extends State<SignupScreen> {
   var passwordController = TextEditingController();
   var repasswordController = TextEditingController();
   var emailController = TextEditingController();
-  final prefsFile = PrefrencesService.prefs;
   bool? islogin = true;
 
   @override
@@ -126,37 +124,37 @@ class _MyWidgetState extends State<SignupScreen> {
                                       textColor: whiteColor,
                                       title: signup,
                                       onPress: () async {
-                                        final modelHud =
+                                        final authController =
                                             Provider.of<AuthController>(context,
                                                 listen: false);
-                                        modelHud.changeisLoading(true);
+                                        authController.changeisLoading(true);
                                         if (passwordController.text ==
                                             repasswordController.text) {
                                           if (_globalKey.currentState!
                                               .validate()) {
                                             _globalKey.currentState?.save();
                                             try {
-                                              await PrefrencesService.savePrefs(
+                                              await Provider.of<AuthController>(context,listen: false).savePrefs(
                                                 name: nameController.text,
                                                 email: emailController.text,
                                                 password:
                                                     passwordController.text,
                                                 login: islogin,
                                               );
-                                              modelHud.changeisLoading(false);
+                                              authController.changeisLoading(false);
                                               VxToast.show(context,
                                                   msg: registeredSuccessfully);
                                               Navigator.pushReplacementNamed(
                                                   context, 'HomepageScreen/');
                                             } catch (e) {
                                               print(e.toString());
-                                              modelHud.changeisLoading(false);
+                                              authController.changeisLoading(false);
                                             }
                                           } else {
-                                            modelHud.changeisLoading(false);
+                                            authController.changeisLoading(false);
                                           }
                                         } else {
-                                          modelHud.changeisLoading(false);
+                                          authController.changeisLoading(false);
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(SnackBar(
                                                   content:

@@ -1,7 +1,6 @@
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/services/prefrences.services.dart';
 import 'package:daily_recipe/widgets/applogo.dart';
-import 'package:daily_recipe/widgets/bg.widgets.dart';
 import 'package:daily_recipe/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 

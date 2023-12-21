@@ -1,6 +1,5 @@
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/providers/auth.providers.dart';
-import 'package:daily_recipe/services/prefrences.services.dart';
 import 'package:daily_recipe/widgets/applogo.dart';
 import 'package:daily_recipe/widgets/custom_button.dart';
 import 'package:daily_recipe/widgets/custom_textfield.dart';
@@ -13,7 +12,6 @@ class LoginScreen extends StatelessWidget {
   GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
-  final prefsFile = PrefrencesService.prefs;
   @override
   Widget build(BuildContext context) {
     double height = context.screenHeight;
@@ -110,8 +108,8 @@ class LoginScreen extends StatelessWidget {
                                             _globalKey.currentState?.save();
                                             try {
                                               String? emailValue =
-                                                  prefsFile!.getString('email');
-                                              String? passwordValue = prefsFile!
+                                                  authController.prefsFile!.getString('email');
+                                              String? passwordValue = authController.prefsFile!
                                                   .getString('password');
                 
                                               if (emailValue == null &&
@@ -136,7 +134,7 @@ class LoginScreen extends StatelessWidget {
                                                 authController
                                                     .changeisLoading(false);
                                               } else {
-                                                prefsFile!.setBool('login', true);
+                                                authController.prefsFile!.setBool('login', true);
                                                 authController
                                                     .changeisLoading(false);
                                                 VxToast.show(context,
