@@ -2,6 +2,7 @@
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/providers/auth.providers.dart';
 import 'package:daily_recipe/screens/homepage.screens.dart';
+import 'package:daily_recipe/screens/intro.screens.dart';
 import 'package:daily_recipe/screens/login_screen.dart';
 import 'package:daily_recipe/screens/signup_screen.dart';
 import 'package:daily_recipe/screens/splash.screens.dart';
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
           initialRoute: '/',
           routes: {
             '/': (context) => SplashScreen(),
+            'IntroScreen/': (context) => IntroScreen(),
             'LoginScreen/': (context) => LoginScreen(),
             'SignupScreen/': (context) => SignupScreen(),
             'HomepageScreen/': (context) => HomepageScreen(),

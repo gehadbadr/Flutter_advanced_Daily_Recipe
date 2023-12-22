@@ -36,7 +36,9 @@ class LoginScreen extends StatelessWidget {
               child: Image(image: AssetImage(imgBg), fit: BoxFit.fill),
             ),
              SingleChildScrollView(
-                  child: Center(
+                  child: Container(
+                  height: context.screenHeight,
+                  width: context.screenWidth,
                       child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(

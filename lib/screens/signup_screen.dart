@@ -47,7 +47,9 @@ class _MyWidgetState extends State<SignupScreen> {
               child: Image(image: AssetImage(imgBg), fit: BoxFit.fill),
             ),
            SingleChildScrollView(
-                child: Center(
+                child:  Container(
+                  height: context.screenHeight,
+                  width: context.screenWidth,
                     child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -168,17 +170,17 @@ class _MyWidgetState extends State<SignupScreen> {
                                 InkWell(
                                     onTap: () {
                                       Navigator.pushNamed(
-                                          context, 'SignupScreen/');
+                                          context, 'LoginScreen/');
                                     },
                                     child: RichText(
                                       text: TextSpan(children: [
                                         TextSpan(
-                                            text: creatNewAccount,
+                                            text: alreadyHaveAccount,
                                             style: TextStyle(
                                                 fontFamily: bold,
                                                 color: fontGrey)),
                                         TextSpan(
-                                            text: register,
+                                            text: login,
                                             style: TextStyle(
                                                 fontFamily: bold,
                                                 color: PKColor))
