@@ -16,13 +16,21 @@ class SignupScreen extends StatefulWidget {
 
 class _MyWidgetState extends State<SignupScreen> {
   bool? isCheck = false;
-  GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
-  var nameController = TextEditingController();
-  var passwordController = TextEditingController();
-  var repasswordController = TextEditingController();
-  var emailController = TextEditingController();
+  late GlobalKey<FormState> _globalKey ;
+  late TextEditingController nameController ;
+  late TextEditingController passwordController;
+  late TextEditingController repasswordController ;
+  late TextEditingController emailController ;
   bool? islogin = true;
-
+@override
+  void initState() {
+   _globalKey = GlobalKey<FormState>();
+   nameController = TextEditingController();
+   passwordController = TextEditingController();
+   repasswordController = TextEditingController();
+   emailController = TextEditingController();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     double height = context.screenHeight;
@@ -46,153 +54,156 @@ class _MyWidgetState extends State<SignupScreen> {
               //
               child: Image(image: AssetImage(imgBg), fit: BoxFit.fill),
             ),
-           SingleChildScrollView(
-                child:  Container(
+            Container(
                   height: context.screenHeight,
                   width: context.screenWidth,
                     child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: (height * 0.1),
-                      ),
-                      appLogoWidget(),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        'Sign In',
-                        style: TextStyle(
-                            color: whiteColor, fontSize: 18, fontFamily: bold),
-                      ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(16),
-                        width: context.screenWidth - 70,
-                        child: Form(
-                            key: _globalKey,
-                            child: Column(
-                              children: [
-                                CustomTextField(
-                                  title: name,
-                                  hint: nameHint,
-                                  controller: nameController,
-                                  icon: Icons.person,
-                                  isPass: false,
-                                  onClick: (value) {
-                                    nameController.text = value!;
-                                  },
-                                ),
-                                CustomTextField(
-                                  title: email,
-                                  hint: emailHint,
-                                  controller: emailController,
-                                  icon: Icons.email,
-                                  isPass: false,
-                                  onClick: (value) {
-                                    emailController.text = value!;
-                                  },
-                                ),
-                                CustomTextField(
-                                  title: password,
-                                  hint: passwordHint,
-                                  controller: passwordController,
-                                  icon: Icons.lock,
-                                  isPass: true,
-                                  onClick: (value) {
-                                    passwordController.text = value!;
-                                  },
-                                ),
-                                CustomTextField(
-                                  title: repassword,
-                                  hint: repasswordHint,
-                                  controller: repasswordController,
-                                  icon: Icons.lock,
-                                  isPass: true,
-                                  onClick: (value) {
-                                    passwordController.text = value!;
-                                  },
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                Container(
-                                    width: context.screenWidth - 50,
-                                    child: CustomButton(
-                                      bgColor: PKColor,
-                                      textColor: whiteColor,
-                                      title: signup,
-                                      onPress: () async {
-                                        final authController =
-                                            Provider.of<AuthController>(context,
-                                                listen: false);
-                                        authController.changeisLoading(true);
-                                        if (passwordController.text ==
-                                            repasswordController.text) {
-                                          if (_globalKey.currentState!
-                                              .validate()) {
-                                            _globalKey.currentState?.save();
-                                            try {
-                                              await Provider.of<AuthController>(context,listen: false).savePrefs(
-                                                name: nameController.text,
-                                                email: emailController.text,
-                                                password:
-                                                    passwordController.text,
-                                                login: islogin,
-                                              );
-                                              authController.changeisLoading(false);
-                                              VxToast.show(context,
-                                                  msg: registeredSuccessfully);
-                                              Navigator.pushReplacementNamed(
-                                                  context, 'HomepageScreen/');
-                                            } catch (e) {
-                                              print(e.toString());
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: (height * 0.1),
+                        ),
+                        appLogoWidget(),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          'Sign In',
+                          style: TextStyle(
+                              color: whiteColor, fontSize: 18, fontFamily: bold),
+                        ),
+                        SizedBox(
+                          height: 40,
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(16),
+                          width: context.screenWidth - 70,
+                          child: Form(
+                              key: _globalKey,
+                              child: Column(
+                                children: [
+                                  CustomTextField(
+                                    title: name,
+                                    hint: nameHint,
+                                    controller: nameController,
+                                    icon: Icons.person,
+                                    isPass: false,
+                                    onClick: (value) {
+                                      nameController.text = value!;
+                                    },
+                                  ),
+                                  CustomTextField(
+                                    title: email,
+                                    hint: emailHint,
+                                    controller: emailController,
+                                    icon: Icons.email,
+                                    isPass: false,
+                                    onClick: (value) {
+                                      emailController.text = value!;
+                                    },
+                                  ),
+                                  CustomTextField(
+                                    title: password,
+                                    hint: passwordHint,
+                                    controller: passwordController,
+                                    icon: Icons.lock,
+                                    isPass: true,
+                                    onClick: (value) {
+                                      passwordController.text = value!;
+                                    },
+                                  ),
+                                  CustomTextField(
+                                    title: repassword,
+                                    hint: repasswordHint,
+                                    controller: repasswordController,
+                                    icon: Icons.lock,
+                                    isPass: true,
+                                    onClick: (value) {
+                                      passwordController.text = value!;
+                                    },
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  Container(
+                                      width: context.screenWidth - 50,
+                                      child: CustomButton(
+                                        bgColor: PKColor,
+                                        textColor: whiteColor,
+                                        title: signup,
+                                        onPress: () async {
+                                          final authController =
+                                              Provider.of<AuthController>(context,
+                                                  listen: false);
+                                          authController.changeisLoading(true);
+                                          if (passwordController.text ==
+                                              repasswordController.text) {
+                                            if (_globalKey.currentState!
+                                                .validate()) {
+                                              _globalKey.currentState?.save();
+                                              try {
+                                                await Provider.of<AuthController>(context,listen: false).savePrefs(
+                                                  name: nameController.text,
+                                                  email: emailController.text,
+                                                  password:
+                                                      passwordController.text,
+                                                  login: islogin,
+                                                );
+                                                authController.changeisLoading(false);
+                                                VxToast.show(context,
+                                                    msg: registeredSuccessfully);
+                                                Navigator.pushReplacementNamed(
+                                                    context, 'HomepageScreen/');
+                                              } catch (e) {
+                                                print(e.toString());
+                                                authController.changeisLoading(false);
+                                              }
+                                            } else {
                                               authController.changeisLoading(false);
                                             }
                                           } else {
                                             authController.changeisLoading(false);
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                                    content:
+                                                        Text(errorRepassword)));
                                           }
-                                        } else {
-                                          authController.changeisLoading(false);
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                                  content:
-                                                      Text(errorRepassword)));
-                                        }
+                                        },
+                                      )),
+                                  SizedBox(
+                                    height: 70,
+                                  ),
+                                  InkWell(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, 'LoginScreen/');
                                       },
-                                    )),
-                                SizedBox(
-                                  height: 70,
-                                ),
-                                InkWell(
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                          context, 'LoginScreen/');
-                                    },
-                                    child: RichText(
-                                      text: TextSpan(children: [
-                                        TextSpan(
-                                            text: alreadyHaveAccount,
-                                            style: TextStyle(
-                                                fontFamily: bold,
-                                                color: fontGrey)),
-                                        TextSpan(
-                                            text: login,
-                                            style: TextStyle(
-                                                fontFamily: bold,
-                                                color: PKColor))
-                                      ]),
-                                    )),
-                              ],
-                            )),
-                      ),
-                    ],
+                                      child: RichText(
+                                        text: TextSpan(children: [
+                                          TextSpan(
+                                              text: alreadyHaveAccount,
+                                              style: TextStyle(
+                                                  fontFamily: bold,
+                                                  color: fontGrey,
+                                                    fontSize: 16)),
+                                          TextSpan(
+                                              text: login,
+                                              style: TextStyle(
+                                                  fontFamily: bold,
+                                                  color: PKColor,
+                                                    fontSize: 16))
+                                        ]),
+                                      )),
+                                ],
+                              )),
+                        ),
+                      ],
+                    ),
                   ),
                 )),
-              ),
+              
             
           ],
         ),

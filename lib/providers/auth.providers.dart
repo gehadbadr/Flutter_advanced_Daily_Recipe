@@ -66,13 +66,19 @@ class AuthController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future getName() async {
+  Future getUesr() async {
     String? userValue = prefsFile!.getString('name');
     String? emailValue = prefsFile!.getString('email');
     String? passwordValue = prefsFile!.getString('password');
     bool? loginValue = prefsFile!.getBool('login');
-    List data =[userValue,emailValue,passwordValue,loginValue];
-    return data;
-    notifyListeners();
+    //List data =[userValue,emailValue,passwordValue,loginValue];
+    Map<String, dynamic> info = {
+      'user': userValue,
+      'email': emailValue,
+      'password': passwordValue,
+      'login': loginValue,
+    };
+    return info;
+    //notifyListeners();
   }
 }

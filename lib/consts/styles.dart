@@ -1,3 +1,3 @@
-const regular = "sans_regular";
-const semibold = "sans_semibold";
-const bold = "sans_bold";
+const regular = "Hellix-Regular";
+const semibold = "Hellix-SemiBold";
+const bold = "Hellix-Bold";
