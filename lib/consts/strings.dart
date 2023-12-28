@@ -29,3 +29,8 @@ const errorNullloggedIn = 'No Email is registered';
 const errorloggedIn = 'Wrong Email or Password ';
 const loggedOut = 'Logged out successfully ';
 
+//Home page screen
+const searchAnyThing ="Search for recipe...";
+const bonjour ="Bonjour";
+const whatToCook ="What would you like to cook today?";
+

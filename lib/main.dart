@@ -1,15 +1,12 @@
 
-import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/providers/auth.providers.dart';
+import 'package:daily_recipe/providers/home.providers.dart';
 import 'package:daily_recipe/screens/homepage.screens.dart';
 import 'package:daily_recipe/screens/intro.screens.dart';
 import 'package:daily_recipe/screens/login_screen.dart';
 import 'package:daily_recipe/screens/signup_screen.dart';
 import 'package:daily_recipe/screens/splash.screens.dart';
 import 'package:daily_recipe/services/prefrences.services.dart';
-import 'package:daily_recipe/widgets/applogo.dart';
-import 'package:daily_recipe/widgets/custom_button.dart';
-import 'package:daily_recipe/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,6 +31,9 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider<AuthController>(
             create: (context) => AuthController(),
+          ),
+          ChangeNotifierProvider<HomeController>(
+            create: (context) => HomeController(),
           ),
         
         ],
