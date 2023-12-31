@@ -1,0 +1,94 @@
+{
+  "ads":[{
+    "title":"New Meals",
+    "image":"https://food.fnr.sndimg.com/content/dam/images/food/fullset/2022/08/19/WU3203-ree-drummond-crispy-everything-chicken-cutlets_4x3.jpg.rend.hgtvcom.1280.960.suffix/1660928170362.jpeg"
+  },
+
+  {
+    "title":"Less Carbs Meals",
+    "image":"https://www.eatingwell.com/thmb/On8Nf2lMq0eOC80XpptXMmu1x8k=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/watercress-salad-honey-Balsamic-tofu-2000-48bdf5401a104b63a2571d7d7e4d4359.jpg"
+  },
+  {
+    "title":"Sea Food Meals",
+    "image":"https://www.licious.in/blog/wp-content/uploads/2022/02/shutterstock_1773695441-min.jpg"
+  },
+  {
+    "title":"Healthy Meals",
+    "image":"https://www.simplemost.com/wp-content/uploads/2017/06/healthy-meal-portion-control.jpeg"
+  }
+],
+"recipes":[
+  {
+    "id":1,
+    "title":"meal 1",
+    "image":"https://www.simplemost.com/wp-content/uploads/2017/06/healthy-meal-portion-control.jpeg",
+    "meal_type": "breakfast",
+    "description":"test description of meal1",
+    "rating":5,
+    "calerios":100,
+    "prep_time":120,
+    "serving":2,
+    "recommended":true
+  },
+  {
+    "id":2,
+    "title":"meal 2",
+    "meal_type": "breakfast",
+    "image":"https://www.eatingwell.com/thmb/On8Nf2lMq0eOC80XpptXMmu1x8k=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/watercress-salad-honey-Balsamic-tofu-2000-48bdf5401a104b63a2571d7d7e4d4359.jpg",
+    "description":"test description of meal2",
+    "rating":4,
+    "calerios":100,
+    "prep_time":60,
+    "serving":4,
+    "recommended":false
+  },
+  {
+    "id":3,
+    "title":"meal 3",
+    "meal_type": "breakfast",
+    "image":"https://www.eatingwell.com/thmb/On8Nf2lMq0eOC80XpptXMmu1x8k=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/watercress-salad-honey-Balsamic-tofu-2000-48bdf5401a104b63a2571d7d7e4d4359.jpg",
+    "description":"test description of meal3",
+    "rating":3,
+    "calerios":100,
+    "prep_time":120,
+    "serving":2,
+    "recommended":false
+  },
+  {   
+    "id":4,
+    "title":"meal 4",
+    "image":"https://www.eatingwell.com/thmb/On8Nf2lMq0eOC80XpptXMmu1x8k=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/watercress-salad-honey-Balsamic-tofu-2000-48bdf5401a104b63a2571d7d7e4d4359.jpg",
+    "meal_type": "breakfast",
+    "description":"test description of meal4",
+    "rating":5,
+    "calerios":100,
+    "prep_time":120,
+    "serving":2,
+    "recommended":true
+  },
+  {
+    "id":5,
+    "title":"meal 5",
+    "image":"https://www.eatingwell.com/thmb/On8Nf2lMq0eOC80XpptXMmu1x8k=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/watercress-salad-honey-Balsamic-tofu-2000-48bdf5401a104b63a2571d7d7e4d4359.jpg",
+    "meal_type": "breakfast",
+    "description":"test description of meal5",
+    "rating":2.3,
+    "calerios":100,
+    "prep_time":120,
+    "serving":2,
+    "recommended":true
+  },
+  {
+    "id":6,
+    "title":"meal 6",
+    "image":"https://www.eatingwell.com/thmb/On8Nf2lMq0eOC80XpptXMmu1x8k=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/watercress-salad-honey-Balsamic-tofu-2000-48bdf5401a104b63a2571d7d7e4d4359.jpg",
+    "meal_type": "breakfast",
+    "description":"test description of meal6",
+    "rating":4.7,
+    "calerios":100,
+    "prep_time":120,
+    "serving":2,
+    "recommended":true
+  }
+]
+}

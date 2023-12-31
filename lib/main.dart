@@ -1,6 +1,7 @@
 
 import 'package:daily_recipe/providers/auth.providers.dart';
 import 'package:daily_recipe/providers/home.providers.dart';
+import 'package:daily_recipe/providers/recepie.providers.dart';
 import 'package:daily_recipe/screens/homepage.screens.dart';
 import 'package:daily_recipe/screens/intro.screens.dart';
 import 'package:daily_recipe/screens/login_screen.dart';
@@ -34,6 +35,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider<HomeController>(
             create: (context) => HomeController(),
+          ),
+          ChangeNotifierProvider<RecipeController>(
+            create: (context) => RecipeController(),
           ),
         
         ],
