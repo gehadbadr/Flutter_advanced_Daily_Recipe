@@ -6,6 +6,6 @@ class appLogoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  return Image.asset(icAppLogo,width: 200,);
+  return Image.asset(ImagesPath.icAppLogo,width: 200,);
   }
 }

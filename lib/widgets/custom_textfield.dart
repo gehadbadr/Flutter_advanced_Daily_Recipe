@@ -47,7 +47,7 @@ class CustomTextField extends StatelessWidget {
         SizedBox(
           height:10 ,
         ),
-        Text(title ,style: TextStyle(color:PKColor,fontSize: 18,fontFamily: semibold ),),
+        Text(title ,style: TextStyle(color:ColorsApp.PKColor,fontSize: 18,fontWeight: FontWeight.w600),),
         SizedBox(
           height:5 ,
         ),
@@ -56,32 +56,32 @@ class CustomTextField extends StatelessWidget {
             if (value!.isEmpty) {
               return errorMessage(hint);
             }
-            if (title == email) {
+            if (title == TextApp.email) {
               return EmailValidator.validate(value)
                   ? null
-                  :invalidEmail;
+                  :TextApp.invalidEmail;
             }
-            if(title == password && value.length < 6) {
-               return weakPassword;                      
+            if(title == TextApp.password && value.length < 6) {
+               return TextApp.weakPassword;                      
             }
           },
           onSaved: onClick,
-          cursorColor:borderLine,
-          style: TextStyle(color: borderLine ),
+          cursorColor:ColorsApp.borderLine,
+          style: TextStyle(color: ColorsApp.borderLine ),
           obscureText: isPass == false?false
-                       :title == password ?authController.isTrue:authController.isConfirmPassword,
+                       :title == TextApp.password ?authController.isTrue:authController.isConfirmPassword,
           controller: controller,
           decoration: InputDecoration(
-              hintStyle: TextStyle(fontFamily: semibold, color: fontGrey),
+              hintStyle: TextStyle(fontWeight: FontWeight.w600, color: ColorsApp.fontGrey),
               hintText: hint,
               //isDense: true,
               //fillColor: lightGrey,
               prefixIcon: Icon(
                 icon,
-                color: PKColor,
+                color: ColorsApp.PKColor,
               ),
               suffixIcon:isPass== true ?
-              title == password ?  InkWell(
+              title == TextApp.password ?  InkWell(
                 onTap: () {
                 authController.togglePassword();
                 },
@@ -95,7 +95,7 @@ class CustomTextField extends StatelessWidget {
               ):null ,
               //border: InputBorder.none,
               focusedBorder:
-                  OutlineInputBorder(borderSide: BorderSide(color: borderLine))),
+                  OutlineInputBorder(borderSide: BorderSide(color: ColorsApp.borderLine))),
         ),
         SizedBox(
           height:5 ,

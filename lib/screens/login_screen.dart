@@ -18,7 +18,7 @@ class LoginScreen extends StatelessWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: bgColor,
+      backgroundColor: ColorsApp.bgColor,
       body: BlurryModalProgressHUD(
         inAsyncCall: Provider.of<AuthController>(context).isLoading,
         blurEffectIntensity: 4,
@@ -33,7 +33,7 @@ class LoginScreen extends StatelessWidget {
           children: <Widget>[
             Positioned.fill(
               //
-              child: Image(image: AssetImage(imgBg), fit: BoxFit.fill),
+              child: Image(image: AssetImage(ImagesPath .imgBg), fit: BoxFit.fill),
             ),
               Container(
                   height: context.screenHeight,
@@ -46,6 +46,7 @@ class LoginScreen extends StatelessWidget {
                           SizedBox(
                             height: (height * 0.1),
                           ),
+                          
                           appLogoWidget(),
                           SizedBox(
                             height: 20,
@@ -53,12 +54,13 @@ class LoginScreen extends StatelessWidget {
                           Text(
                             'Sign In',
                             style: TextStyle(
-                                color: whiteColor, fontSize: 18, fontFamily: bold),
+                                color: ColorsApp.whiteColor, fontSize: 18,fontWeight: FontWeight.w700),
                           ),
                           SizedBox(
                             height: 40,
                           ),
                           Container(
+                            decoration: const BoxDecoration(color: Colors.black38),
                             padding: EdgeInsets.all(16),
                             width: context.screenWidth - 70,
                             child: Form(
@@ -66,8 +68,8 @@ class LoginScreen extends StatelessWidget {
                                 child: Column(
                                   children: [
                                     CustomTextField(
-                                      title: email,
-                                      hint: emailHint,
+                                      title: TextApp.email,
+                                      hint: TextApp.emailHint,
                                       controller: emailController,
                                       icon: Icons.email,
                                       isPass: false,
@@ -76,8 +78,8 @@ class LoginScreen extends StatelessWidget {
                                       },
                                     ),
                                     CustomTextField(
-                                      title: password,
-                                      hint: passwordHint,
+                                      title: TextApp.password,
+                                      hint: TextApp.passwordHint,
                                       controller: passwordController,
                                       icon: Icons.lock,
                                       isPass: true,
@@ -89,7 +91,7 @@ class LoginScreen extends StatelessWidget {
                                         alignment: Alignment.topRight,
                                         child: TextButton(
                                           onPressed: () {},
-                                          child: Text(forgetPass),
+                                          child: Text(TextApp.forgetPass),
                                         )),
                                     SizedBox(
                                       height: 5,
@@ -97,9 +99,9 @@ class LoginScreen extends StatelessWidget {
                                     Container(
                                         width: context.screenWidth - 50,
                                         child: CustomButton(
-                                          bgColor: PKColor,
-                                          textColor: whiteColor,
-                                          title: login,
+                                          bgColor: ColorsApp.PKColor,
+                                          textColor: ColorsApp.whiteColor,
+                                          title: TextApp.login,
                                           onPress: () async {
                                             final authController =
                                                 Provider.of<AuthController>(context,
@@ -110,8 +112,8 @@ class LoginScreen extends StatelessWidget {
                                               _globalKey.currentState?.save();
                                               try {
                                                 String? emailValue =
-                                                    authController.prefsFile!.getString('email');
-                                                String? passwordValue = authController.prefsFile!
+                                                    authController.prefsFile.getString('email');
+                                                String? passwordValue = authController.prefsFile
                                                     .getString('password');
                                     
                                                 if (emailValue == null &&
@@ -121,7 +123,7 @@ class LoginScreen extends StatelessWidget {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
                                                           content: Text(
-                                                              errorNullloggedIn)));
+                                                              TextApp.errorNullloggedIn)));
                                                 }
                                                 if (emailValue !=
                                                         emailController.text ||
@@ -132,15 +134,15 @@ class LoginScreen extends StatelessWidget {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
                                                           content:
-                                                              Text(errorloggedIn)));
+                                                              Text(TextApp.errorloggedIn)));
                                                   authController
                                                       .changeisLoading(false);
                                                 } else {
-                                                  authController.prefsFile!.setBool('login', true);
+                                                  authController.prefsFile.setBool('login', true);
                                                   authController
                                                       .changeisLoading(false);
                                                   VxToast.show(context,
-                                                      msg: loggedIn);
+                                                      msg: TextApp.loggedIn);
                                                   Navigator.pushReplacementNamed(
                                                       context, 'HomepageScreen/');
                                                 }
@@ -158,8 +160,8 @@ class LoginScreen extends StatelessWidget {
                                       height: 10,
                                     ),
                                     Text(
-                                      loginWith,
-                                      style: TextStyle(color: whiteColor),
+                                      TextApp.loginWith,
+                                      style: TextStyle(color: ColorsApp.whiteColor),
                                     ),
                                     SizedBox(
                                       height: 10,
@@ -171,18 +173,22 @@ class LoginScreen extends StatelessWidget {
                                           (index) => Padding(
                                                 padding: EdgeInsets.only(left: 8),
                                                 child: CircleAvatar(
-                                                    backgroundColor: lightGrey,
+                                                    backgroundColor: ColorsApp.lightGrey,
                                                     radius: 25,
                                                     child: Image.asset(
-                                                      socialIconList[index],
+                                                      ListsApp.socialIconList[index],
                                                       width: 30,
                                                     )),
                                               )),
-                                    ),
+                                    )
+                                    
+                                ],
+                                )),
+                          ),
                                     SizedBox(
                                       height: context.screenHeight / 7,
                                     ),
-                                    InkWell(
+                            InkWell(
                                         onTap: () {
                                           Navigator.pushNamed(
                                               context, 'SignupScreen/');
@@ -190,23 +196,23 @@ class LoginScreen extends StatelessWidget {
                                         child: RichText(
                                           text: TextSpan(children: [
                                             TextSpan(
-                                                text: creatNewAccount,
+                                                text: TextApp.creatNewAccount,
                                                 style: TextStyle(
-                                                    fontFamily: bold,
-                                                    color: fontGrey,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: ColorsApp.fontGrey,
                                                     fontSize: 16)),
                                             TextSpan(
-                                                text: register,
+                                                text: TextApp.register,
                                                 style: TextStyle(
-                                                    fontFamily: bold,
-                                                    color: PKColor,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: ColorsApp.PKColor,
                                                     fontSize: 16))
                                           ]),
                                         )),
+                                        SizedBox(
+                                      height: 10,
+                                    ),
                                   ],
-                                )),
-                          ),
-                        ],
                       ),
                     ),
                   )),

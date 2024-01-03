@@ -19,7 +19,7 @@ class CustomButton extends StatelessWidget {
         ),),
             
         onPressed:onPress,
-        child: Text(title!,style: TextStyle(color: textColor,fontFamily: bold,fontSize: 16),)
+        child: Text(title!,style: TextStyle(color: textColor,fontWeight: FontWeight.w700,fontSize: 16),)
         );
   }
 }

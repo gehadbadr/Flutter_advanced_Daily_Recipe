@@ -1,13 +1,24 @@
 //icons
-const icAppLogo = "assets/icons/app_logo.png";
-const imgBg = "assets/images/bg.jpg";
-const icFacebookLogo = "assets/icons/facebook_logo.png";
-const icGoogleLogo = "assets/icons/google_logo.png";
+abstract class ImagesPath {
+   static const String _path = "assets/images/";
+   static const String _pathIcon = "assets/icons/";
 
-const icTwitterLogo = "assets/icons/twitter_logo.png";
-const slider1 = "assets/images/slider1.png";
-const slider2 = "assets/images/slider2.jpg";
-const slider3 = "assets/images/slider3.jpg";
-const slider4 = "assets/images/slider4.png";
-const slider5 = "assets/images/slider5.jpg";
+static const icAppLogo = "${_pathIcon}app_logo.png";
+static const imgBg = "${_path}bg.jpg";
+static const icFacebookLogo = "${_pathIcon}facebook_logo.png";
+static const icGoogleLogo = "${_pathIcon}google_logo.png";
+static const icTwitterLogo = "${_pathIcon}twitter_logo.png";
+
+static const slider1 = "${_path}slider1.png";
+static const slider2 = "${_path}slider2.jpg";
+static const slider3 = "${_path}slider3.jpg";
+static const slider4 = "${_path}slider4.png";
+static const slider5 = "${_path}slider5.jpg";
+
+static const recipe1 = "${_path}image1small.png";
+static const recipe2 = "${_path}image2small.png";
+static const recipe3 = "${_path}image3small.png";
+}
+
+
 

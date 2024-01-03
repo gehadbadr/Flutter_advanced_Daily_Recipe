@@ -4,7 +4,7 @@ import 'package:daily_recipe/widgets/applogo.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
-  final prefsFile = PrefrencesService.prefs;
+  //final prefsFile = PrefrencesService.prefs;
 
   SplashScreen({super.key});
 
@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
           children: <Widget>[
             Positioned.fill(
               //
-              child: Image(image: AssetImage(imgBg), fit: BoxFit.fill),
+              child: Image(image: AssetImage(ImagesPath .imgBg), fit: BoxFit.fill),
             ),
             SingleChildScrollView(
                 child: Container(

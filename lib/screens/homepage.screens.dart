@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:daily_recipe/providers/auth.providers.dart';
@@ -24,7 +26,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteColor,
+      backgroundColor: ColorsApp.whiteColor,
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(60.0),
           child: CustomAppBar(
@@ -42,11 +44,12 @@ class _HomepageScreenState extends State<HomepageScreen> {
               children: [
                 Consumer<AuthController>(
                     builder: (context, authController, child) {
-                  String? name = authController.prefsFile!.getString('name');
+                  String? name = authController.prefsFile.getString('name');
+
                   return Align(
                       alignment: Alignment.centerLeft,
-                      child: Text('${bonjour}, ${name}',
-                          style: TextStyle(fontSize: 20, color: fontGrey)));
+                      child: Text('${TextApp.bonjour}, ${name}',
+                          style: TextStyle(fontSize: 20, color: ColorsApp.fontGrey)));
                 }),
                 SizedBox(
                   height: 10,
@@ -54,8 +57,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    whatToCook,
-                    style: TextStyle(fontFamily: bold, fontSize: 25),
+                    TextApp.whatToCook,
+                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 25),
                   ),
                 ),
                 SizedBox(
@@ -71,10 +74,10 @@ class _HomepageScreenState extends State<HomepageScreen> {
                           width: 200,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: lightGrey,
+                            color: ColorsApp.lightGrey,
                           ),
                           child: TextFormField(
-                            cursorColor: borderLine,
+                            cursorColor: ColorsApp.borderLine,
                             decoration: const InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius: const BorderRadius.all(
@@ -86,12 +89,12 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                 ),
                                 prefixIcon: Icon(
                                   Icons.search,
-                                  color: borderLine,
+                                  color: ColorsApp.borderLine,
                                 ),
                                 filled: true,
-                                fillColor: lightGrey,
-                                hintText: searchAnyThing,
-                                hintStyle: TextStyle(color: borderLine)),
+                                fillColor: ColorsApp.lightGrey,
+                                hintText: TextApp.searchAnyThing,
+                                hintStyle: TextStyle(color: ColorsApp.borderLine)),
                           )),
                     ),
                     SizedBox(
@@ -110,7 +113,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         ),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: lightGrey),
+                            color: ColorsApp.lightGrey),
                       ),
                     ),
                   ],
@@ -164,7 +167,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                                   fit: BoxFit.fill,
                                                 )),
                                             margin: EdgeInsets.all(10),
-                                          
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.all(20.0),
@@ -177,8 +179,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                                 homeController
                                                     .adsLists[index].title!,
                                                 style: TextStyle(
-                                                    fontFamily: bold,
-                                                    color: whiteColor),
+                                                    fontWeight: FontWeight.w700,
+                                                    color: ColorsApp.whiteColor),
                                               ),
                                             ),
                                           )
@@ -196,7 +198,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                 decorator: DotsDecorator(
                                   size: const Size.square(9.0),
                                   activeSize: const Size(18.0, 9.0),
-                                  activeColor: PKColor,
+                                  activeColor: ColorsApp.PKColor,
                                   activeShape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5.0),
                                   ),
@@ -210,7 +212,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                           child: Container(
                             height: 40,
                             width: 40,
-                            color: lightGrey.withOpacity(0.5),
+                            color: ColorsApp.lightGrey.withOpacity(0.5),
                             child: IconButton(
                               onPressed: () {
                                 homeController.previousSlider();
@@ -218,7 +220,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                               icon: const Icon(
                                 Icons.navigate_before,
                                 size: 25,
-                                color: PKColor,
+                                color: ColorsApp.PKColor,
                               ),
                             ),
                           ),
@@ -230,13 +232,13 @@ class _HomepageScreenState extends State<HomepageScreen> {
                             child: Container(
                               height: 40,
                               width: 40,
-                              color: lightGrey.withOpacity(0.5),
+                              color: ColorsApp.lightGrey.withOpacity(0.5),
                               child: IconButton(
                                 onPressed: () {
                                   homeController.nextSlider();
                                 },
                                 icon: const Icon(Icons.navigate_next,
-                                    size: 30, color: PKColor),
+                                    size: 30, color: ColorsApp.PKColor),
                               ),
                             ),
                           ),
@@ -262,14 +264,14 @@ class _HomepageScreenState extends State<HomepageScreen> {
                           children: [
                             Expanded(
                               child: Text(
-                                'Today\'s Fresh Recipes',
+                              TextApp.todayFreshRecipe,
                                 style:
-                                    TextStyle(fontFamily: bold, fontSize: 20),
+                                    TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
                               ),
                             ),
                             Text(
-                              'See all',
-                              style: TextStyle(color: PKColor, fontSize: 16),
+                              TextApp.seeAll,
+                              style: TextStyle(color: ColorsApp.PKColor, fontSize: 16),
                             )
                           ],
                         ),
@@ -284,67 +286,75 @@ class _HomepageScreenState extends State<HomepageScreen> {
                             children: List.generate(
                                 recipeController.recipesLists.length,
                                 (index) => FreshRecipes(
-                                    id: recipeController.recipesLists[index].id,
-                                    title: recipeController
-                                        .recipesLists[index].title!,
-                                    image: recipeController
-                                        .recipesLists[index].image,
-                                    meal_type: recipeController
-                                        .recipesLists[index].meal_type,
-                                    rating: recipeController
-                                        .recipesLists[index].rating,
-                                    calerios: recipeController
-                                        .recipesLists[index].calerios,
-                                    serving: recipeController
-                                        .recipesLists[index].serving,
-                                    prep_time: recipeController
-                                        .recipesLists[index].prep_time,
-                                        recommended: false,)),
+                                      id: recipeController
+                                          .recipesLists[index].id,
+                                      title: recipeController
+                                          .recipesLists[index].title!,
+                                      image: recipeController
+                                          .recipesLists[index].image,
+                                      meal_type: recipeController
+                                          .recipesLists[index].meal_type,
+                                      rating: recipeController
+                                          .recipesLists[index].rating,
+                                      calerios: recipeController
+                                          .recipesLists[index].calerios,
+                                      serving: recipeController
+                                          .recipesLists[index].serving,
+                                      prep_time: recipeController
+                                          .recipesLists[index].prep_time,
+                                      recommended: false,
+                                    )),
                           ),
                         ),
                         Divider(),
-                          Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
                               child: Text(
-                                'Recommended',
+                                TextApp.recomended,
                                 style:
-                                    TextStyle(fontFamily: bold, fontSize: 20),
+                                    TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
                               ),
                             ),
                             Text(
-                              'See all',
-                              style: TextStyle(color: PKColor, fontSize: 16),
+                              TextApp.seeAll,
+                              style: TextStyle(color: ColorsApp.PKColor, fontSize: 16),
                             )
                           ],
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                          recipeController.recommendedList.isEmpty?
-                    CircularProgressIndicator():
-                        Column(
-                            children: List.generate(
-                                recipeController.recommendedList.length,
-                                (index) => FreshRecipes(
-                                    id: recipeController.recommendedList[index].id,
-                                    title: recipeController
-                                        .recommendedList[index].title!,
-                                    image: recipeController
-                                        .recommendedList[index].image,
-                                    meal_type: recipeController
-                                        .recommendedList[index].meal_type,
-                                    rating: recipeController
-                                        .recommendedList[index].rating,
-                                    calerios: recipeController
-                                        .recommendedList[index].calerios,
-                                    serving: recipeController
-                                        .recommendedList[index].serving,
-                                    prep_time: recipeController
-                                        .recommendedList[index].prep_time,
-                                        recommended: true)),
-                          ),
+                        recipeController.recommendedList.isEmpty
+                            ? CircularProgressIndicator()
+                            : /*SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: */Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: List.generate(
+                                      recipeController.recommendedList.length,
+                                      (index) => FreshRecipes(
+                                          id: recipeController
+                                              .recommendedList[index].id,
+                                          title: recipeController
+                                              .recommendedList[index].title!,
+                                          image: recipeController
+                                              .recommendedList[index].image,
+                                          meal_type: recipeController
+                                              .recommendedList[index].meal_type,
+                                          rating: recipeController
+                                              .recommendedList[index].rating,
+                                          calerios: recipeController
+                                              .recommendedList[index].calerios,
+                                          serving: recipeController
+                                              .recommendedList[index].serving,
+                                          prep_time: recipeController
+                                              .recommendedList[index].prep_time,
+                                          recommended: true),
+                                          ),
+                                ),
+                            //),
                       ],
                     );
                   }

@@ -1,5 +1,16 @@
 import 'package:daily_recipe/consts/consts.dart';
 
-const socialIconList = [icFacebookLogo ,icGoogleLogo ,icTwitterLogo];
-const sliderList = [slider1 ,slider2 ,slider3,slider4,slider5];
-
+abstract class ListsApp {
+  static const socialIconList = [
+    ImagesPath.icFacebookLogo,
+    ImagesPath.icGoogleLogo,
+    ImagesPath.icTwitterLogo
+  ];
+  static const sliderList = [
+    ImagesPath.slider1,
+    ImagesPath.slider2,
+    ImagesPath.slider3,
+    ImagesPath.slider4,
+    ImagesPath.slider5
+  ];
+}

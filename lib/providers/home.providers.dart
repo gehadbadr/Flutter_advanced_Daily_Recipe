@@ -17,8 +17,8 @@ class HomeController extends ChangeNotifier {
     var adsData = await rootBundle.loadString('assets/data/sample.json');
     var dataDecoded =
         List<Map<String, dynamic>>.from(jsonDecode(adsData)['ads']);
+      //  print(dataDecoded);
     adsLists = dataDecoded.map((e) => Ad.fromJson(e)).toList();
-    //  print(dataDecoded);
 
     notifyListeners();
   }

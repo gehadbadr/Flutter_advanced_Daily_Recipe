@@ -37,7 +37,7 @@ class _MyWidgetState extends State<SignupScreen> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: bgColor,
+      backgroundColor: ColorsApp.bgColor,
       body: BlurryModalProgressHUD(
         inAsyncCall: Provider.of<AuthController>(context).isLoading,
         blurEffectIntensity: 4,
@@ -52,7 +52,7 @@ class _MyWidgetState extends State<SignupScreen> {
           children: <Widget>[
             Positioned.fill(
               //
-              child: Image(image: AssetImage(imgBg), fit: BoxFit.fill),
+              child: Image(image: AssetImage(ImagesPath .imgBg), fit: BoxFit.fill),
             ),
             Container(
                   height: context.screenHeight,
@@ -72,12 +72,13 @@ class _MyWidgetState extends State<SignupScreen> {
                         Text(
                           'Sign In',
                           style: TextStyle(
-                              color: whiteColor, fontSize: 18, fontFamily: bold),
+                              color: ColorsApp.whiteColor, fontSize: 18, fontWeight: FontWeight.w700),
                         ),
                         SizedBox(
                           height: 40,
                         ),
                         Container(
+                          decoration: const BoxDecoration(color: Colors.black38),
                           padding: EdgeInsets.all(16),
                           width: context.screenWidth - 70,
                           child: Form(
@@ -85,8 +86,8 @@ class _MyWidgetState extends State<SignupScreen> {
                               child: Column(
                                 children: [
                                   CustomTextField(
-                                    title: name,
-                                    hint: nameHint,
+                                    title: TextApp.name,
+                                    hint: TextApp.nameHint,
                                     controller: nameController,
                                     icon: Icons.person,
                                     isPass: false,
@@ -95,8 +96,8 @@ class _MyWidgetState extends State<SignupScreen> {
                                     },
                                   ),
                                   CustomTextField(
-                                    title: email,
-                                    hint: emailHint,
+                                    title: TextApp.email,
+                                    hint: TextApp.emailHint,
                                     controller: emailController,
                                     icon: Icons.email,
                                     isPass: false,
@@ -105,8 +106,8 @@ class _MyWidgetState extends State<SignupScreen> {
                                     },
                                   ),
                                   CustomTextField(
-                                    title: password,
-                                    hint: passwordHint,
+                                    title: TextApp.password,
+                                    hint: TextApp.passwordHint,
                                     controller: passwordController,
                                     icon: Icons.lock,
                                     isPass: true,
@@ -115,8 +116,8 @@ class _MyWidgetState extends State<SignupScreen> {
                                     },
                                   ),
                                   CustomTextField(
-                                    title: repassword,
-                                    hint: repasswordHint,
+                                    title: TextApp.repassword,
+                                    hint: TextApp.repasswordHint,
                                     controller: repasswordController,
                                     icon: Icons.lock,
                                     isPass: true,
@@ -130,9 +131,9 @@ class _MyWidgetState extends State<SignupScreen> {
                                   Container(
                                       width: context.screenWidth - 50,
                                       child: CustomButton(
-                                        bgColor: PKColor,
-                                        textColor: whiteColor,
-                                        title: signup,
+                                        bgColor: ColorsApp.PKColor,
+                                        textColor: ColorsApp.whiteColor,
+                                        title: TextApp.signup,
                                         onPress: () async {
                                           final authController =
                                               Provider.of<AuthController>(context,
@@ -153,7 +154,7 @@ class _MyWidgetState extends State<SignupScreen> {
                                                 );
                                                 authController.changeisLoading(false);
                                                 VxToast.show(context,
-                                                    msg: registeredSuccessfully);
+                                                    msg: TextApp.registeredSuccessfully);
                                                 Navigator.pushReplacementNamed(
                                                     context, 'HomepageScreen/');
                                               } catch (e) {
@@ -168,11 +169,15 @@ class _MyWidgetState extends State<SignupScreen> {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(SnackBar(
                                                     content:
-                                                        Text(errorRepassword)));
+                                                        Text(TextApp.errorRepassword)));
                                           }
                                         },
                                       )),
-                                  SizedBox(
+                                
+                                ],
+                              )),
+                        ),
+                          SizedBox(
                                     height: 70,
                                   ),
                                   InkWell(
@@ -183,22 +188,23 @@ class _MyWidgetState extends State<SignupScreen> {
                                       child: RichText(
                                         text: TextSpan(children: [
                                           TextSpan(
-                                              text: alreadyHaveAccount,
+                                              text: TextApp.alreadyHaveAccount,
                                               style: TextStyle(
-                                                  fontFamily: bold,
-                                                  color: fontGrey,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: ColorsApp.fontGrey,
                                                     fontSize: 16)),
                                           TextSpan(
-                                              text: login,
+                                              text: TextApp.login,
                                               style: TextStyle(
-                                                  fontFamily: bold,
-                                                  color: PKColor,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: ColorsApp.PKColor,
                                                     fontSize: 16))
                                         ]),
                                       )),
-                                ],
-                              )),
-                        ),
+                                        SizedBox(
+                                      height: 10,
+                                    ),
+                              
                       ],
                     ),
                   ),

@@ -1,36 +1,42 @@
-const appname = "gApp";
-const slogen = "Cooking Done The Easy Way";
-const appversion = "Version 1.0.0";
-const credits = "@Gehad Devs";
-const name = 'Name';
-const nameHint = 'Name';
-const email = 'Email';
-const emailHint = 'admin@admin.com';
-const password = 'Password';
-const passwordHint = 'Password';
-const repassword = 'Confirm password';
-const repasswordHint = 'Confirm Password';
-const forgetPass = 'Forget Password';
-const login = 'Log In';
-const signup = 'Sign Up';
-const creatNewAccount = 'Don\'t have an account ? ';
-const register = 'Register';
-const loginWith = 'Log in with';
-const privacyPolicy = 'Privacy Policy';
-const termAndCond = 'Terms and Conditions';
-const alreadyHaveAccount = 'Already have an account ? ';
-const registeredSuccessfully = 'you register successfully ';
-const errorRepassword = 'Confirm password is not correct';
-const errorAgree = 'You have to agree';
-const invalidEmail = 'Please enter a valid email';
-const weakPassword = 'Please Enter more than 6 digit .';
-const loggedIn = 'you Logged is successfully ';
-const errorNullloggedIn = 'No Email is registered';
-const errorloggedIn = 'Wrong Email or Password ';
-const loggedOut = 'Logged out successfully ';
+abstract class TextApp {
+  static const appname = "gApp";
+  static const slogen = "Cooking Done The Easy Way";
+  static const appversion = "Version 1.0.0";
+  static const credits = "@Gehad Devs";
+  static const name = 'Name';
+  static const nameHint = 'Name';
+  static const email = 'Email';
+  static const emailHint = 'admin@admin.com';
+  static const password = 'Password';
+  static const passwordHint = 'Password';
+  static const repassword = 'Confirm password';
+  static const repasswordHint = 'Confirm Password';
+  static const forgetPass = 'Forget Password';
+  static const login = 'Log In';
+  static const signup = 'Sign Up';
+  static const creatNewAccount = 'Don\'t have an account ? ';
+  static const register = 'Register';
+  static const loginWith = 'Log in with';
+  static const privacyPolicy = 'Privacy Policy';
+  static const termAndCond = 'Terms and Conditions';
+  static const alreadyHaveAccount = 'Already have an account ? ';
+  static const registeredSuccessfully = 'you register successfully ';
+  static const errorRepassword = 'Confirm password is not correct';
+  static const errorAgree = 'You have to agree';
+  static const invalidEmail = 'Please enter a valid email';
+  static const weakPassword = 'Please Enter more than 6 digit .';
+  static const loggedIn = 'you Logged is successfully ';
+  static const errorNullloggedIn = 'No Email is registered';
+  static const errorloggedIn = 'Wrong Email or Password ';
+  static const loggedOut = 'Logged out successfully ';
 
 //Home page screen
-const searchAnyThing ="Search for recipe...";
-const bonjour ="Bonjour";
-const whatToCook ="What would you like to cook today?";
+  static const searchAnyThing = "Search for recipe...";
+  static const bonjour = "Bonjour";
+  static const whatToCook = "What would you like to cook today?";
+  static const todayFreshRecipe = "Today\'s Fresh Recipes";
+  static const seeAll = "See All";
+  static const recomended = "Recomended";
 
+  
+}

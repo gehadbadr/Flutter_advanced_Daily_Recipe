@@ -1,3 +1,3 @@
-const regular = "Hellix-Regular";
-const semibold = "Hellix-SemiBold";
-const bold = "Hellix-Bold";
+// const regular = "Hellix-Regular";
+// const semibold = "Hellix-SemiBold";
+// const bold = "Hellix-Bold";

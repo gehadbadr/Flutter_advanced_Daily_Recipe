@@ -42,6 +42,7 @@ dependencies:
   velocity_x: ^4.1.2
   carousel_slider: ^4.2.1
   dots_indicator: ^3.0.0
+  get_it: ^7.6.4
 
 dev_dependencies:
   flutter_test:
@@ -87,18 +88,22 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-  - family: Hellix-Regular
-    fonts:
-      - asset: assets/fonts/Hellix-Regular.ttf
-
-  - family: Hellix-SemiBold
-    fonts:
-      - asset: assets/fonts/Hellix-SemiBold.ttf
-
-  - family: Hellix-Bold
-    fonts:
-      - asset: assets/fonts/Hellix-Bold.ttf
-
+    - family: Hellix
+      fonts:
+        - asset: assets/fonts/Hellix-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Hellix-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Hellix-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Hellix-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Hellix-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Hellix-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Hellix-ExtraBold.ttf
+          weight: 800
   # fonts:
   #   - family: Schyler
   #     fonts:
