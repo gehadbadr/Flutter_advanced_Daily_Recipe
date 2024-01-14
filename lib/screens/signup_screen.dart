@@ -1,5 +1,6 @@
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/providers/auth.providers.dart';
+import 'package:daily_recipe/reuseable_function/snackbar.function.dart';
 import 'package:daily_recipe/widgets/applogo.dart';
 import 'package:daily_recipe/widgets/custom_button.dart';
 import 'package:daily_recipe/widgets/custom_textfield.dart';
@@ -16,27 +17,28 @@ class SignupScreen extends StatefulWidget {
 
 class _MyWidgetState extends State<SignupScreen> {
   bool? isCheck = false;
-  late GlobalKey<FormState> _globalKey ;
-  late TextEditingController nameController ;
+  late GlobalKey<FormState> _globalKey;
+  late TextEditingController nameController;
   late TextEditingController passwordController;
-  late TextEditingController repasswordController ;
-  late TextEditingController emailController ;
+  late TextEditingController repasswordController;
+  late TextEditingController emailController;
   bool? islogin = true;
-@override
+  @override
   void initState() {
-   _globalKey = GlobalKey<FormState>();
-   nameController = TextEditingController();
-   passwordController = TextEditingController();
-   repasswordController = TextEditingController();
-   emailController = TextEditingController();
+    _globalKey = GlobalKey<FormState>();
+    nameController = TextEditingController();
+    passwordController = TextEditingController();
+    repasswordController = TextEditingController();
+    emailController = TextEditingController();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     double height = context.screenHeight;
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      //  resizeToAvoidBottomInset: false,
       backgroundColor: ColorsApp.bgColor,
       body: BlurryModalProgressHUD(
         inAsyncCall: Provider.of<AuthController>(context).isLoading,
@@ -50,14 +52,15 @@ class _MyWidgetState extends State<SignupScreen> {
         color: Colors.black87,
         child: Stack(
           children: <Widget>[
-            Positioned.fill(
+            const Positioned.fill(
               //
-              child: Image(image: AssetImage(ImagesPath .imgBg), fit: BoxFit.fill),
+              child:
+                  Image(image: AssetImage(ImagesPath.imgBg), fit: BoxFit.fill),
             ),
-            Container(
-                  height: context.screenHeight,
-                  width: context.screenWidth,
-                    child: Padding(
+            SizedBox(
+                height: context.screenHeight,
+                width: context.screenWidth,
+                child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SingleChildScrollView(
                     child: Column(
@@ -65,21 +68,24 @@ class _MyWidgetState extends State<SignupScreen> {
                         SizedBox(
                           height: (height * 0.1),
                         ),
-                        appLogoWidget(),
-                        SizedBox(
+                        const AppLogoWidget(),
+                        const SizedBox(
                           height: 20,
                         ),
-                        Text(
+                        const Text(
                           'Sign In',
                           style: TextStyle(
-                              color: ColorsApp.whiteColor, fontSize: 18, fontWeight: FontWeight.w700),
+                              color: ColorsApp.whiteColor,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 40,
                         ),
                         Container(
-                          decoration: const BoxDecoration(color: Colors.black38),
-                          padding: EdgeInsets.all(16),
+                          decoration:
+                              const BoxDecoration(color: Colors.black38),
+                          padding: const EdgeInsets.all(16),
                           width: context.screenWidth - 70,
                           child: Form(
                               key: _globalKey,
@@ -125,10 +131,10 @@ class _MyWidgetState extends State<SignupScreen> {
                                       passwordController.text = value!;
                                     },
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 15,
                                   ),
-                                  Container(
+                                  SizedBox(
                                       width: context.screenWidth - 50,
                                       child: CustomButton(
                                         bgColor: ColorsApp.PKColor,
@@ -136,81 +142,95 @@ class _MyWidgetState extends State<SignupScreen> {
                                         title: TextApp.signup,
                                         onPress: () async {
                                           final authController =
-                                              Provider.of<AuthController>(context,
+                                              Provider.of<AuthController>(
+                                                  context,
                                                   listen: false);
                                           authController.changeisLoading(true);
-                                          if (passwordController.text ==
-                                              repasswordController.text) {
-                                            if (_globalKey.currentState!
-                                                .validate()) {
-                                              _globalKey.currentState?.save();
-                                              try {
-                                                await Provider.of<AuthController>(context,listen: false).savePrefs(
-                                                  name: nameController.text,
-                                                  email: emailController.text,
-                                                  password:
-                                                      passwordController.text,
-                                                  login: islogin,
-                                                );
-                                                authController.changeisLoading(false);
-                                                VxToast.show(context,
-                                                    msg: TextApp.registeredSuccessfully);
-                                                Navigator.pushReplacementNamed(
-                                                    context, 'HomepageScreen/');
-                                              } catch (e) {
-                                                print(e.toString());
-                                                authController.changeisLoading(false);
+                                          String? emailValue = authController
+                                              .prefsFile
+                                              .getString('email');
+                                          if (emailController.text !=
+                                              emailValue) {
+                                            if (passwordController.text ==
+                                                repasswordController.text) {
+                                              if (_globalKey.currentState!
+                                                  .validate()) {
+                                                _globalKey.currentState?.save();
+                                                try {
+                                                  await Provider.of<
+                                                              AuthController>(
+                                                          context,
+                                                          listen: false)
+                                                      .savePrefs(
+                                                    name: nameController.text,
+                                                    email: emailController.text,
+                                                    password:
+                                                        passwordController.text,
+                                                    login: islogin,
+                                                  );
+                                                  authController
+                                                      .changeisLoading(false);
+                                                  VxToast.show(context,
+                                                      msg: TextApp
+                                                          .registeredSuccessfully);
+                                                  context.replaceNamed(
+                                                      'HomepageScreen');
+                                                } catch (e) {
+                                                  print(e.toString());
+                                                  authController
+                                                      .changeisLoading(false);
+                                                }
+                                              } else {
+                                                authController
+                                                    .changeisLoading(false);
                                               }
                                             } else {
-                                              authController.changeisLoading(false);
+                                              authController
+                                                  .changeisLoading(false);
+                                              ShowSnackbar.showSnackbar(context,
+                                                  TextApp.errorRepassword);
                                             }
                                           } else {
-                                            authController.changeisLoading(false);
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(SnackBar(
-                                                    content:
-                                                        Text(TextApp.errorRepassword)));
+                                            authController
+                                                .changeisLoading(false);
+                                            ShowSnackbar.showSnackbar(context,
+                                                TextApp.errorRegisteredBefore);
                                           }
                                         },
                                       )),
-                                
                                 ],
                               )),
                         ),
-                          SizedBox(
-                                    height: 70,
-                                  ),
-                                  InkWell(
-                                      onTap: () {
-                                        Navigator.pushNamed(
-                                            context, 'LoginScreen/');
-                                      },
-                                      child: RichText(
-                                        text: TextSpan(children: [
-                                          TextSpan(
-                                              text: TextApp.alreadyHaveAccount,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w700,
-                                                  color: ColorsApp.fontGrey,
-                                                    fontSize: 16)),
-                                          TextSpan(
-                                              text: TextApp.login,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w700,
-                                                  color: ColorsApp.PKColor,
-                                                    fontSize: 16))
-                                        ]),
-                                      )),
-                                        SizedBox(
-                                      height: 10,
-                                    ),
-                              
+                        const SizedBox(
+                          height: 70,
+                        ),
+                        InkWell(
+                            onTap: () {
+                              context.goNamed('LoginScreen');
+                            },
+                            child: RichText(
+                              text: const TextSpan(children: [
+                                TextSpan(
+                                    text: TextApp.alreadyHaveAccount,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        color: ColorsApp.fontGrey,
+                                        fontSize: 16)),
+                                TextSpan(
+                                    text: TextApp.login,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        color: ColorsApp.PKColor,
+                                        fontSize: 16))
+                              ]),
+                            )),
+                        const SizedBox(
+                          height: 10,
+                        ),
                       ],
                     ),
                   ),
                 )),
-              
-            
           ],
         ),
       ),

@@ -19,13 +19,10 @@ class CustomAppBar extends StatelessWidget {
 surfaceTintColor: Colors.transparent,
         bottomOpacity: 0.0,
         elevation: 0.0,
-        leading: IconButton(
-          onPressed: onPressLeading,
-          icon:   Icon(
-              leadingIcon,
-              size: 30,
-            ),
-        ),
+        // leading:  const Icon(
+        //       Icons.menu,
+        //       size: 30,         
+        // ),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 20,top: 5),

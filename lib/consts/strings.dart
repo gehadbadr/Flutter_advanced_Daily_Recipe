@@ -28,15 +28,30 @@ abstract class TextApp {
   static const loggedIn = 'you Logged is successfully ';
   static const errorNullloggedIn = 'No Email is registered';
   static const errorloggedIn = 'Wrong Email or Password ';
+  static const errorRegisteredBefore = 'This email is registered before.';
   static const loggedOut = 'Logged out successfully ';
 
 //Home page screen
   static const searchAnyThing = "Search for recipe...";
   static const bonjour = "Bonjour";
   static const whatToCook = "What would you like to cook today?";
-  static const todayFreshRecipe = "Today\'s Fresh Recipes";
+  static const todayFreshRecipe = "Today's Fresh Recipes";
   static const seeAll = "See All";
   static const recomended = "Recomended";
+//Drawer
+  static const home = "Home";
+  static const favorite = "Favorites";
+  static const settings = "Settings";
+  static const recentlyViewed = "Recently Viewed";
+  static const about = "About us";
+  static const help = "Help";
+  static const logout = "Log Out";
+  //Recently Viewed  
+  static const clear = "Clear";
+  static const searchAnyKey = "Search uesing keywords...";
+  //Recipe details  
+  static const ingredients = "Ingredients";
+  static const directions = "Directions";
 
   
 }

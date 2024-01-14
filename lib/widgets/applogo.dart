@@ -1,8 +1,8 @@
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:flutter/material.dart';
 
-class appLogoWidget extends StatelessWidget {
-  const appLogoWidget({super.key});
+class AppLogoWidget extends StatelessWidget {
+  const AppLogoWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

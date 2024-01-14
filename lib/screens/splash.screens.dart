@@ -16,30 +16,34 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-      _navigatetohome();
+    _navigatetohome();
   }
 
   _navigatetohome() async {
-    await Future.delayed(Duration(seconds: 4), () {});
+    await Future.delayed(const Duration(seconds: 4), () {});
     bool? res = await PrefrencesService.isLogin();
     if (res == true) {
-      Navigator.pushReplacementNamed(context, 'HomepageScreen/');
+      context.goNamed('HomepageScreen');
     } else {
-      Navigator.pushReplacementNamed(context, 'IntroScreen/');
+      context.goNamed('IntroScreen');
+
+      //Navigator.pushReplacementNamed(context, 'IntroScreen/');
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: Stack(
           children: <Widget>[
-            Positioned.fill(
+            const Positioned.fill(
               //
-              child: Image(image: AssetImage(ImagesPath .imgBg), fit: BoxFit.fill),
+              child:
+                  Image(image: AssetImage(ImagesPath.imgBg), fit: BoxFit.fill),
             ),
             SingleChildScrollView(
-                child: Container(
+                child: SizedBox(
               height: context.screenHeight,
               width: context.screenWidth,
               child: Column(
@@ -47,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   SizedBox(
                     height: context.screenHeight / 2.5,
                   ),
-                  appLogoWidget(),
+                  const AppLogoWidget(),
                 ],
               ),
             )),

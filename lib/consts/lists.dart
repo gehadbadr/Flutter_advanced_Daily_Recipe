@@ -1,4 +1,5 @@
 import 'package:daily_recipe/consts/consts.dart';
+import 'package:flutter/material.dart';
 
 abstract class ListsApp {
   static const socialIconList = [
@@ -12,5 +13,17 @@ abstract class ListsApp {
     ImagesPath.slider3,
     ImagesPath.slider4,
     ImagesPath.slider5
+  ];
+
+    static const drawerList = [
+      { "icon":Icons.home,
+    "title":TextApp.home,
+    "color":ColorsApp.PKColor,
+    "path": 'HomepageScreen'},
+    { "icon":Icons.home,
+    "title":TextApp.home,
+    "color":ColorsApp.PKColor,
+    "path": 'HomepageScreen'},
+
   ];
 }

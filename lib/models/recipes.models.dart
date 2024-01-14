@@ -1,6 +1,6 @@
 class Recipe {
   String? title,image, meal_type,description;
-  double? rating;
+  double?  rating;
   int? id,calerios, prep_time,serving;
   bool? recommended;
 

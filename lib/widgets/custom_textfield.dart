@@ -11,7 +11,7 @@ class CustomTextField extends StatelessWidget {
   final Function(String?)? onClick;
   final IconData icon;
   final bool isPass;
-  CustomTextField(
+  const CustomTextField(
       {super.key,
       required this.title,
       required this.hint,
@@ -19,12 +19,7 @@ class CustomTextField extends StatelessWidget {
       required this.isPass,
       this.controller,
       this.onClick});
-  //var modelHubcontroller = Provider.of<ModelHud>;
-  void mail() {
-    const String email = 'fredrik.eilertsen@gail.com';
-    final bool isValid = EmailValidator.validate(email);
-    print('Email is valid? ' + (isValid ? 'yes' : 'no'));
-  }
+  
 
   String? errorMessage(String str) {
     switch (hint) {
@@ -44,11 +39,11 @@ class CustomTextField extends StatelessWidget {
   final authController = Provider.of<AuthController>(context, listen: false);
 
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        SizedBox(
+        const SizedBox(
           height:10 ,
         ),
-        Text(title ,style: TextStyle(color:ColorsApp.PKColor,fontSize: 18,fontWeight: FontWeight.w600),),
-        SizedBox(
+        Text(title ,style: const TextStyle(color:ColorsApp.PKColor,fontSize: 18,fontWeight: FontWeight.w600),),
+        const SizedBox(
           height:5 ,
         ),
         TextFormField(
@@ -66,15 +61,15 @@ class CustomTextField extends StatelessWidget {
             }
           },
           onSaved: onClick,
-          cursorColor:ColorsApp.borderLine,
-          style: TextStyle(color: ColorsApp.borderLine ),
+          cursorColor:ColorsApp.whiteColor,
+          style: const TextStyle(color: ColorsApp.whiteColor ),
           obscureText: isPass == false?false
                        :title == TextApp.password ?authController.isTrue:authController.isConfirmPassword,
           controller: controller,
           decoration: InputDecoration(
-              hintStyle: TextStyle(fontWeight: FontWeight.w600, color: ColorsApp.fontGrey),
+              hintStyle: const TextStyle(fontWeight: FontWeight.w600, color: ColorsApp.fontGrey),
               hintText: hint,
-              //isDense: true,
+              isDense: true,
               //fillColor: lightGrey,
               prefixIcon: Icon(
                 icon,
@@ -95,9 +90,9 @@ class CustomTextField extends StatelessWidget {
               ):null ,
               //border: InputBorder.none,
               focusedBorder:
-                  OutlineInputBorder(borderSide: BorderSide(color: ColorsApp.borderLine))),
+                  const OutlineInputBorder(borderSide: BorderSide(color: ColorsApp.borderLine))),
         ),
-        SizedBox(
+        const SizedBox(
           height:5 ,
         ),
       ]);

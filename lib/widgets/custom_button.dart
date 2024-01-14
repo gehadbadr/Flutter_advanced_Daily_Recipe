@@ -1,4 +1,3 @@
-import 'package:daily_recipe/consts/consts.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
@@ -13,7 +12,7 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom( 
-            backgroundColor: bgColor!, padding: EdgeInsets.all(20),
+            backgroundColor: bgColor!, padding: const EdgeInsets.all(15),
             shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
         ),),

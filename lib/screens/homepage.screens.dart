@@ -1,24 +1,22 @@
-import 'dart:convert';
-
 import 'package:daily_recipe/consts/consts.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:daily_recipe/providers/auth.providers.dart';
-import 'package:daily_recipe/providers/home.providers.dart';
 import 'package:daily_recipe/providers/recepie.providers.dart';
 import 'package:daily_recipe/widgets/appbar.widgets.dart';
-import 'package:daily_recipe/widgets/fresh_recipes.widget.dart';
+import 'package:daily_recipe/widgets/carsoul.widget.dart';
+import 'package:daily_recipe/widgets/drawer.widgets.dart';
+import 'package:daily_recipe/screens/recipes/components/recipes.components.dart';
 import 'package:flutter/material.dart';
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:provider/provider.dart';
 
 class HomepageScreen extends StatefulWidget {
-  HomepageScreen({super.key});
+  const HomepageScreen({super.key});
 
   @override
   State<HomepageScreen> createState() => _HomepageScreenState();
 }
 
 class _HomepageScreenState extends State<HomepageScreen> {
+  @override
   void initState() {
     super.initState();
   }
@@ -34,13 +32,13 @@ class _HomepageScreenState extends State<HomepageScreen> {
               actionIcon: Icons.notification_add_outlined,
               onPressLeading: () {},
               onPressAction: () {})),
+      drawer: const DrawerWidget(),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Container(
-                child: Column(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
               children: [
                 Consumer<AuthController>(
                     builder: (context, authController, child) {
@@ -48,20 +46,21 @@ class _HomepageScreenState extends State<HomepageScreen> {
 
                   return Align(
                       alignment: Alignment.centerLeft,
-                      child: Text('${TextApp.bonjour}, ${name}',
-                          style: TextStyle(fontSize: 20, color: ColorsApp.fontGrey)));
+                      child: Text('${TextApp.bonjour}, $name',
+                          style: const TextStyle(
+                              fontSize: 20, color: ColorsApp.fontGrey)));
                 }),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                Align(
+                const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     TextApp.whatToCook,
                     style: TextStyle(fontWeight: FontWeight.w700, fontSize: 25),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Row(
@@ -80,8 +79,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                             cursorColor: ColorsApp.borderLine,
                             decoration: const InputDecoration(
                                 border: OutlineInputBorder(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(10.0)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.0)),
                                   borderSide: BorderSide(
                                     width: 0,
                                     style: BorderStyle.none,
@@ -94,16 +93,20 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                 filled: true,
                                 fillColor: ColorsApp.lightGrey,
                                 hintText: TextApp.searchAnyThing,
-                                hintStyle: TextStyle(color: ColorsApp.borderLine)),
+                                hintStyle:
+                                    TextStyle(color: ColorsApp.borderLine)),
                           )),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Expanded(
                       flex: 1,
                       child: Container(
                         height: 60,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: ColorsApp.lightGrey),
                         child: IconButton(
                           onPressed: () {},
                           icon: const Icon(
@@ -111,256 +114,129 @@ class _HomepageScreenState extends State<HomepageScreen> {
                             //  size: 25,
                           ),
                         ),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: ColorsApp.lightGrey),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                Consumer<HomeController>(
-                    builder: (context, homeController, child) {
-                  homeController.getAds();
-                  if (homeController.adsLists.isEmpty) {
-                    return CircularProgressIndicator();
-                  } else {
-                    return Stack(
-                      alignment: Alignment.centerLeft,
-                      children: [
-                        Positioned(
-                          child: Column(
-                            children: [
-                              CarouselSlider.builder(
-                                  //  key: key,
-                                  carouselController:
-                                      homeController.carouselControllerEx,
-                                  options: CarouselOptions(
-                                      autoPlay: true,
-                                      height: 200,
-                                      viewportFraction: .75,
-                                      enlargeStrategy:
-                                          CenterPageEnlargeStrategy.height,
-                                      enlargeCenterPage: true,
-                                      onPageChanged: (index, _) {
-                                        homeController.onSliderChanged(
-                                            index, _);
-                                      },
-                                      enlargeFactor: .3),
-                                  itemCount: homeController.adsLists.length,
-                                  itemBuilder: (BuildContext, index, int) =>
-                                      Stack(
-                                        alignment: Alignment.topLeft,
-                                        children: [
-                                          Container(
-                                            width: double.infinity,
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10.0),
-                                                image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      homeController
-                                                          .adsLists[index]
-                                                          .image!),
-                                                  fit: BoxFit.fill,
-                                                )),
-                                            margin: EdgeInsets.all(10),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(20.0),
-                                            child: Container(
-                                              color: Colors.black38,
-                                              //height: 20,
-                                              padding:
-                                                  const EdgeInsets.all(4.0),
-                                              child: Text(
-                                                homeController
-                                                    .adsLists[index].title!,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w700,
-                                                    color: ColorsApp.whiteColor),
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      )),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              DotsIndicator(
-                                dotsCount: homeController.adsLists.length,
-                                position: homeController.sliderIndex,
-                                onTap: (position) async {
-                                  await homeController.dotsIndicator(position);
-                                },
-                                decorator: DotsDecorator(
-                                  size: const Size.square(9.0),
-                                  activeSize: const Size(18.0, 9.0),
-                                  activeColor: ColorsApp.PKColor,
-                                  activeShape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Visibility(
-                          visible: homeController.showNext,
-                          child: Container(
-                            height: 40,
-                            width: 40,
-                            color: ColorsApp.lightGrey.withOpacity(0.5),
-                            child: IconButton(
-                              onPressed: () {
-                                homeController.previousSlider();
-                              },
-                              icon: const Icon(
-                                Icons.navigate_before,
-                                size: 25,
-                                color: ColorsApp.PKColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: context.screenWidth - 80,
-                          child: Visibility(
-                            visible: homeController.showPrev,
-                            child: Container(
-                              height: 40,
-                              width: 40,
-                              color: ColorsApp.lightGrey.withOpacity(0.5),
-                              child: IconButton(
-                                onPressed: () {
-                                  homeController.nextSlider();
-                                },
-                                icon: const Icon(Icons.navigate_next,
-                                    size: 30, color: ColorsApp.PKColor),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  }
-                }),
+                const CarsoulWidget(),
                 const SizedBox(
                   height: 10,
                 ),
                 Consumer<RecipeController>(
                     builder: (context, recipeController, child) {
                   recipeController.getRecipes();
-                  recipeController.getRecommendedRecipes();
-                  if (recipeController.recipesLists.isEmpty) {
-                    return CircularProgressIndicator();
-                  } else {
-                    return Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
+                  return Column(
+                    children: [
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
                               TextApp.todayFreshRecipe,
-                                style:
-                                    TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
-                              ),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 20),
                             ),
-                            Text(
-                              TextApp.seeAll,
-                              style: TextStyle(color: ColorsApp.PKColor, fontSize: 16),
-                            )
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          physics: BouncingScrollPhysics(),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: List.generate(
-                                recipeController.recipesLists.length,
-                                (index) => FreshRecipes(
-                                      id: recipeController
-                                          .recipesLists[index].id,
-                                      title: recipeController
-                                          .recipesLists[index].title!,
-                                      image: recipeController
-                                          .recipesLists[index].image,
-                                      meal_type: recipeController
-                                          .recipesLists[index].meal_type,
-                                      rating: recipeController
-                                          .recipesLists[index].rating,
-                                      calerios: recipeController
-                                          .recipesLists[index].calerios,
-                                      serving: recipeController
-                                          .recipesLists[index].serving,
-                                      prep_time: recipeController
-                                          .recipesLists[index].prep_time,
-                                      recommended: false,
-                                    )),
                           ),
-                        ),
-                        Divider(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                TextApp.recomended,
-                                style:
-                                    TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+                          Text(
+                            TextApp.seeAll,
+                            style: TextStyle(
+                                color: ColorsApp.PKColor, fontSize: 16),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      recipeController.recipesLists.isEmpty
+                          ? const CircularProgressIndicator()
+                          : SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              physics: const BouncingScrollPhysics(),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: List.generate(
+                                    recipeController.recipesLists.length,
+                                    (index) => Recipes(
+                                          id: recipeController
+                                              .recipesLists[index].id,
+                                          title: recipeController
+                                              .recipesLists[index].title!,
+                                          image: recipeController
+                                              .recipesLists[index].image,
+                                          meal_type: recipeController
+                                              .recipesLists[index].meal_type,
+                                          rating: recipeController
+                                              .recipesLists[index].rating,
+                                          calerios: recipeController
+                                              .recipesLists[index].calerios,
+                                          serving: recipeController
+                                              .recipesLists[index].serving,
+                                          prep_time: recipeController
+                                              .recipesLists[index].prep_time,
+                                          viewType: 0,
+                                        )),
                               ),
                             ),
-                            Text(
-                              TextApp.seeAll,
-                              style: TextStyle(color: ColorsApp.PKColor, fontSize: 16),
-                            )
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        recipeController.recommendedList.isEmpty
-                            ? CircularProgressIndicator()
-                            : /*SingleChildScrollView(
+                      const Divider(),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              TextApp.recomended,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 20),
+                            ),
+                          ),
+                          Text(
+                            TextApp.seeAll,
+                            style: TextStyle(
+                                color: ColorsApp.PKColor, fontSize: 16),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      recipeController.recommendedList.isEmpty
+                          ? const CircularProgressIndicator()
+                          : SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
-                              child: */Column(
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: List.generate(
-                                      recipeController.recommendedList.length,
-                                      (index) => FreshRecipes(
-                                          id: recipeController
-                                              .recommendedList[index].id,
-                                          title: recipeController
-                                              .recommendedList[index].title!,
-                                          image: recipeController
-                                              .recommendedList[index].image,
-                                          meal_type: recipeController
-                                              .recommendedList[index].meal_type,
-                                          rating: recipeController
-                                              .recommendedList[index].rating,
-                                          calerios: recipeController
-                                              .recommendedList[index].calerios,
-                                          serving: recipeController
-                                              .recommendedList[index].serving,
-                                          prep_time: recipeController
-                                              .recommendedList[index].prep_time,
-                                          recommended: true),
-                                          ),
+                                children: List.generate(
+                                  recipeController.recommendedList.length,
+                                  (index) => Recipes(
+                                      id: recipeController
+                                          .recommendedList[index].id,
+                                      title: recipeController
+                                          .recommendedList[index].title!,
+                                      image: recipeController
+                                          .recommendedList[index].image,
+                                      meal_type: recipeController
+                                          .recommendedList[index].meal_type,
+                                      rating: recipeController
+                                          .recommendedList[index].rating,
+                                      calerios: recipeController
+                                          .recommendedList[index].calerios,
+                                      serving: recipeController
+                                          .recommendedList[index].serving,
+                                      prep_time: recipeController
+                                          .recommendedList[index].prep_time,
+                                      viewType: 1),
                                 ),
-                            //),
-                      ],
-                    );
-                  }
+                              ),
+                            ),
+                    ],
+                  );
+                  //}
                 })
               ],
-            )),
+            ),
           ),
         ),
       ),
