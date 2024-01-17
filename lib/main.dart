@@ -6,13 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get_it/get_it.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
-    //  PrefrencesService.prefs = await SharedPreferences.getInstance();
     var prefrence = await SharedPreferences.getInstance();
     GetIt.I.registerSingleton<SharedPreferences>(prefrence);
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
   } catch (e) {
     print(e.toString());
   }

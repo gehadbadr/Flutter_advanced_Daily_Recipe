@@ -29,6 +29,8 @@ abstract class TextApp {
   static const errorNullloggedIn = 'No Email is registered';
   static const errorloggedIn = 'Wrong Email or Password ';
   static const errorRegisteredBefore = 'This email is registered before.';
+  static const errorUserNotFound = 'This email is not found.';
+  static const errorWrongPassword = 'Wrong Password .';
   static const loggedOut = 'Logged out successfully ';
 
 //Home page screen

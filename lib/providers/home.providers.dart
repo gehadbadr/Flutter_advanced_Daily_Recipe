@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/models/ad.models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

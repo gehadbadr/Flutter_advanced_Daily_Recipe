@@ -1,7 +1,7 @@
 import 'package:daily_recipe/providers/auth.providers.dart';
 import 'package:flutter/material.dart';
 import 'package:daily_recipe/consts/consts.dart';
-import 'package:email_validator/email_validator.dart';
+//import 'package:email_validator/email_validator.dart';
 import 'package:provider/provider.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -32,6 +32,7 @@ class CustomTextField extends StatelessWidget {
       case 'RePassword':
         return 'RePassword is required ';
     }
+    return null;
   }
 
   @override
@@ -51,14 +52,14 @@ class CustomTextField extends StatelessWidget {
             if (value!.isEmpty) {
               return errorMessage(hint);
             }
-            if (title == TextApp.email) {
-              return EmailValidator.validate(value)
-                  ? null
-                  :TextApp.invalidEmail;
-            }
-            if(title == TextApp.password && value.length < 6) {
-               return TextApp.weakPassword;                      
-            }
+            // if (title == TextApp.email) {
+            //   return EmailValidator.validate(value)
+            //       ? null
+            //       :TextApp.invalidEmail;
+            // }
+            // if(title == TextApp.password && value.length < 6) {
+            //    return TextApp.weakPassword;                      
+            // }
           },
           onSaved: onClick,
           cursorColor:ColorsApp.whiteColor,

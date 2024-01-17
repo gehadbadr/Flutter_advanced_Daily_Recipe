@@ -1,12 +1,11 @@
 import 'package:daily_recipe/consts/consts.dart';
-import 'package:daily_recipe/services/prefrences.services.dart';
 import 'package:daily_recipe/widgets/applogo.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
-  //final prefsFile = PrefrencesService.prefs;
 
-  SplashScreen({super.key});
+  const SplashScreen({super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -21,11 +20,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
   _navigatetohome() async {
     await Future.delayed(const Duration(seconds: 4), () {});
-    bool? res = await PrefrencesService.isLogin();
-    if (res == true) {
-      context.goNamed('HomepageScreen');
+    if (FirebaseAuth.instance.currentUser  != null) {
+      context.replaceNamed('HomepageScreen');
     } else {
-      context.goNamed('IntroScreen');
+      context.replaceNamed('IntroScreen');
 
       //Navigator.pushReplacementNamed(context, 'IntroScreen/');
     }

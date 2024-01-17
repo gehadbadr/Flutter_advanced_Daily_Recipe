@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "98511826291",
+    "project_id": "recipe-app-fed63",
+    "storage_bucket": "recipe-app-fed63.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:98511826291:android:8796c78d33c7bbfcb32906",
+        "android_client_info": {
+          "package_name": "com.example.daily_recipe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGz4gtJHbUyTUorqsNzCCY8Q8Nd_Lb-As"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

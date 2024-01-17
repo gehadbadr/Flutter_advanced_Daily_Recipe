@@ -1,8 +1,6 @@
-import 'package:daily_recipe/consts/colors.dart';
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/providers/auth.providers.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -16,13 +14,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   @override
   void initState() {
     super.initState();
-    getName();
-  }
-
-  String getName() {
-    final authController = Provider.of<AuthController>(context, listen: false);
-    String? name = authController.prefsFile.getString('name');
-    return name!;
   }
 
   @override
@@ -34,7 +25,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Consumer<AuthController>(builder: (context, authController, child) {
-              String? name = authController.prefsFile.getString('name');
+              authController.getDisplayName();
+              String? name = authController.displayName;
               return header(context, name!);
             }),
             menuItem(context),
@@ -170,9 +162,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 onTap: () async {
                   final authController =
                       Provider.of<AuthController>(context, listen: false);
-                  authController.logOut();
-                  VxToast.show(context, msg: TextApp.loggedOut);
-                  context.goNamed('LoginScreen');
+                  authController.signoutMethod(context);
                 },
               ),
             ],

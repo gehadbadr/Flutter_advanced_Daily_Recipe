@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 class RecipeDetailsScreen extends StatelessWidget {
   final String? recipeId;
-  RecipeDetailsScreen({super.key, required this.recipeId});
+  const RecipeDetailsScreen({super.key, required this.recipeId});
   int idInt() {
     int id = int.parse(recipeId!);
     return id;

@@ -27,12 +27,4 @@ class RecipeController extends ChangeNotifier {
     }
   }
 
-  // void getRecommendedRecipes() async {
-  //   var recipesData = await rootBundle.loadString('assets/data/sample.json');
-  //   var dataDecoded =
-  //       List<Map<String, dynamic>>.from(jsonDecode(recipesData)['recipes']);
-  //   recipesLists = dataDecoded.map((e) => Recipe.fromJson(e)).toList();
-  //   recommendedList= recipesLists.where((e) => e.recommended == true).toList();
-  //   notifyListeners();
-  // }
 }

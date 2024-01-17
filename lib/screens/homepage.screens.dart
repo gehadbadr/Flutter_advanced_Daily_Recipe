@@ -26,7 +26,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
     return Scaffold(
       backgroundColor: ColorsApp.whiteColor,
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(60.0),
+          preferredSize: const Size.fromHeight(60.0),
           child: CustomAppBar(
               leadingIcon: Icons.menu,
               actionIcon: Icons.notification_add_outlined,
@@ -42,7 +42,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
               children: [
                 Consumer<AuthController>(
                     builder: (context, authController, child) {
-                  String? name = authController.prefsFile.getString('name');
+                  authController.getDisplayName();
+                  String? name = authController.displayName;
 
                   return Align(
                       alignment: Alignment.centerLeft,
