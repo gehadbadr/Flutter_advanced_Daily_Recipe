@@ -17,7 +17,12 @@ class FavoriteRecipesScreen extends StatefulWidget {
 class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
   @override
   void initState() {
+    init();
     super.initState();
+  }
+
+  void init() async {
+    Provider.of<RecipeController>(context, listen: false).getRecipes();
   }
 
   @override
@@ -123,34 +128,34 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
             ),
             Consumer<RecipeController>(
               builder: (context, recipeController, child) {
-              recipeController.getRecipes();
+            //  recipeController.getRecipes();
                 return Column(
                   children: [
-                    recipeController.recommendedList.isEmpty
+                    recipeController.recommendedList!.isEmpty
                         ? const CircularProgressIndicator()
                         : SingleChildScrollView(
                           padding: const EdgeInsets.all(0),
                           scrollDirection: Axis.horizontal,
                           child: Column(
                               children: List.generate(
-                                  recipeController.recommendedList.length,
+                                  recipeController.recommendedList!.length,
                                   (index) => Recipes(
                                       id: recipeController
-                                          .recommendedList[index].id,
+                                          .recommendedList![index].id,
                                       title: recipeController
-                                          .recommendedList[index].title!,
+                                          .recommendedList![index].title!,
                                       image: recipeController
-                                          .recommendedList[index].image,
+                                          .recommendedList![index].image,
                                       meal_type: recipeController
-                                          .recommendedList[index].meal_type,
+                                          .recommendedList![index].mealType,
                                       rating: recipeController
-                                          .recommendedList[index].rating,
+                                          .recommendedList![index].rating,
                                       calerios: recipeController
-                                          .recommendedList[index].calerios,
+                                          .recommendedList![index].calerios,
                                       serving: recipeController
-                                          .recommendedList[index].serving,
+                                          .recommendedList![index].serving,
                                       prep_time: recipeController
-                                          .recommendedList[index].prep_time,
+                                          .recommendedList![index].prepTime,
                                       viewType: 1),
                                       ),
                             ),

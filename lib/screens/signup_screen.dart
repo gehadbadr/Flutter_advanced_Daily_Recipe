@@ -138,7 +138,7 @@ class _MyWidgetState extends State<SignupScreen> {
                           ),
                           InkWell(
                               onTap: () {
-                                context.goNamed('LoginScreen');
+                                 Navigator.pushNamed(context,AppRoutes.loginScreen);
                               },
                               child: RichText(
                                 text: const TextSpan(children: [

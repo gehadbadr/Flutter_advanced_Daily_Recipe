@@ -1,11 +1,13 @@
 import 'package:daily_recipe/consts/consts.dart';
+import 'package:daily_recipe/screens/recipes/recipeDetails.screens.dart';
 import 'package:flutter/material.dart';
 
 class Recipes extends StatelessWidget {
-  final String? title, image, meal_type;
+  final String? id,title, image, meal_type;
   final double? rating;
-  final int? id, calerios, prep_time, serving;
+  final int?  calerios, prep_time, serving;
   final int? viewType;
+  
   const Recipes({
     super.key,
     required this.id,
@@ -67,7 +69,13 @@ class Recipes extends StatelessWidget {
                   offset: const Offset(30, 0),
                   child: InkWell(
                       onTap: () {
-                        context.goNamed('RecipeDetailsScreen', queryParameters: {'recipeId':'$id'});
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                   RecipeDetailsScreen(recipeId: id)),
+                        );
+                        //    context.goNamed(AppRoutes.recipeDetailsScreen, queryParameters: {'recipeId':'$id'});
                       },
                       child: recipeImage(200, 150, context))),
               const SizedBox(
@@ -114,7 +122,13 @@ class Recipes extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () {
-                  context.goNamed('RecipeDetailsScreen', queryParameters: {'recipeId':'$id'});
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                             RecipeDetailsScreen(recipeId: id)),
+                  );
+                  //  context.goNamed(AppRoutes.recipeDetailsScreen, queryParameters: {'recipeId':'$id'});
                 },
                 child: Align(
                     alignment: Alignment.center,
@@ -212,7 +226,13 @@ class Recipes extends StatelessWidget {
         mealType(12),
         InkWell(
             onTap: () {
-              context.goNamed('RecipeDetailsScreen', queryParameters: {'recipeId':'$id'});
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                         RecipeDetailsScreen(recipeId: id)),
+              );
+              //  context.goNamed(AppRoutes.recipeDetailsScreen, queryParameters: {'recipeId':'$id'});
             },
             child: titleWidget(context, viewType)),
         const SizedBox(

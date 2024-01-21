@@ -5,16 +5,39 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CarsoulWidget extends StatelessWidget {
-
+class CarsoulWidget extends StatefulWidget {
   const CarsoulWidget({super.key});
+
+  @override
+  State<CarsoulWidget> createState() => _CarsoulWidgetState();
+}
+
+class _CarsoulWidgetState extends State<CarsoulWidget> {
+  @override
+  void initState() {
+    init();
+    super.initState();
+  }
+
+  void init() async {
+    Provider.of<HomeController>(context, listen: false).getAds();
+    Provider.of<HomeController>(context, listen: false).initCarousal();
+  }
+
+  // @override
+  // void dispose() async {
+  //   Provider.of<HomeController>(context, listen: false).disposeCarousal();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<HomeController>(builder: (context, homeController, child) {
-       homeController.getAds();
-      if (homeController.adsLists.isEmpty) {
-        return const CircularProgressIndicator();
+      homeController.getAds();
+      if(homeController.adsList == null){
+      return const CircularProgressIndicator();
+      }else if (homeController.adsList!.isEmpty ?? false) {
+        return const Text('No Data Found');
       } else {
         return Stack(
           alignment: Alignment.centerLeft,
@@ -35,7 +58,7 @@ class CarsoulWidget extends StatelessWidget {
                             homeController.onSliderChanged(index, _);
                           },
                           enlargeFactor: .3),
-                      itemCount: homeController.adsLists.length,
+                      itemCount: homeController.adsList!.length,
                       itemBuilder: (BuildContext, index, int) => Stack(
                             alignment: Alignment.topLeft,
                             children: [
@@ -45,7 +68,7 @@ class CarsoulWidget extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(10.0),
                                     image: DecorationImage(
                                       image: NetworkImage(homeController
-                                          .adsLists[index].image!),
+                                          .adsList![index].image!),
                                       fit: BoxFit.fill,
                                     )),
                                 margin: const EdgeInsets.all(10),
@@ -57,7 +80,7 @@ class CarsoulWidget extends StatelessWidget {
                                   //height: 20,
                                   padding: const EdgeInsets.all(4.0),
                                   child: Text(
-                                    homeController.adsLists[index].title!,
+                                    homeController.adsList![index].title!,
                                     style: const TextStyle(
                                         fontWeight: FontWeight.w700,
                                         color: ColorsApp.whiteColor),
@@ -70,7 +93,7 @@ class CarsoulWidget extends StatelessWidget {
                     height: 10,
                   ),
                   DotsIndicator(
-                    dotsCount: homeController.adsLists.length,
+                    dotsCount: homeController.adsList!.length,
                     position: homeController.sliderIndex,
                     onTap: (position) async {
                       await homeController.dotsIndicator(position);

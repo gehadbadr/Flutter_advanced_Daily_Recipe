@@ -39,7 +39,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   Widget header(BuildContext context, String name) {
     return InkWell(
         onTap: () {
-          context.goNamed('HomepageScreen/');
+          Navigator.pushNamed(context,AppRoutes.homepageScreen);
         },
         child: Container(
           padding: EdgeInsets.only(
@@ -94,7 +94,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     style: TextStyle(color: ColorsApp.PKColor)),
                 onTap: () {
                   //  context.goNamed( 'HomepageScreen/');
-                  context.goNamed('HomepageScreen');
+                  Navigator.pushNamed(context,AppRoutes.homepageScreen);
                 },
               ),
               const SizedBox(
@@ -108,7 +108,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   style: TextStyle(color: ColorsApp.borderLine),
                 ),
                 onTap: () {
-                  context.goNamed('FavoriteRecipesScreen');
+                  Navigator.pushNamed(context,AppRoutes.favoriteRecipesScreen);
                 },
               ),
               const SizedBox(
@@ -122,7 +122,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   style: TextStyle(color: ColorsApp.borderLine),
                 ),
                 onTap: () {
-                  context.goNamed('ViewedRecipesScreen');
+                  Navigator.pushNamed(context,AppRoutes.viewedRecipesScreen);
                 },
               ),
               ListTile(

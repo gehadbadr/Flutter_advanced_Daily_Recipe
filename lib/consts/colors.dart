@@ -13,4 +13,5 @@ abstract class ColorsApp {
   static const Color golden = Color.fromRGBO(255, 168, 0, 1);
   static const Color borderLine = Color.fromRGBO(178, 183, 198, 1);
   static const Color lightGolden = Color(0xffFEEAD1);
+  static const Color red = Colors.red;
 }

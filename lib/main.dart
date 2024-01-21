@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:daily_recipe/app_router.dart';
 import 'package:daily_recipe/providers/auth.providers.dart';
 import 'package:daily_recipe/providers/home.providers.dart';
@@ -17,18 +18,24 @@ void main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    
   } catch (e) {
     print(e.toString());
   }
-  runApp(const MyApp());
+  runApp(const  MyApp());
 
   /// The route configuration.
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
+  const  MyApp({super.key});
+//  final routerDelegate = BeamerDelegate(
+//     locationBuilder: BeamerLocationBuilder(
+//       beamLocations: [AppRouter()],
+//     ),
+//     notFoundRedirectNamed: '/books',
+//   );
+//   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -43,10 +50,15 @@ class MyApp extends StatelessWidget {
           create: (context) => RecipeController(),
         ),
       ],
-      child: MaterialApp.router(
-        routerConfig: AppRouter.router,
+       child: MaterialApp(
+      //  .router(
+      // routerDelegate: routerDelegate,
+      // routeInformationParser: BeamerParser(),
+      // backButtonDispatcher:
+      //     BeamerBackButtonDispatcher(delegate: routerDelegate),
+        // routerConfig: AppRouter.router,
         debugShowCheckedModeBanner: false,
-        title: 'Daily Recipe',
+        // title: 'Daily Recipe',
         /*    theme: ThemeData(
       //  colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
@@ -61,17 +73,8 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
 
-        /*initialRoute: '/',
-          routes: {
-            '/': (context) => SplashScreen(),
-            'IntroScreen/': (context) => const IntroScreen(),
-            'LoginScreen/': (context) => LoginScreen(),
-            'SignupScreen/': (context) => SignupScreen(),
-            'HomepageScreen/': (context) => const HomepageScreen(),
-            'ViewedRecipesScreen/': (context) => const ViewedRecipesScreen(),
-            'FavoriteRecipesScreen/': (context) => const FavoriteRecipesScreen(),
-            'RecipeDetailsScreen/': (context) => const RecipeDetailsScreen(),
-          }*/
+        initialRoute: '/',
+          routes:AppRouter.router
       ),
     );
   }

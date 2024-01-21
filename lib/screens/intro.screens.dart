@@ -43,9 +43,10 @@ class IntroScreen extends StatelessWidget {
                           textColor: ColorsApp.whiteColor,
                           title: TextApp.login,
                           onPress: () async {
-                            context.goNamed('LoginScreen');
+                          //  context.goNamed(AppRoutes.loginScreen);
+           Navigator.pushNamed(context,AppRoutes.loginScreen);
 
-                            //Navigator.pushNamed(context, 'LoginScreen/');
+                            //Navigator.goNamed(context, 'LoginScreen/');
                           },
                         ),
                       ),
@@ -60,7 +61,7 @@ class IntroScreen extends StatelessWidget {
                           textColor: ColorsApp.whiteColor,
                           title: TextApp.signup,
                           onPress: () async {
-                            context.goNamed('SignupScreen');
+                             Navigator.pushNamed(context,AppRoutes.signupScreen);
                           },
                         ),
                       ),

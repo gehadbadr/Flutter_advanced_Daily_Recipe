@@ -150,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           InkWell(
                               onTap: () {
-                                context.goNamed('SignupScreen');
+                                 Navigator.pushNamed(context,AppRoutes.signupScreen);
                               },
                               child: RichText(
                                 text: const TextSpan(children: [

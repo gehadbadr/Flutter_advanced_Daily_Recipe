@@ -1,16 +1,17 @@
 import 'package:daily_recipe/consts/consts.dart';
+import 'package:daily_recipe/consts/toastStatus.dart';
 import 'package:daily_recipe/reuseable_function/snackbar.function.dart';
+import 'package:daily_recipe/reuseable_function/toast.function.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthController extends ChangeNotifier {
-  final _auth = FirebaseAuth.instance;
+  final auth = FirebaseAuth.instance;
   late GlobalKey<FormState>? globalKey;
   late TextEditingController? nameController;
   late TextEditingController? passwordController;
   late TextEditingController? repasswordController;
   late TextEditingController? emailController;
-  late bool islogin;
   String? displayName;
   bool? isLoading;
   bool? obscureText;
@@ -26,12 +27,10 @@ class AuthController extends ChangeNotifier {
     passwordController = TextEditingController();
     repasswordController = TextEditingController();
     isLoading = false;
-    islogin = true;
     obscureText = false;
     _isTrue = true;
     _isConfirmPassword = true;
     displayName = null;
-
   }
 
   void providerDispose() {
@@ -39,12 +38,10 @@ class AuthController extends ChangeNotifier {
     passwordController = null;
     globalKey = null;
     nameController = null;
-    islogin = true;
     obscureText = false;
     _isTrue = true;
     _isConfirmPassword = true;
     displayName = null;
-
   }
 
   changeisLoading(bool value) {
@@ -102,13 +99,51 @@ class AuthController extends ChangeNotifier {
     }
   }
 
+// Future<void> signupMehtod(
+//       String email, String password, String name, BuildContext context) async {
+//     UserCredential? userCredential;
+
+//     try {
+//       userCredential = await auth.createUserWithEmailAndPassword(
+//           email: email, password: password);
+//     } on FirebaseAuthException catch (e) {
+//       if (e.code == 'invalid-email') {
+//         ShowSnackbar.showSnackbar(context, TextApp.invalidEmail);
+//       } else if (e.code == 'email-already-in-use') {
+//         ShowSnackbar.showSnackbar(context, TextApp.errorRegisteredBefore);
+//       } else if (e.code == 'weak-password') {
+//         ShowSnackbar.showSnackbar(context, TextApp.weakPassword);
+//       }
+//       changeisLoading(false);
+//     }
+//     if (userCredential?.user != null) {
+//       await userCredential?.user?.updateDisplayName(name);
+//       notifyListeners();
+//       changeisLoading(false);
+//       VxToast.show(context, msg: TextApp.registeredSuccessfully);
+//       providerDispose();
+//       Navigator.pushReplacementNamed(context,'HomepageScreen');
+//     }
+//   }
+
   Future<void> signupMehtod(
       String email, String password, String name, BuildContext context) async {
     UserCredential? userCredential;
 
     try {
-      userCredential = await _auth.createUserWithEmailAndPassword(
+      userCredential = await auth.createUserWithEmailAndPassword(
           email: email, password: password);
+      if (userCredential.user != null) {
+        await userCredential.user?.updateDisplayName(name);
+        notifyListeners();
+        changeisLoading(false);
+        if (context.mounted) {
+          ShowToastMessage.showToast(context, TextApp.registeredSuccessfully,
+              3000, ToastMessageStatus.success);
+        }
+        providerDispose();
+        Navigator.pushReplacementNamed(context, AppRoutes.homepageScreen);
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
         ShowSnackbar.showSnackbar(context, TextApp.invalidEmail);
@@ -119,19 +154,11 @@ class AuthController extends ChangeNotifier {
       }
       changeisLoading(false);
     }
-    if (userCredential?.user != null) {
-      await userCredential?.user?.updateDisplayName(name);
-      notifyListeners();
-      changeisLoading(false);
-      VxToast.show(context, msg: TextApp.registeredSuccessfully);
-      providerDispose();
-      context.replaceNamed('HomepageScreen');
-    }
   }
 
 //---------------end Sign Up------------------
 //---------------start Sign in------------------
-  
+
   Future<void> signIn(BuildContext context) async {
     changeisLoading(true);
     if (globalKey?.currentState?.validate() ?? false) {
@@ -151,8 +178,17 @@ class AuthController extends ChangeNotifier {
       String email, String password, BuildContext context) async {
     UserCredential? userCredential;
     try {
-      userCredential = await _auth.signInWithEmailAndPassword(
+      userCredential = await auth.signInWithEmailAndPassword(
           email: email, password: password);
+      if (userCredential.user != null) {
+        ShowToastMessage.showToast(
+            context, TextApp.loggedIn, 3000, ToastMessageStatus.success);
+        changeisLoading(false);
+        providerDispose();
+        if (context.mounted) {
+          Navigator.pushReplacementNamed(context, AppRoutes.homepageScreen);
+        }
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
         ShowSnackbar.showSnackbar(context, TextApp.invalidEmail);
@@ -163,29 +199,36 @@ class AuthController extends ChangeNotifier {
       }
       changeisLoading(false);
     }
-
-    if (userCredential?.user != null) {
-      VxToast.show(context, msg: TextApp.loggedIn);
-      changeisLoading(false);
-      providerDispose();
-      context.replaceNamed('HomepageScreen');
-    }
   }
 
 //------------end sign in -------
 //--------- getDisplayName-------
   Future<void> getDisplayName() async {
-    displayName = _auth.currentUser?.displayName;
+    displayName = auth.currentUser?.displayName;
   }
 
 //------------LogOut-------------
   void signoutMethod(BuildContext context) async {
     try {
-      _auth.signOut();
-      VxToast.show(context, msg: TextApp.loggedOut);
-      context.goNamed('LoginScreen');
+      auth.signOut();
+      ShowToastMessage.showToast(
+          context, TextApp.loggedOut, 3000, ToastMessageStatus.success);
+
+      if (context.mounted) {
+        Navigator.pushNamedAndRemoveUntil(
+            context, AppRoutes.introScreen, (route) => false);
+      }
     } catch (e) {
       print(e.toString());
     }
   }
+
+  // late User _user;
+  // bool get isAuthenticated => _user != null;
+  // Future<void> initAuth() async {
+  //   auth.authStateChanges().listen((User? user) {
+  //     _user = user!;
+  //     notifyListeners();
+  //   });
+  // }
 }

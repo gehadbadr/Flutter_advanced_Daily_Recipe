@@ -16,10 +16,16 @@ class HomepageScreen extends StatefulWidget {
 }
 
 class _HomepageScreenState extends State<HomepageScreen> {
-  @override
+    @override
   void initState() {
+  //  init();
     super.initState();
   }
+
+  void init() async {
+    Provider.of<RecipeController>(context, listen: false).getRecipes();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +157,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       const SizedBox(
                         height: 10,
                       ),
-                      recipeController.recipesLists.isEmpty
+                      recipeController.recipesList!.isEmpty
                           ? const CircularProgressIndicator()
                           : SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
@@ -160,24 +166,24 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: List.generate(
-                                    recipeController.recipesLists.length,
+                                    recipeController.recipesList!.length,
                                     (index) => Recipes(
                                           id: recipeController
-                                              .recipesLists[index].id,
+                                              .recipesList![index].id,
                                           title: recipeController
-                                              .recipesLists[index].title!,
+                                              .recipesList![index].title!,
                                           image: recipeController
-                                              .recipesLists[index].image,
+                                              .recipesList![index].image,
                                           meal_type: recipeController
-                                              .recipesLists[index].meal_type,
+                                              .recipesList![index].mealType,
                                           rating: recipeController
-                                              .recipesLists[index].rating,
+                                              .recipesList![index].rating,
                                           calerios: recipeController
-                                              .recipesLists[index].calerios,
+                                              .recipesList![index].calerios,
                                           serving: recipeController
-                                              .recipesLists[index].serving,
+                                              .recipesList![index].serving,
                                           prep_time: recipeController
-                                              .recipesLists[index].prep_time,
+                                              .recipesList![index].prepTime,
                                           viewType: 0,
                                         )),
                               ),
@@ -203,31 +209,31 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       const SizedBox(
                         height: 10,
                       ),
-                      recipeController.recommendedList.isEmpty
+                      recipeController.recommendedList!.isEmpty
                           ? const CircularProgressIndicator()
                           : SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: List.generate(
-                                  recipeController.recommendedList.length,
+                                  recipeController.recommendedList!.length,
                                   (index) => Recipes(
                                       id: recipeController
-                                          .recommendedList[index].id,
+                                          .recommendedList![index].id,
                                       title: recipeController
-                                          .recommendedList[index].title!,
+                                          .recommendedList![index].title!,
                                       image: recipeController
-                                          .recommendedList[index].image,
+                                          .recommendedList![index].image,
                                       meal_type: recipeController
-                                          .recommendedList[index].meal_type,
+                                          .recommendedList![index].mealType,
                                       rating: recipeController
-                                          .recommendedList[index].rating,
+                                          .recommendedList![index].rating,
                                       calerios: recipeController
-                                          .recommendedList[index].calerios,
+                                          .recommendedList![index].calerios,
                                       serving: recipeController
-                                          .recommendedList[index].serving,
+                                          .recommendedList![index].serving,
                                       prep_time: recipeController
-                                          .recommendedList[index].prep_time,
+                                          .recommendedList![index].prepTime,
                                       viewType: 1),
                                 ),
                               ),
