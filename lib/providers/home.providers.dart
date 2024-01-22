@@ -51,6 +51,7 @@ class HomeController extends ChangeNotifier {
 
   void disposeCarousal() {
     carouselControllerEx = null;
+    
   }
 
   onSliderChanged(index, _) {

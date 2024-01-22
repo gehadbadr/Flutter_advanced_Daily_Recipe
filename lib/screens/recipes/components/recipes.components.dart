@@ -1,22 +1,23 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/screens/recipes/recipeDetails.screens.dart';
 import 'package:flutter/material.dart';
 
 class Recipes extends StatelessWidget {
-  final String? id,title, image, meal_type;
+  final String? id, title, image, mealType;
   final double? rating;
-  final int?  calerios, prep_time, serving;
+  final int? calerios, prepTime, serving;
   final int? viewType;
-  
+
   const Recipes({
     super.key,
     required this.id,
     required this.title,
     required this.image,
-    required this.meal_type,
+    required this.mealType,
     required this.rating,
     required this.calerios,
-    required this.prep_time,
+    required this.prepTime,
     required this.serving,
     this.viewType,
   });
@@ -40,56 +41,50 @@ class Recipes extends StatelessWidget {
   }
 
   Widget freshRecipes(BuildContext context) {
-    return Stack(
-      alignment: Alignment.topLeft,
-      children: [
-        Container(
-          alignment: Alignment.bottomLeft,
-          margin:
-              const EdgeInsets.only(top: 10, right: 30, bottom: 10, left: 10),
-          width: 200,
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
+    return Container(
+      alignment: Alignment.bottomLeft,
+      margin: const EdgeInsets.only(top: 10, right: 30, bottom: 10, left: 10),
+      width: 200,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: ColorsApp.lightGrey,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(
             color: ColorsApp.lightGrey,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: const [
-              BoxShadow(
-                color: ColorsApp.lightGrey,
-                blurRadius: 5,
-              ),
-            ],
+            blurRadius: 5,
           ),
-          child: Column(
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+            height: 5,
+          ),
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 5,
-              ),
-              Transform.translate(
-                  offset: const Offset(30, 0),
-                  child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                   RecipeDetailsScreen(recipeId: id)),
-                        );
-                        //    context.goNamed(AppRoutes.recipeDetailsScreen, queryParameters: {'recipeId':'$id'});
-                      },
-                      child: recipeImage(200, 150, context))),
-              const SizedBox(
-                height: 5,
-              ),
-              info(context, viewType!)
+              favoriteIcon(),
+              InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              RecipeDetailsScreen(recipeId: id)),
+                    );
+                    //    context.goNamed(AppRoutes.recipeDetailsScreen, queryParameters: {'recipeId':'$id'});
+                  },
+                  child: recipeImage(130, 130, context)),
             ],
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: favoriteIcon(),
-        ),
-      ],
+          const SizedBox(
+            height: 5,
+          ),
+          info(context, viewType!)
+        ],
+      ),
     );
   }
 
@@ -126,7 +121,7 @@ class Recipes extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                             RecipeDetailsScreen(recipeId: id)),
+                            RecipeDetailsScreen(recipeId: id)),
                   );
                   //  context.goNamed(AppRoutes.recipeDetailsScreen, queryParameters: {'recipeId':'$id'});
                 },
@@ -145,7 +140,7 @@ class Recipes extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(16.0),
           child: favoriteIcon(),
         )
       ],
@@ -163,7 +158,7 @@ class Recipes extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20, child: mealType(15)),
+              SizedBox(height: 20, child: mealTypeWidget(15)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -211,7 +206,7 @@ class Recipes extends StatelessWidget {
           ),
         ),
         Transform.translate(
-            offset: const Offset(80, 0), child: recipeImage(250, 180, context)),
+            offset: const Offset(0, 0), child: recipeImage(240, 170, context)),
         const SizedBox(
           height: 5,
         ),
@@ -223,14 +218,13 @@ class Recipes extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        mealType(12),
+        mealTypeWidget(12),
         InkWell(
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                         RecipeDetailsScreen(recipeId: id)),
+                    builder: (context) => RecipeDetailsScreen(recipeId: id)),
               );
               //  context.goNamed(AppRoutes.recipeDetailsScreen, queryParameters: {'recipeId':'$id'});
             },
@@ -275,9 +269,9 @@ class Recipes extends StatelessWidget {
     );
   }
 
-  Widget mealType(double fontSize) {
+  Widget mealTypeWidget(double fontSize) {
     return Text(
-      "$meal_type",
+      "$mealType",
       style: TextStyle(fontSize: fontSize, color: ColorsApp.lightBlue),
     );
   }
@@ -361,44 +355,44 @@ class Recipes extends StatelessWidget {
           width: 5,
         ),
         Text(
-          "$prep_time mins",
+          "$prepTime mins",
           style: TextStyle(color: ColorsApp.borderLine, fontSize: fontSize),
         ),
       ],
     );
   }
 
-  Widget recipeImage(double width, double height, BuildContext context) {
-    return SizedBox(
-      height: height,
-      width: width,
-      child: Image.asset(image!, fit: BoxFit.fill),
-    );
-  }
+  // Widget recipeImage(double width, double height, BuildContext context) {
+  //   return SizedBox(
+  //     height: height,
+  //     width: width,
+  //     child: Image.asset(image!, fit: BoxFit.fill),
+  //   );
+  // }
 
   Widget favoriteIcon() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: IconButton(
-        onPressed: () {},
-        icon: const Icon(
-          Icons.favorite_outline,
-          color: ColorsApp.borderLine,
-        ),
+    return IconButton(
+      onPressed: () {},
+      icon: const Icon(
+        Icons.favorite_outline,
+        color: ColorsApp.borderLine,
       ),
     );
   }
 
-  // recipeImage1(width, height) {
-  //   return Container(
-  //     height: height,
-  //     width: width,
-  //     decoration: BoxDecoration(
-  //         borderRadius: BorderRadius.circular(10.0),
-  //         image: DecorationImage(
-  //           image: NetworkImage(image!),
-  //           fit: BoxFit.fill,
-  //         )),
-  //   );
-  // }
+  recipeImage(width, height, BuildContext context) {
+    return SizedBox(
+      height: height,
+      width: width,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10.0),
+        child: CachedNetworkImage(
+          imageUrl: image!,
+          placeholder: (context, url) => Text(title!),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
+          fit: BoxFit.fill,
+        ),
+      ),
+    );
+  }
 }

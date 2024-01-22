@@ -146,7 +146,7 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
                                           .recommendedList![index].title!,
                                       image: recipeController
                                           .recommendedList![index].image,
-                                      meal_type: recipeController
+                                      mealType: recipeController
                                           .recommendedList![index].mealType,
                                       rating: recipeController
                                           .recommendedList![index].rating,
@@ -154,7 +154,7 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
                                           .recommendedList![index].calerios,
                                       serving: recipeController
                                           .recommendedList![index].serving,
-                                      prep_time: recipeController
+                                      prepTime: recipeController
                                           .recommendedList![index].prepTime,
                                       viewType: 1),
                                       ),

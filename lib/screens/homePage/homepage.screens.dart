@@ -2,7 +2,7 @@ import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/providers/auth.providers.dart';
 import 'package:daily_recipe/providers/recepie.providers.dart';
 import 'package:daily_recipe/widgets/appbar.widgets.dart';
-import 'package:daily_recipe/widgets/carsoul.widget.dart';
+import 'package:daily_recipe/screens/homePage/components/carsoul.widget.dart';
 import 'package:daily_recipe/widgets/drawer.widgets.dart';
 import 'package:daily_recipe/screens/recipes/components/recipes.components.dart';
 import 'package:flutter/material.dart';
@@ -174,7 +174,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                               .recipesList![index].title!,
                                           image: recipeController
                                               .recipesList![index].image,
-                                          meal_type: recipeController
+                                          mealType: recipeController
                                               .recipesList![index].mealType,
                                           rating: recipeController
                                               .recipesList![index].rating,
@@ -182,7 +182,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                               .recipesList![index].calerios,
                                           serving: recipeController
                                               .recipesList![index].serving,
-                                          prep_time: recipeController
+                                          prepTime: recipeController
                                               .recipesList![index].prepTime,
                                           viewType: 0,
                                         )),
@@ -224,7 +224,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                           .recommendedList![index].title!,
                                       image: recipeController
                                           .recommendedList![index].image,
-                                      meal_type: recipeController
+                                      mealType: recipeController
                                           .recommendedList![index].mealType,
                                       rating: recipeController
                                           .recommendedList![index].rating,
@@ -232,7 +232,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                           .recommendedList![index].calerios,
                                       serving: recipeController
                                           .recommendedList![index].serving,
-                                      prep_time: recipeController
+                                      prepTime: recipeController
                                           .recommendedList![index].prepTime,
                                       viewType: 1),
                                 ),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/providers/home.providers.dart';
@@ -24,19 +25,19 @@ class _CarsoulWidgetState extends State<CarsoulWidget> {
     Provider.of<HomeController>(context, listen: false).initCarousal();
   }
 
-  // @override
-  // void dispose() async {
-  //   Provider.of<HomeController>(context, listen: false).disposeCarousal();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() async {
+    Provider.of<HomeController>(context, listen: false).disposeCarousal();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<HomeController>(builder: (context, homeController, child) {
       homeController.getAds();
-      if(homeController.adsList == null){
-      return const CircularProgressIndicator();
-      }else if (homeController.adsList!.isEmpty ?? false) {
+      if (homeController.adsList == null) {
+        return const CircularProgressIndicator();
+      } else if (homeController.adsList!.isEmpty) {
         return const Text('No Data Found');
       } else {
         return Stack(
@@ -64,14 +65,19 @@ class _CarsoulWidgetState extends State<CarsoulWidget> {
                             children: [
                               Container(
                                 width: double.infinity,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    image: DecorationImage(
-                                      image: NetworkImage(homeController
-                                          .adsList![index].image!),
-                                      fit: BoxFit.fill,
-                                    )),
                                 margin: const EdgeInsets.all(10),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: CachedNetworkImage(
+                                    imageUrl:
+                                        homeController.adsList![index].image!,
+                                    placeholder: (context, url) => Text(
+                                        homeController.adsList![index].title!),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(20.0),
