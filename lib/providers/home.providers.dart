@@ -14,21 +14,14 @@ class HomeController extends ChangeNotifier {
 
   List<Ad>? get adsList => _adsList;
 
-  // void getAds() async {
-  //   var adsData = await rootBundle.loadString('assets/data/sample.json');
-  //   var dataDecoded =
-  //       List<Map<String, dynamic>>.from(jsonDecode(adsData)['ads']);
-  //   //  print(dataDecoded);
-  //   _adsList = dataDecoded.map((e) => Ad.fromJson(e)).toList();
-
-  //   notifyListeners();
-  // }
+  
 
   Future<void> getAds() async {
     try {
       var result = await FirebaseFirestore.instance
           .collection('ads')
           .where('isActive', isEqualTo: true)
+          .limit(10)
           .get();
       if (result.docs.isNotEmpty) {
         _adsList = List<Ad>.from(

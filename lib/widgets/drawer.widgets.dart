@@ -1,10 +1,15 @@
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/providers/auth.providers.dart';
+import 'package:daily_recipe/screens/recipes/favoriteRecipes.screens.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:provider/provider.dart';
 
 class DrawerWidget extends StatefulWidget {
-  const DrawerWidget({super.key});
+  final ZoomDrawerController? controller;
+
+   const DrawerWidget({super.key,required this.controller});
 
   @override
   State<DrawerWidget> createState() => _DrawerWidgetState();
@@ -18,20 +23,18 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      backgroundColor: ColorsApp.lightGrey,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Consumer<AuthController>(builder: (context, authController, child) {
-              authController.getDisplayName();
-              String? name = authController.displayName;
-              return header(context, name!);
-            }),
-            menuItem(context),
-          ],
-        ),
+    return  Scaffold(
+        backgroundColor: Colors.white,
+        body:Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Consumer<AuthController>(builder: (context, authController, child) {
+            authController.getDisplayName();
+            String? name = authController.displayName;
+            return header(context, name!);
+          }),
+          menuItem(context),
+        ],
       ),
     );
   }
@@ -44,7 +47,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         child: Container(
           padding: EdgeInsets.only(
               top: 24 + MediaQuery.of(context).padding.top, bottom: 24),
-          child: Row(
+          child:
+           Row(
             children: [
               const SizedBox(
                 width: 10,
@@ -56,24 +60,26 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   backgroundColor: ColorsApp.golden,
                 ),
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(name,
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  const Text(
-                    "view profile",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: ColorsApp.borderLine),
-                  )
-                ],
+              Flexible(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(name,
+                        style:
+                            const TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    const Text(
+                      "view profile",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: ColorsApp.borderLine),
+                    )
+                  ],
+                ),
               ),
             ],
           ),
@@ -108,6 +114,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   style: TextStyle(color: ColorsApp.borderLine),
                 ),
                 onTap: () {
+                  widget.controller!.close?.call();
                   Navigator.pushNamed(context,AppRoutes.favoriteRecipesScreen);
                 },
               ),
@@ -122,7 +129,32 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   style: TextStyle(color: ColorsApp.borderLine),
                 ),
                 onTap: () {
+                  widget.controller!.close?.call();
                   Navigator.pushNamed(context,AppRoutes.viewedRecipesScreen);
+                },
+              ),
+                ListTile(
+                leading: const Icon(Icons.play_arrow_outlined,
+                    color: ColorsApp.borderLine),
+                title: const Text(
+                  TextApp.ingredients,
+                  style: TextStyle(color: ColorsApp.borderLine),
+                ),
+                onTap: () {
+                  widget.controller!.close?.call();
+                  Navigator.pushNamed(context,AppRoutes.viewedRecipesScreen);
+                },
+              ),
+                  ListTile(
+                leading: const Icon(Icons.food_bank,
+                    color: ColorsApp.borderLine),
+                title: const Text(
+                  TextApp.ingredients,
+                  style: TextStyle(color: ColorsApp.borderLine),
+                ),
+                onTap: () {
+                  widget.controller!.close?.call();
+                  Navigator.pushNamed(context,AppRoutes.ingredientsScreen);
                 },
               ),
               ListTile(
@@ -160,6 +192,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 title: const Text(TextApp.logout,
                     style: TextStyle(color: ColorsApp.borderLine)),
                 onTap: () async {
+                  widget.controller!.close?.call();
                   final authController =
                       Provider.of<AuthController>(context, listen: false);
                   authController.signoutMethod(context);

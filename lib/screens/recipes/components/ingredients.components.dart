@@ -13,14 +13,6 @@ class Ingredients extends StatelessWidget {
        ingredients!.length,
         (index) =>
             Text(ingredients![index])));
-    //  return Container();
-    // return GridView.builder(
-    //   itemCount: 100,
-    //   itemBuilder: (context, index) => Text(ingredients![index].toString()),
-    //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-    //     crossAxisCount: 2,
-    //     childAspectRatio: 2,
-    //   ),
-    // );
+  
   }
 }

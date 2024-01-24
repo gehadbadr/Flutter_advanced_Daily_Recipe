@@ -8,21 +8,27 @@ class CustomAppBar extends StatelessWidget {
   final Function()? onPressLeading;
   final Function()? onPressAction;
   const CustomAppBar(
-      {super.key,required this.leadingIcon,required this.actionIcon, this.title,required this.onPressLeading, required this.onPressAction});
+      {super.key, this.leadingIcon,required this.actionIcon, this.title,this.onPressLeading, required this.onPressAction});
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
+    if(leadingIcon != null){
+    return  AppBar(
         shadowColor: ColorsApp.whiteColor,
         backgroundColor: ColorsApp.whiteColor,
         foregroundColor: ColorsApp.darkFontGrey,
-surfaceTintColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
         bottomOpacity: 0.0,
         elevation: 0.0,
-        // leading:  const Icon(
-        //       Icons.menu,
-        //       size: 30,         
-        // ),
+        leading: InkWell(
+                onTap: 
+                  onPressLeading
+                ,
+                child:  Icon(
+                leadingIcon,
+                size: 30,         
+          ),
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 20,top: 5),
@@ -35,5 +41,26 @@ surfaceTintColor: Colors.transparent,
             ),
           ),
         ]);
+  }else{  return  AppBar(
+        shadowColor: ColorsApp.whiteColor,
+        backgroundColor: ColorsApp.whiteColor,
+        foregroundColor: ColorsApp.darkFontGrey,
+        surfaceTintColor: Colors.transparent,
+        bottomOpacity: 0.0,
+        elevation: 0.0,
+        
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20,top: 5),
+            child: IconButton(
+              onPressed: onPressAction,
+              icon:  Icon(
+                actionIcon,
+                size: 30,
+              ),
+            ),
+          ),
+        ]);
+  }  
   }
 }

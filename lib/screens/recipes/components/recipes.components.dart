@@ -8,6 +8,8 @@ class Recipes extends StatelessWidget {
   final double? rating;
   final int? calerios, prepTime, serving;
   final int? viewType;
+  final Function()? onPressAction;
+  final bool? isFavorite;
 
   const Recipes({
     super.key,
@@ -19,7 +21,9 @@ class Recipes extends StatelessWidget {
     required this.calerios,
     required this.prepTime,
     required this.serving,
+    required this.isFavorite,
     this.viewType,
+    this.onPressAction,
   });
 
   @override
@@ -59,24 +63,24 @@ class Recipes extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
-            height: 5,
-          ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               favoriteIcon(),
-              InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              RecipeDetailsScreen(recipeId: id)),
-                    );
-                    //    context.goNamed(AppRoutes.recipeDetailsScreen, queryParameters: {'recipeId':'$id'});
-                  },
-                  child: recipeImage(130, 130, context)),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                RecipeDetailsScreen(recipeId: id)),
+                      );
+                      //    context.goNamed(AppRoutes.recipeDetailsScreen, queryParameters: {'recipeId':'$id'});
+                    },
+                    child: recipeImage(130, 130, context)),
+              ),
             ],
           ),
           const SizedBox(
@@ -148,69 +152,73 @@ class Recipes extends StatelessWidget {
   }
 
   Widget recipeDetails(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomRight,
-      children: [
-        Container(
-          width: MediaQuery.of(context).size.width - 50,
-          constraints: const BoxConstraints(minHeight: 250),
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      width: MediaQuery.of(context).size.width - 50,
+      constraints: const BoxConstraints(minHeight: 250),
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 20, child: mealTypeWidget(15)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(height: 20, child: mealTypeWidget(15)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Expanded(
+                flex: 4,
+                child: Text(
+                  "$title",
+                  style: const TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black),
+                ),
+              ),
+              SizedBox(
+                child: SizedBox(
+                  width: 20,
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: favoriteIcon(),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    flex: 4,
-                    child: Text(
-                      "$title",
-                      style: const TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black),
-                    ),
+                  colories(14),
+                  const SizedBox(
+                    height: 10,
                   ),
-                  SizedBox(
-                    child: SizedBox(
-                      width: 20,
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: Padding(
-                          padding: const EdgeInsets.all(0),
-                          child: favoriteIcon(),
-                        ),
-                      ),
-                    ),
+                  ratingStars(20),
+                  const SizedBox(
+                    height: 25,
                   ),
+                  perpTime(20, 14),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  serve(20, 14),
                 ],
               ),
               const SizedBox(
+                width: 5,
+              ),
+              recipeImage(220, 170, context),
+              const SizedBox(
                 height: 5,
-              ),
-              colories(14),
-              const SizedBox(
-                height: 10,
-              ),
-              ratingStars(20),
-              const SizedBox(
-                height: 25,
-              ),
-              perpTime(20, 14),
-              const SizedBox(
-                height: 15,
-              ),
-              serve(20, 14),
+              )
             ],
           ),
-        ),
-        Transform.translate(
-            offset: const Offset(0, 0), child: recipeImage(240, 170, context)),
-        const SizedBox(
-          height: 5,
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -371,13 +379,22 @@ class Recipes extends StatelessWidget {
   // }
 
   Widget favoriteIcon() {
+    Color favoriteColor;
+    IconData favoriteIcon;
+    if (isFavorite!) {
+      favoriteColor = ColorsApp.PKColor;
+      favoriteIcon = Icons.favorite;
+    } else {
+      favoriteColor = ColorsApp.borderLine;
+            favoriteIcon = Icons.favorite_outline;
+
+    }
     return IconButton(
-      onPressed: () {},
-      icon: const Icon(
-        Icons.favorite_outline,
-        color: ColorsApp.borderLine,
-      ),
-    );
+        onPressed: onPressAction,
+        icon: Icon(
+          favoriteIcon,
+          color: favoriteColor,
+        ));
   }
 
   recipeImage(width, height, BuildContext context) {

@@ -3,7 +3,6 @@ import 'package:daily_recipe/providers/recepie.providers.dart';
 import 'package:daily_recipe/screens/recipes/components/ingredients.components.dart';
 import 'package:daily_recipe/screens/recipes/components/directions.components.dart';
 import 'package:daily_recipe/widgets/appbar.widgets.dart';
-import 'package:daily_recipe/widgets/drawer.widgets.dart';
 import 'package:daily_recipe/screens/recipes/components/recipes.components.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -35,16 +34,13 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60.0),
           child: CustomAppBar(
-              leadingIcon: Icons.menu,
               actionIcon: Icons.notification_add_outlined,
-              onPressLeading: () {},
               onPressAction: () {})),
-      drawer: const DrawerWidget(),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Container(
-          //  padding: const EdgeInsets.all(20.0),
+            //  padding: const EdgeInsets.all(20.0),
             width: context.screenWidth,
             color: ColorsApp.lightGrey,
             child: Column(
@@ -55,9 +51,9 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                 Consumer<RecipeController>(
                     builder: (context, recipeController, child) {
                   if (recipeController.recipeDetails == null) {
-                    return const CircularProgressIndicator();
-                  } else if (recipeController.recipeDetails!.isEmpty) {
                     return const Text('No Data Found');
+                  } else if (recipeController.recipeDetails!.isEmpty) {
+                    return const CircularProgressIndicator();
                   } else {
                     return Column(
                       children: [
@@ -65,19 +61,26 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                           Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: Recipes(
-                                id: recipeController.recipeDetails![0].id,
-                                title: recipeController.recipeDetails![0].title!,
+                                id: recipeController.recipeDetails![0].docId,
+                                title:
+                                    recipeController.recipeDetails![0].title!,
                                 image: recipeController.recipeDetails![0].image,
                                 mealType:
                                     recipeController.recipeDetails![0].mealType,
-                                rating: recipeController.recipeDetails![0].rating,
+                                rating:
+                                    recipeController.recipeDetails![0].rating,
                                 calerios:
                                     recipeController.recipeDetails![0].calerios,
                                 serving:
                                     recipeController.recipeDetails![0].serving,
-                                prepTime:
-                                    recipeController.recipeDetails![0].prepTime!,
-                                viewType: 2),
+                                prepTime: recipeController
+                                    .recipeDetails![0].prepTime!,
+                                viewType: 2,
+                                isFavorite: recipeController.isFavoriteById(recipeController.recipeDetails!),
+                                onPressAction: () {
+                                          recipeController.addFavoriteMethodById(
+                                              recipeController.recipeDetails!, context);
+                                        }),
                           ),
                           const SizedBox(
                             height: 10,
@@ -114,50 +117,48 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                               ],
                             ),
                           ),
-                              Container(
-                                  decoration: const BoxDecoration(
-                                      color: ColorsApp.whiteColor,
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          topRight: Radius.circular(20))),
-                                  padding: const EdgeInsets.all(20),
-                                  height: context.screenHeight,
-                                  child: Column(
-                                    children: [
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      Container(
-                                        width: 150,
-                                        height: 5,
-                                        color: ColorsApp.lightGrey,
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: 5, left: 10),
-                                            child: Text(
-                                              TextApp.directions,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 16),
-                                            ),
-                                          ),
-                                          Directions(
-                                              directions: recipeController
-                                                  .recipeDetails![0].directions),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+                          Container(
+                            decoration: const BoxDecoration(
+                                color: ColorsApp.whiteColor,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20))),
+                            padding: const EdgeInsets.all(20),
+                            height: context.screenHeight,
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 20,
                                 ),
-                            
+                                Container(
+                                  width: 150,
+                                  height: 5,
+                                  color: ColorsApp.lightGrey,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Padding(
+                                      padding:
+                                          EdgeInsets.only(bottom: 5, left: 10),
+                                      child: Text(
+                                        TextApp.directions,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 16),
+                                      ),
+                                    ),
+                                    Directions(
+                                        directions: recipeController
+                                            .recipeDetails![0].directions),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
                         ]),
                       ],
                     );

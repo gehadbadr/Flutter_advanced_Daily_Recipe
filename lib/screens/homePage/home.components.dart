@@ -1,22 +1,25 @@
 import 'package:daily_recipe/consts/consts.dart';
+import 'package:daily_recipe/providers/auth.providers.dart';
 import 'package:daily_recipe/providers/recepie.providers.dart';
-import 'package:daily_recipe/widgets/appbar.widgets.dart';
-import 'package:daily_recipe/widgets/drawer.widgets.dart';
+import 'package:daily_recipe/screens/homePage/components/carsoul.widget.dart';
 import 'package:daily_recipe/screens/recipes/components/recipes.components.dart';
+import 'package:daily_recipe/widgets/appbar.widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:provider/provider.dart';
 
-class ViewedRecipesScreen extends StatefulWidget {
-  const ViewedRecipesScreen({super.key});
+class HomeWidget extends StatefulWidget {
+  final ZoomDrawerController? controller;
+
+  const HomeWidget({super.key, required this.controller});
 
   @override
-  State<ViewedRecipesScreen> createState() => _ViewedRecipesScreenState();
+  State<HomeWidget> createState() => _HomeWidgetState();
 }
 
-class _ViewedRecipesScreenState extends State<ViewedRecipesScreen> {
+class _HomeWidgetState extends State<HomeWidget> {
   @override
   void initState() {
-    init();
     super.initState();
   }
 
@@ -31,7 +34,11 @@ class _ViewedRecipesScreenState extends State<ViewedRecipesScreen> {
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60.0),
           child: CustomAppBar(
+              leadingIcon: Icons.menu,
               actionIcon: Icons.notification_add_outlined,
+              onPressLeading: () {
+                widget.controller!.toggle!();
+              },
               onPressAction: () {})),
       body: SafeArea(
         child: Padding(
@@ -40,27 +47,26 @@ class _ViewedRecipesScreenState extends State<ViewedRecipesScreen> {
             physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        TextApp.recentlyViewed,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 25),
-                      ),
-                    ),
-                    Text(
-                      TextApp.clear,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: ColorsApp.PKColor,
-                          fontSize: 16),
-                    )
-                  ],
-                ),
+                Consumer<AuthController>(
+                    builder: (context, authController, child) {
+                  authController.getDisplayName();
+                  String? name = authController.displayName;
+
+                  return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text('${TextApp.bonjour}, $name',
+                          style: const TextStyle(
+                              fontSize: 20, color: ColorsApp.fontGrey)));
+                }),
                 const SizedBox(
                   height: 10,
+                ),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    TextApp.whatToCook,
+                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 25),
+                  ),
                 ),
                 const SizedBox(
                   height: 10,
@@ -94,7 +100,7 @@ class _ViewedRecipesScreenState extends State<ViewedRecipesScreen> {
                                 ),
                                 filled: true,
                                 fillColor: ColorsApp.lightGrey,
-                                hintText: TextApp.searchAnyKey,
+                                hintText: TextApp.searchAnyThing,
                                 hintStyle:
                                     TextStyle(color: ColorsApp.borderLine)),
                           )),
@@ -123,14 +129,94 @@ class _ViewedRecipesScreenState extends State<ViewedRecipesScreen> {
                 const SizedBox(
                   height: 10,
                 ),
+                const CarsoulWidget(),
                 const SizedBox(
                   height: 10,
                 ),
                 Consumer<RecipeController>(
                     builder: (context, recipeController, child) {
-                //  recipeController.getRecipes();
+                  recipeController.getRecipes();
                   return Column(
                     children: [
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              TextApp.todayFreshRecipe,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 20),
+                            ),
+                          ),
+                          Text(
+                            TextApp.seeAll,
+                            style: TextStyle(
+                                color: ColorsApp.PKColor, fontSize: 16),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      recipeController.recipesList! == null
+                          ? const Text('No Data Found')
+                          :recipeController.recipesList!.isEmpty
+                          ? const CircularProgressIndicator()
+                          : SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              physics: const BouncingScrollPhysics(),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: List.generate(
+                                    recipeController.recipesList!.length,
+                                    (index) => Recipes(
+                                        id: recipeController
+                                            .recipesList![index].docId,
+                                        title: recipeController
+                                            .recipesList![index].title!,
+                                        image: recipeController
+                                            .recipesList![index].image,
+                                        mealType: recipeController
+                                            .recipesList![index].mealType,
+                                        rating: recipeController
+                                            .recipesList![index].rating,
+                                        calerios: recipeController
+                                            .recipesList![index].calerios,
+                                        serving: recipeController
+                                            .recipesList![index].serving,
+                                        prepTime: recipeController
+                                            .recipesList![index].prepTime,
+                                        viewType: 0,
+                                        isFavorite: recipeController.isFavorite(index),
+                                        onPressAction: () {
+                                          recipeController.addFavoriteMethod(
+                                              index, context);
+                                        }
+                                        )),
+                              ),
+                            ),
+                      const Divider(),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              TextApp.recomended,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 20),
+                            ),
+                          ),
+                          Text(
+                            TextApp.seeAll,
+                            style: TextStyle(
+                                color: ColorsApp.PKColor, fontSize: 16),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       recipeController.recommendedList!.isEmpty
                           ? const CircularProgressIndicator()
                           : SingleChildScrollView(
@@ -162,6 +248,7 @@ class _ViewedRecipesScreenState extends State<ViewedRecipesScreen> {
                                           recipeController.addFavoriteMethod(
                                               index, context);
                                         }),
+                                      
                                 ),
                               ),
                             ),

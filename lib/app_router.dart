@@ -1,6 +1,7 @@
 //import 'package:daily_recipe/error_screen.dart';
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/screens/homePage/homepage.screens.dart';
+import 'package:daily_recipe/screens/ingredients/ingredient.screens.dart';
 import 'package:daily_recipe/screens/intro.screens.dart';
 import 'package:daily_recipe/screens/login_screen.dart';
 import 'package:daily_recipe/screens/recipes/favoriteRecipes.screens.dart';
@@ -19,8 +20,7 @@ class AppRouter {
     AppRoutes.homepageScreen: (context) => const HomepageScreen(),
     AppRoutes.viewedRecipesScreen: (context) => const ViewedRecipesScreen(),
     AppRoutes.favoriteRecipesScreen: (context) => const FavoriteRecipesScreen(),
-    AppRoutes.recipeDetailsScreen: (context) => const RecipeDetailsScreen(
-          recipeId: null,
-        ),
+    AppRoutes.ingredientsScreen: (context) => const IngredientsScreen()
+
   };
 }

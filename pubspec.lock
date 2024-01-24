@@ -25,6 +25,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
+  back_button_interceptor:
+    dependency: transitive
+    description:
+      name: back_button_interceptor
+      sha256: e47660f2178a4392eb72001f9594d3fdcb5efde93e59d2819d61fda499e781c8
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.0.2"
   beamer:
     dependency: "direct main"
     description:
@@ -296,6 +304,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_zoom_drawer:
+    dependency: "direct main"
+    description:
+      name: flutter_zoom_drawer
+      sha256: be25be3536e030096c356b7b0fbeaee418b5e0994d87ff74875032b349cb4079
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.1"
   get_it:
     dependency: "direct main"
     description:
@@ -384,6 +400,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  overlay_kit:
+    dependency: "direct main"
+    description:
+      name: overlay_kit
+      sha256: "5822b7d2c77bbf034e41186ab0edd7c8466b5662ed8e7a605a7342047d82df4f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.8"
   path:
     dependency: transitive
     description:

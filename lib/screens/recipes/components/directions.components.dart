@@ -8,8 +8,7 @@ class Directions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-        ListView.builder(
+    return ListView.builder(
       shrinkWrap: true,
       itemBuilder: (BuildContext context, int index) {
         return ListTile(
@@ -17,7 +16,7 @@ class Directions extends StatelessWidget {
           leading: Container(
             color: ColorsApp.red,
             child: const Icon(
-              Icons.fiber_manual_record,
+              Icons.circle,
               color: ColorsApp.PKColor,
               size: 10,
             ),

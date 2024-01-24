@@ -8,5 +8,6 @@ abstract class AppRoutes {
   static const String viewedRecipesScreen = "ViewedRecipes/";
   static const String favoriteRecipesScreen = "FavoriteRecipes/";
   static const String recipeDetailsScreen = "RecipeDetails/";
+  static const String ingredientsScreen = "Ingredients/";
 
 }

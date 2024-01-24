@@ -25,7 +25,7 @@ abstract class TextApp {
   static const errorAgree = 'You have to agree';
   static const invalidEmail = 'Please enter a valid email';
   static const weakPassword = 'Please Enter more than 6 digit .';
-  static const loggedIn = 'you Logged is successfully ';
+  static const loggedIn = 'you Logged successfully ';
   static const errorNullloggedIn = 'No Email is registered';
   static const errorloggedIn = 'Wrong Email or Password ';
   static const errorRegisteredBefore = 'This email is registered before.';
@@ -40,6 +40,9 @@ abstract class TextApp {
   static const todayFreshRecipe = "Today's Fresh Recipes";
   static const seeAll = "See All";
   static const recomended = "Recomended";
+  static const addFavorite = "Added to favorite list";
+  static const removeFavorite = "Removed from favorite list";
+
 //Drawer
   static const home = "Home";
   static const favorite = "Favorites";
@@ -54,6 +57,10 @@ abstract class TextApp {
   //Recipe details  
   static const ingredients = "Ingredients";
   static const directions = "Directions";
+  //Ingredient Screen  
+  static const addIngredient = "Ingredient is added successfully";
+  static const removeIngredient = "Ingredient is removed successfully";
+  static const error = "Error";
 
   
 }

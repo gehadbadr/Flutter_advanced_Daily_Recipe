@@ -25,10 +25,16 @@ class _CarsoulWidgetState extends State<CarsoulWidget> {
     Provider.of<HomeController>(context, listen: false).initCarousal();
   }
 
+  // @override
+  // void dispose() async {
+  //   Provider.of<HomeController>(context, listen: false).disposeCarousal();
+  //   super.dispose();
+  // }
+
   @override
-  void dispose() async {
+  void deactivate() {
     Provider.of<HomeController>(context, listen: false).disposeCarousal();
-    super.dispose();
+    super.deactivate();
   }
 
   @override
@@ -36,9 +42,9 @@ class _CarsoulWidgetState extends State<CarsoulWidget> {
     return Consumer<HomeController>(builder: (context, homeController, child) {
       homeController.getAds();
       if (homeController.adsList == null) {
-        return const CircularProgressIndicator();
-      } else if (homeController.adsList!.isEmpty) {
         return const Text('No Data Found');
+      } else if (homeController.adsList!.isEmpty) {
+        return const CircularProgressIndicator();
       } else {
         return Stack(
           alignment: Alignment.centerLeft,
@@ -71,8 +77,7 @@ class _CarsoulWidgetState extends State<CarsoulWidget> {
                                   child: CachedNetworkImage(
                                     imageUrl:
                                         homeController.adsList![index].image!,
-                                    placeholder: (context, url) => Text(
-                                        homeController.adsList![index].title!),
+                                  //  placeholder: (context, url) => const CircularProgressIndicator(),
                                     errorWidget: (context, url, error) =>
                                         const Icon(Icons.error),
                                     fit: BoxFit.fill,

@@ -4,6 +4,7 @@ import 'package:daily_recipe/reuseable_function/snackbar.function.dart';
 import 'package:daily_recipe/reuseable_function/toast.function.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:overlay_kit/overlay_kit.dart';
 
 class AuthController extends ChangeNotifier {
   final auth = FirebaseAuth.instance;
@@ -13,7 +14,6 @@ class AuthController extends ChangeNotifier {
   late TextEditingController? repasswordController;
   late TextEditingController? emailController;
   String? displayName;
-  bool? isLoading;
   bool? obscureText;
   late bool _isTrue;
   late bool _isConfirmPassword;
@@ -26,7 +26,6 @@ class AuthController extends ChangeNotifier {
     nameController = TextEditingController();
     passwordController = TextEditingController();
     repasswordController = TextEditingController();
-    isLoading = false;
     obscureText = false;
     _isTrue = true;
     _isConfirmPassword = true;
@@ -42,11 +41,6 @@ class AuthController extends ChangeNotifier {
     _isTrue = true;
     _isConfirmPassword = true;
     displayName = null;
-  }
-
-  changeisLoading(bool value) {
-    isLoading = value;
-    notifyListeners();
   }
 
   get switchPasswordIcon {
@@ -79,7 +73,7 @@ class AuthController extends ChangeNotifier {
 
 //---------------start Sign Up------------------
   Future<void> signUp(BuildContext context) async {
-    changeisLoading(true);
+    OverlayLoadingProgress.start();;
     if (passwordController?.text == repasswordController?.text) {
       if (globalKey?.currentState?.validate() ?? false) {
         globalKey?.currentState?.save();
@@ -88,13 +82,13 @@ class AuthController extends ChangeNotifier {
               nameController!.text, context);
         } catch (e) {
           print(e.toString());
-          changeisLoading(false);
+          OverlayLoadingProgress.stop();
         }
       } else {
-        changeisLoading(false);
+        OverlayLoadingProgress.stop();
       }
     } else {
-      changeisLoading(false);
+      OverlayLoadingProgress.stop();
       ShowSnackbar.showSnackbar(context, TextApp.errorRepassword);
     }
   }
@@ -136,7 +130,7 @@ class AuthController extends ChangeNotifier {
       if (userCredential.user != null) {
         await userCredential.user?.updateDisplayName(name);
         notifyListeners();
-        changeisLoading(false);
+        OverlayLoadingProgress.stop();
         if (context.mounted) {
           ShowToastMessage.showToast(context, TextApp.registeredSuccessfully,
               3000, ToastMessageStatus.success);
@@ -152,7 +146,7 @@ class AuthController extends ChangeNotifier {
       } else if (e.code == 'weak-password') {
         ShowSnackbar.showSnackbar(context, TextApp.weakPassword);
       }
-      changeisLoading(false);
+      OverlayLoadingProgress.stop();
     }
   }
 
@@ -160,17 +154,17 @@ class AuthController extends ChangeNotifier {
 //---------------start Sign in------------------
 
   Future<void> signIn(BuildContext context) async {
-    changeisLoading(true);
+    OverlayLoadingProgress.start();
     if (globalKey?.currentState?.validate() ?? false) {
       globalKey?.currentState?.save();
       try {
         loginMehtod(emailController!.text, passwordController!.text, context);
       } catch (e) {
         print(e.toString());
-        changeisLoading(false);
+        OverlayLoadingProgress.stop();
       }
     } else {
-      changeisLoading(false);
+      OverlayLoadingProgress.stop();
     }
   }
 
@@ -183,7 +177,7 @@ class AuthController extends ChangeNotifier {
       if (userCredential.user != null) {
         ShowToastMessage.showToast(
             context, TextApp.loggedIn, 3000, ToastMessageStatus.success);
-        changeisLoading(false);
+        OverlayLoadingProgress.stop();
         providerDispose();
         if (context.mounted) {
           Navigator.pushReplacementNamed(context, AppRoutes.homepageScreen);
@@ -197,7 +191,7 @@ class AuthController extends ChangeNotifier {
       } else if (e.code == 'wrong-password') {
         ShowSnackbar.showSnackbar(context, TextApp.errorWrongPassword);
       }
-      changeisLoading(false);
+      OverlayLoadingProgress.stop();
     }
   }
 
@@ -210,17 +204,20 @@ class AuthController extends ChangeNotifier {
 //------------LogOut-------------
   void signoutMethod(BuildContext context) async {
     try {
+      OverlayLoadingProgress.start();
+      await Future.delayed(const Duration(seconds: 1));
       auth.signOut();
       ShowToastMessage.showToast(
           context, TextApp.loggedOut, 3000, ToastMessageStatus.success);
-
       if (context.mounted) {
         Navigator.pushNamedAndRemoveUntil(
             context, AppRoutes.introScreen, (route) => false);
       }
     } catch (e) {
       print(e.toString());
+      OverlayLoadingProgress.stop();
     }
+    OverlayLoadingProgress.stop();
   }
 
   // late User _user;
