@@ -146,14 +146,13 @@ class RecipeController extends ChangeNotifier {
   }
 
   void addFavoriteMethodById(List recipeDetailList, BuildContext context) {
-    print('55555555');
+    //print('55555555');
     isAdd = recipeDetailList[0]
         .fanId
         ?.contains(FirebaseAuth.instance.currentUser?.uid);
-    print(isAdd);
-    print(recipeDetailList[0].docId!);
+    //print(isAdd);
+    //print(recipeDetailList[0].docId!);
     addFavoriteToUser(recipeDetailList[0].docId!, isAdd, context);
-    //  addFavoriteToUser('2', isAdd, context);
   }
 
   bool? isFavoriteById(List recipeDetailList) {
@@ -161,26 +160,12 @@ class RecipeController extends ChangeNotifier {
         recipeDetailList[0]
             .fanId
             ?.contains(FirebaseAuth.instance.currentUser?.uid);
-    print(isAdd);
+    //print(isAdd);
     return isAdd;
-    // isAdd = await FirebaseFirestore.instance
-    //         .collection('recipes')
-    //         .doc(docId)
-    //       .where('isActive', isEqualTo: true)
-
-    //     .fanId
-    //     ?.contains(FirebaseAuth.instance.currentUser?.uid);
-    // return isAdd;
+  
   }
 
-  // void getRecipes() async {
-  //   var recipesData = await rootBundle.loadString('assets/data/sample.json');
-  //   var dataDecoded =
-  //       List<Map<String, dynamic>>.from(jsonDecode(recipesData)['recipes']);
-  //   recipesLists = dataDecoded.map((e) => Recipe.fromJson(e)).toList();
-  //   recommendedList = recipesLists.where((e) => e.recommended == true).toList();
-  //   notifyListeners();
-  // }
+
 
   
 }
