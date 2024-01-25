@@ -160,7 +160,7 @@ class _ViewedRecipesScreenState extends State<ViewedRecipesScreen> {
                                       isFavorite: recipeController.isFavorite(index),
                                       onPressAction: () {
                                           recipeController.addFavoriteMethod(
-                                              index, context);
+                                              index, context,AppRoutes.homepageScreen);
                                         }),
                                 ),
                               ),

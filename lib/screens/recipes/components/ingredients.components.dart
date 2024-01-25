@@ -7,12 +7,14 @@ class Ingredients extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children:List.generate(
-       ingredients!.length,
-        (index) =>
-            Text(ingredients![index])));
+  return Flexible(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children:List.generate(
+         ingredients!.length,
+          (index) =>
+              Text(ingredients![index]))),
+  );
   
   }
 }

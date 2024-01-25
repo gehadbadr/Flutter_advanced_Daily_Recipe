@@ -20,6 +20,7 @@ class HomeWidget extends StatefulWidget {
 class _HomeWidgetState extends State<HomeWidget> {
   @override
   void initState() {
+    init();
     super.initState();
   }
 
@@ -135,7 +136,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                 ),
                 Consumer<RecipeController>(
                     builder: (context, recipeController, child) {
-                  recipeController.getRecipes();
+                  //call here to add favorite
+                  //recipeController.getRecipes();
                   return Column(
                     children: [
                       const Row(
@@ -160,42 +162,45 @@ class _HomeWidgetState extends State<HomeWidget> {
                       ),
                       recipeController.recipesList! == null
                           ? const Text('No Data Found')
-                          :recipeController.recipesList!.isEmpty
-                          ? const CircularProgressIndicator()
-                          : SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              physics: const BouncingScrollPhysics(),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: List.generate(
-                                    recipeController.recipesList!.length,
-                                    (index) => Recipes(
-                                        id: recipeController
-                                            .recipesList![index].docId,
-                                        title: recipeController
-                                            .recipesList![index].title!,
-                                        image: recipeController
-                                            .recipesList![index].image,
-                                        mealType: recipeController
-                                            .recipesList![index].mealType,
-                                        rating: recipeController
-                                            .recipesList![index].rating,
-                                        calerios: recipeController
-                                            .recipesList![index].calerios,
-                                        serving: recipeController
-                                            .recipesList![index].serving,
-                                        prepTime: recipeController
-                                            .recipesList![index].prepTime,
-                                        viewType: 0,
-                                        isFavorite: recipeController.isFavorite(index),
-                                        onPressAction: () {
-                                          recipeController.addFavoriteMethod(
-                                              index, context);
-                                        }
-                                        )),
-                              ),
-                            ),
+                          : recipeController.recipesList!.isEmpty
+                              ? const CircularProgressIndicator()
+                              : SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  physics: const BouncingScrollPhysics(),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: List.generate(
+                                        recipeController.recipesList!.length,
+                                        (index) => Recipes(
+                                            id: recipeController
+                                                .recipesList![index].docId,
+                                            title: recipeController
+                                                .recipesList![index].title!,
+                                            image: recipeController
+                                                .recipesList![index].image,
+                                            mealType: recipeController
+                                                .recipesList![index].mealType,
+                                            rating: recipeController
+                                                .recipesList![index].rating,
+                                            calerios: recipeController
+                                                .recipesList![index].calerios,
+                                            serving: recipeController
+                                                .recipesList![index].serving,
+                                            prepTime: recipeController
+                                                .recipesList![index].prepTime,
+                                            viewType: 0,
+                                            isFavorite: recipeController
+                                                .isFavorite(index),
+                                            onPressAction: () {
+                                              recipeController
+                                                  .addFavoriteMethod(
+                                                      index,
+                                                      context,
+                                                      AppRoutes.homepageScreen);
+                                            })),
+                                  ),
+                                ),
                       const Divider(),
                       const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -243,12 +248,14 @@ class _HomeWidgetState extends State<HomeWidget> {
                                       prepTime: recipeController
                                           .recommendedList![index].prepTime,
                                       viewType: 1,
-                                      isFavorite: recipeController.isFavorite(index),
+                                      isFavorite:
+                                          recipeController.isFavorite(index),
                                       onPressAction: () {
-                                          recipeController.addFavoriteMethod(
-                                              index, context);
-                                        }),
-                                      
+                                        recipeController.addFavoriteMethod(
+                                            index,
+                                            context,
+                                            AppRoutes.homepageScreen);
+                                      }),
                                 ),
                               ),
                             ),

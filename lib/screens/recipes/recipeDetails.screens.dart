@@ -1,3 +1,4 @@
+import 'package:daily_recipe/app_router.dart';
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/providers/recepie.providers.dart';
 import 'package:daily_recipe/screens/recipes/components/ingredients.components.dart';
@@ -50,6 +51,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                 ),
                 Consumer<RecipeController>(
                     builder: (context, recipeController, child) {
+                  //    recipeController.getRecipeById(widget.recipeId!);
                   if (recipeController.recipeDetails == null) {
                     return const Text('No Data Found');
                   } else if (recipeController.recipeDetails!.isEmpty) {
@@ -79,13 +81,14 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                 isFavorite: recipeController.isFavoriteById(recipeController.recipeDetails!),
                                 onPressAction: () {
                                           recipeController.addFavoriteMethodById(
-                                              recipeController.recipeDetails!, context);
+                                              recipeController.recipeDetails!, context,AppRoutes.recipeDetailsScreen);
                                         }),
                           ),
                           const SizedBox(
                             height: 10,
                           ),
-                          Padding(
+                        ]),
+                        Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,18 +102,15 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                         fontSize: 16),
                                   ),
                                 ),
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  physics: const BouncingScrollPhysics(),
-                                  child: Row(children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      child: Ingredients(
-                                          ingredients: recipeController
-                                              .recipeDetails![0].ingredients),
-                                    )
-                                  ]),
-                                ),
+                                Row(children: [
+                                  Container(
+                                    width:context.screenWidth-50,
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Ingredients(
+                                        ingredients: recipeController
+                                            .recipeDetails![0].ingredients),
+                                  )
+                                ]),
                                 const SizedBox(
                                   height: 15,
                                 ),
@@ -154,13 +154,13 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                     Directions(
                                         directions: recipeController
                                             .recipeDetails![0].directions),
+                                            
                                   ],
                                 ),
                               ],
                             ),
                           ),
-                        ]),
-                      ],
+                        ],
                     );
                   }
                 }),

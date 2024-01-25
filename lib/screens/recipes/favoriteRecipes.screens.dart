@@ -15,7 +15,7 @@ class FavoriteRecipesScreen extends StatefulWidget {
 class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
   @override
   void initState() {
-  //  init();
+   init();
     super.initState();
   }
 
@@ -127,7 +127,7 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
                 ),
                 Consumer<RecipeController>(
                     builder: (context, recipeController, child) {
-                  recipeController.getFavoriteRecipes();
+                  //recipeController.getFavoriteRecipes();
                   return Column(
                     children: [
                       recipeController.favoriteList == null
@@ -164,7 +164,7 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
                                               .isFavorite(index),
                                           onPressAction: () {
                                             recipeController.addFavoriteMethod(
-                                                index, context);
+                                                index, context,AppRoutes.favoriteRecipesScreen);
                                           }),
                                     ),
                                   ),

@@ -19,6 +19,7 @@ class RecipeController extends ChangeNotifier {
   List<Recipe>? get recommendedList => _recommendedList;
   List<Recipe>? get recipeDetails => _recipeDetails;
   List<Recipe>? get favoriteList => _favoriteList;
+
   bool? isAdd;
 
   void getRecipes() async {
@@ -48,7 +49,7 @@ class RecipeController extends ChangeNotifier {
     }
   }
 
-  Future<void>  getFavoriteRecipes() async {
+  Future<void> getFavoriteRecipes() async {
     try {
       var result = await FirebaseFirestore.instance
           .collection('recipes')
@@ -90,7 +91,7 @@ class RecipeController extends ChangeNotifier {
   }
 
   Future<void> addFavoriteToUser(
-      String recipeId, isAdd, BuildContext context) async {
+      String recipeId, isAdd, BuildContext context, String screen) async {
     try {
       OverlayLoadingProgress.start();
       if (!isAdd) {
@@ -121,7 +122,13 @@ class RecipeController extends ChangeNotifier {
         notifyListeners();
       }
       OverlayLoadingProgress.stop();
-    //  getFavoriteRecipes();
+      if(screen == AppRoutes.recipeDetailsScreen){
+        getRecipeById(recipeId);
+      }else if(screen == AppRoutes.favoriteRecipesScreen){
+        getFavoriteRecipes();
+      }else{
+        getRecipes();
+      }
       notifyListeners();
     } catch (e) {
       OverlayLoadingProgress.stop();
@@ -133,9 +140,9 @@ class RecipeController extends ChangeNotifier {
     }
   }
 
-  void addFavoriteMethod(int index, BuildContext context) {
+  void addFavoriteMethod(int index, BuildContext context, String screen) {
     isAdd = isFavorite(index);
-    addFavoriteToUser(_recipesList[index].docId!, isAdd, context);
+    addFavoriteToUser(_recipesList[index].docId!, isAdd, context, screen);
   }
 
   bool? isFavorite(int index) {
@@ -145,27 +152,19 @@ class RecipeController extends ChangeNotifier {
     return isAdd;
   }
 
-  void addFavoriteMethodById(List recipeDetailList, BuildContext context) {
-    //print('55555555');
+  void addFavoriteMethodById(
+      List recipeDetailList, BuildContext context, String screen) {
+    isAdd = recipeDetailList[0]
+        .fanId
+        ?.contains(FirebaseAuth.instance.currentUser?.uid);
+    addFavoriteToUser(recipeDetailList[0].docId!, isAdd, context, screen);
+  }
+
+  bool? isFavoriteById(List recipeDetailList) {
     isAdd = recipeDetailList[0]
         .fanId
         ?.contains(FirebaseAuth.instance.currentUser?.uid);
     //print(isAdd);
-    //print(recipeDetailList[0].docId!);
-    addFavoriteToUser(recipeDetailList[0].docId!, isAdd, context);
-  }
-
-  bool? isFavoriteById(List recipeDetailList) {
-    isAdd = 
-        recipeDetailList[0]
-            .fanId
-            ?.contains(FirebaseAuth.instance.currentUser?.uid);
-    //print(isAdd);
     return isAdd;
-  
   }
-
-
-
-  
 }
