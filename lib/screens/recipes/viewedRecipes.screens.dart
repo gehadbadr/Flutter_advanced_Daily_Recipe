@@ -1,8 +1,9 @@
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/providers/recepie.providers.dart';
 import 'package:daily_recipe/widgets/appbar.widgets.dart';
-import 'package:daily_recipe/widgets/drawer.widgets.dart';
 import 'package:daily_recipe/screens/recipes/components/recipes.components.dart';
+import 'package:daily_recipe/widgets/filter_button.dart';
+import 'package:daily_recipe/widgets/search_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +22,13 @@ class _ViewedRecipesScreenState extends State<ViewedRecipesScreen> {
   }
 
   void init() async {
-    Provider.of<RecipeController>(context, listen: false).getRecipes();
+    Provider.of<RecipeController>(context, listen: false).getViewedRecipes();
+  }
+
+    @override
+  void deactivate() {
+    Provider.of<RecipeController>(context, listen: false).disposeRecentlyViewed();
+    super.deactivate();
   }
 
   @override
@@ -77,46 +84,16 @@ class _ViewedRecipesScreenState extends State<ViewedRecipesScreen> {
                             borderRadius: BorderRadius.circular(10),
                             color: ColorsApp.lightGrey,
                           ),
-                          child: TextFormField(
-                            cursorColor: ColorsApp.borderLine,
-                            decoration: const InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10.0)),
-                                  borderSide: BorderSide(
-                                    width: 0,
-                                    style: BorderStyle.none,
-                                  ),
-                                ),
-                                prefixIcon: Icon(
-                                  Icons.search,
-                                  color: ColorsApp.borderLine,
-                                ),
-                                filled: true,
-                                fillColor: ColorsApp.lightGrey,
-                                hintText: TextApp.searchAnyKey,
-                                hintStyle:
-                                    TextStyle(color: ColorsApp.borderLine)),
-                          )),
+                          child: SearchTextField(onChanged: (value) {
+                            Provider.of<RecipeController>(context, listen: false).runFilter(value);
+                          })),
                     ),
                     const SizedBox(
                       width: 10,
                     ),
-                    Expanded(
+                    const Expanded(
                       flex: 1,
-                      child: Container(
-                        height: 60,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: ColorsApp.lightGrey),
-                        child: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.tune,
-                            //  size: 25,
-                          ),
-                        ),
-                      ),
+                      child: FilterButton()
                     ),
                   ],
                 ),
@@ -128,43 +105,51 @@ class _ViewedRecipesScreenState extends State<ViewedRecipesScreen> {
                 ),
                 Consumer<RecipeController>(
                     builder: (context, recipeController, child) {
-                //  recipeController.getRecipes();
                   return Column(
                     children: [
-                      recipeController.recommendedList!.isEmpty
+                      recipeController.foundRecipes == null
                           ? const CircularProgressIndicator()
-                          : SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: List.generate(
-                                  recipeController.recommendedList!.length,
-                                  (index) => Recipes(
-                                      id: recipeController
-                                          .recommendedList![index].docId,
-                                      title: recipeController
-                                          .recommendedList![index].title!,
-                                      image: recipeController
-                                          .recommendedList![index].image,
-                                      mealType: recipeController
-                                          .recommendedList![index].mealType,
-                                      rating: recipeController
-                                          .recommendedList![index].rating,
-                                      calerios: recipeController
-                                          .recommendedList![index].calerios,
-                                      serving: recipeController
-                                          .recommendedList![index].serving,
-                                      prepTime: recipeController
-                                          .recommendedList![index].prepTime,
-                                      viewType: 1,
-                                      isFavorite: recipeController.isFavorite(index),
-                                      onPressAction: () {
-                                          recipeController.addFavoriteMethod(
-                                              index, context,AppRoutes.homepageScreen);
-                                        }),
+                  :(recipeController.foundRecipes?.isEmpty ?? false)
+                      ? const Text('No Data Found') 
+                          : recipeController.foundRecipes!.isEmpty
+                              ? const CircularProgressIndicator()
+                              : SingleChildScrollView(
+                                  padding: const EdgeInsets.all(0),
+                                  scrollDirection: Axis.horizontal,
+                                  child: Column(
+                                    children: List.generate(
+                                      recipeController.foundRecipes!.length,
+                                      (index) => Recipes(
+                                        /*  id: recipeController
+                                              .foundRecipes![index].docId,
+                                          title: recipeController
+                                              .foundRecipes![index].title!,
+                                          image: recipeController
+                                              .foundRecipes![index].image,
+                                          mealType: recipeController
+                                              .foundRecipes![index].mealType,
+                                          rating: recipeController
+                                              .foundRecipes![index].rating,
+                                          calerios: recipeController
+                                              .foundRecipes![index].calerios,
+                                          serving: recipeController
+                                              .foundRecipes![index].serving,
+                                          prepTime: recipeController
+                                              .foundRecipes![index].prepTime,*/
+                                                recipeDetails: recipeController
+                                                .foundRecipes![index],
+                                          viewType: 3,
+                                          isFavorite: recipeController
+                                              .isFavoriteById(recipeController
+                                                .foundRecipes![index]),
+                                          onPressAction: () {
+                                            recipeController.removeViewedRecipe(
+                                                recipeController
+                                                .foundRecipes![index].docId!, context);
+                                          }),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
                     ],
                   );
                   //}

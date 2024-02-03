@@ -2,6 +2,8 @@ import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/providers/recepie.providers.dart';
 import 'package:daily_recipe/widgets/appbar.widgets.dart';
 import 'package:daily_recipe/screens/recipes/components/recipes.components.dart';
+import 'package:daily_recipe/widgets/filter_button.dart';
+import 'package:daily_recipe/widgets/search_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,15 +15,21 @@ class FavoriteRecipesScreen extends StatefulWidget {
 }
 
 class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
+  // ValueNotifier<List<Map>> filtered = ValueNotifier<List<Map>>([]);
+  // TextEditingController searchController = TextEditingController();
+  // FocusNode searchFocus = FocusNode();
+  // bool searching = false;
   @override
   void initState() {
-   init();
+    Provider.of<RecipeController>(context, listen: false).initFavorite();
     super.initState();
   }
-
-  void init() async {
-    Provider.of<RecipeController>(context, listen: false).getFavoriteRecipes();
+  @override
+  void deactivate() {
+    Provider.of<RecipeController>(context, listen: false).disposeFavorite();
+    super.deactivate();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +84,9 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
                             borderRadius: BorderRadius.circular(10),
                             color: ColorsApp.lightGrey,
                           ),
-                          child: TextFormField(
+                          child: SearchTextField(onChanged: (value) {
+                            Provider.of<RecipeController>(context, listen: false).runFilter(value);
+                          }) /*TextFormField(
                             cursorColor: ColorsApp.borderLine,
                             decoration: const InputDecoration(
                                 border: OutlineInputBorder(
@@ -96,26 +106,15 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
                                 hintText: TextApp.searchAnyKey,
                                 hintStyle:
                                     TextStyle(color: ColorsApp.borderLine)),
-                          )),
+                          )*/
+                          ),
                     ),
                     const SizedBox(
                       width: 10,
                     ),
-                    Expanded(
+                    const Expanded(
                       flex: 1,
-                      child: Container(
-                        height: 60,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: ColorsApp.lightGrey),
-                        child: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.tune,
-                            //  size: 25,
-                          ),
-                        ),
-                      ),
+                      child: FilterButton()
                     ),
                   ],
                 ),
@@ -130,20 +129,20 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
                   //recipeController.getFavoriteRecipes();
                   return Column(
                     children: [
-                      recipeController.favoriteList == null
+                      recipeController.foundRecipes == null
                           ? const CircularProgressIndicator()
-                  :(recipeController.favoriteList?.isEmpty ?? false)
-                      ? const Text('No Data Found') 
-                          : recipeController.favoriteList!.isEmpty
-                              ? const CircularProgressIndicator()
-                              : SingleChildScrollView(
-                                  padding: const EdgeInsets.all(0),
-                                  scrollDirection: Axis.horizontal,
-                                  child: Column(
-                                    children: List.generate(
-                                      recipeController.favoriteList!.length,
-                                      (index) => Recipes(
-                                          id: recipeController
+                          : (recipeController.foundRecipes!.isEmpty ?? false)
+                              ? const Text('No Data Found')
+                              : recipeController.foundRecipes!.isEmpty
+                                  ? const CircularProgressIndicator()
+                                  : SingleChildScrollView(
+                                      padding: const EdgeInsets.all(0),
+                                      scrollDirection: Axis.horizontal,
+                                      child: Column(
+                                        children: List.generate(
+                                          recipeController.foundRecipes!.length,
+                                          (index) => Recipes(
+                                              /*  id: recipeController
                                               .favoriteList![index].docId,
                                           title: recipeController
                                               .favoriteList![index].title!,
@@ -158,17 +157,22 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
                                           serving: recipeController
                                               .favoriteList![index].serving,
                                           prepTime: recipeController
-                                              .favoriteList![index].prepTime,
-                                          viewType: 1,
-                                          isFavorite: recipeController
-                                              .isFavorite(index),
-                                          onPressAction: () {
-                                            recipeController.addFavoriteMethod(
-                                                index, context,AppRoutes.favoriteRecipesScreen);
-                                          }),
+                                              .favoriteList![index].prepTime,*/
+                                              recipeDetails:
+                                                  recipeController.foundRecipes![index],
+                                              viewType: 1,
+                                              isFavorite: recipeController
+                                                  .isFavoriteById(recipeController.foundRecipes![index]),
+                                              onPressAction: () {
+                                                recipeController.addFavoriteMethodById(
+                                                    recipeController.foundRecipes![index],
+                                                    context,
+                                                    AppRoutes
+                                                        .favoriteRecipesScreen);
+                                              }),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
                     ],
                   );
                   //}

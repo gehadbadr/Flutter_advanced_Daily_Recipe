@@ -1,5 +1,5 @@
-import 'package:daily_recipe/app_router.dart';
 import 'package:daily_recipe/consts/consts.dart';
+import 'package:daily_recipe/models/recipes.models.dart';
 import 'package:daily_recipe/providers/recepie.providers.dart';
 import 'package:daily_recipe/screens/recipes/components/ingredients.components.dart';
 import 'package:daily_recipe/screens/recipes/components/directions.components.dart';
@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class RecipeDetailsScreen extends StatefulWidget {
-  final String? recipeId;
-  const RecipeDetailsScreen({super.key, required this.recipeId});
+  final Recipe recipeDetails;
+  const RecipeDetailsScreen({super.key, required this.recipeDetails});
 
   @override
   State<RecipeDetailsScreen> createState() => _RecipeDetailsScreenState();
@@ -19,13 +19,13 @@ class RecipeDetailsScreen extends StatefulWidget {
 class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
   @override
   void initState() {
-    init();
+      init();
     super.initState();
   }
 
   void init() async {
-    Provider.of<RecipeController>(context, listen: false)
-        .getRecipeById(widget.recipeId!);
+     Provider.of<RecipeController>(context, listen: false)
+        .addViewedRecipeByUserId(widget.recipeDetails);
   }
 
   @override
@@ -51,119 +51,129 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                 ),
                 Consumer<RecipeController>(
                     builder: (context, recipeController, child) {
-                  //    recipeController.getRecipeById(widget.recipeId!);
-                  if (recipeController.recipeDetails == null) {
-                    return const Text('No Data Found');
-                  } else if (recipeController.recipeDetails!.isEmpty) {
+                  /*    if (recipeController.openedRecipe == null) {
                     return const CircularProgressIndicator();
-                  } else {
-                    return Column(
-                      children: [
-                        Column(children: [
-                          Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Recipes(
-                                id: recipeController.recipeDetails![0].docId,
-                                title:
-                                    recipeController.recipeDetails![0].title!,
-                                image: recipeController.recipeDetails![0].image,
-                                mealType:
-                                    recipeController.recipeDetails![0].mealType,
-                                rating:
-                                    recipeController.recipeDetails![0].rating,
-                                calerios:
-                                    recipeController.recipeDetails![0].calerios,
-                                serving:
-                                    recipeController.recipeDetails![0].serving,
-                                prepTime: recipeController
-                                    .recipeDetails![0].prepTime!,
-                                viewType: 2,
-                                isFavorite: recipeController.isFavoriteById(recipeController.recipeDetails!),
-                                onPressAction: () {
-                                          recipeController.addFavoriteMethodById(
-                                              recipeController.recipeDetails!, context,AppRoutes.recipeDetailsScreen);
-                                        }),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                        ]),
+                  } else if (recipeController.openedRecipe!.docId!.isEmpty ?? false) {
+                    return const Text('No Data Found');
+                  } else {*/
+                  return Column(
+                    children: [
+                      Column(children: [
                         Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Column(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Recipes(
+                              /* id: recipeController.openedRecipe!.docId,
+                                title:
+                                    recipeController.openedRecipe!.title,
+                                image: recipeController.openedRecipe!.image,
+                                mealType:
+                                    recipeController.openedRecipe!.mealType,
+                                rating:
+                                    recipeController.openedRecipe!.rating,
+                                calerios:
+                                    recipeController.openedRecipe!.calerios,
+                                serving:
+                                    recipeController.openedRecipe!.serving,
+                                prepTime: recipeController
+                                    .openedRecipe!.prepTime,*/
+                              recipeDetails: widget.recipeDetails,
+                              viewType: 2,
+                              isFavorite:
+                                  recipeController.recipeDetails.docId != null && recipeController.recipeDetails.docId== widget.recipeDetails.docId
+                                      ? recipeController.isFavoriteById(
+                                          recipeController.recipeDetails)
+                                      :
+                                  recipeController
+                                      .isFavoriteById(widget.recipeDetails),
+                              onPressAction: () {
+                                var details;
+                                if (recipeController.recipeDetails.docId != null && recipeController.recipeDetails.docId== widget.recipeDetails.docId) {
+                                   details = recipeController.recipeDetails;
+                                } else {
+                                details = widget.recipeDetails;
+                                 }
+                                recipeController.addFavoriteMethodById(details,
+                                    context, AppRoutes.recipeDetailsScreen);
+                              }),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      ]),
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(bottom: 5),
+                              child: Text(
+                                TextApp.ingredients,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700, fontSize: 16),
+                              ),
+                            ),
+                            Row(children: [
+                              Container(
+                                width: context.screenWidth - 50,
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Ingredients(
+                                    ingredients:
+                                        widget.recipeDetails.ingredients),
+                              )
+                            ]),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        decoration: const BoxDecoration(
+                            color: ColorsApp.whiteColor,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20))),
+                        padding: const EdgeInsets.all(20),
+                        height: context.screenHeight,
+                        child: Column(
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              width: 150,
+                              height: 5,
+                              color: ColorsApp.lightGrey,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Padding(
-                                  padding: EdgeInsets.only(bottom: 5),
+                                  padding: EdgeInsets.only(bottom: 5, left: 10),
                                   child: Text(
-                                    TextApp.ingredients,
+                                    TextApp.directions,
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 16),
                                   ),
                                 ),
-                                Row(children: [
-                                  Container(
-                                    width:context.screenWidth-50,
-                                    padding: const EdgeInsets.only(left: 10),
-                                    child: Ingredients(
-                                        ingredients: recipeController
-                                            .recipeDetails![0].ingredients),
-                                  )
-                                ]),
-                                const SizedBox(
-                                  height: 15,
-                                ),
+                                Directions(
+                                    directions:
+                                        widget.recipeDetails.directions),
                               ],
                             ),
-                          ),
-                          Container(
-                            decoration: const BoxDecoration(
-                                color: ColorsApp.whiteColor,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(20),
-                                    topRight: Radius.circular(20))),
-                            padding: const EdgeInsets.all(20),
-                            height: context.screenHeight,
-                            child: Column(
-                              children: [
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Container(
-                                  width: 150,
-                                  height: 5,
-                                  color: ColorsApp.lightGrey,
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Padding(
-                                      padding:
-                                          EdgeInsets.only(bottom: 5, left: 10),
-                                      child: Text(
-                                        TextApp.directions,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 16),
-                                      ),
-                                    ),
-                                    Directions(
-                                        directions: recipeController
-                                            .recipeDetails![0].directions),
-                                            
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                    );
-                  }
-                }),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                }
+                    //}
+                    ),
               ],
             ),
           ),

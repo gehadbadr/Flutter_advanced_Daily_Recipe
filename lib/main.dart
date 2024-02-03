@@ -1,8 +1,8 @@
-import 'package:beamer/beamer.dart';
 import 'package:daily_recipe/app_router.dart';
 import 'package:daily_recipe/providers/auth.providers.dart';
 import 'package:daily_recipe/providers/home.providers.dart';
 import 'package:daily_recipe/providers/ingredient.providers.dart';
+import 'package:daily_recipe/providers/profile.providers.dart';
 import 'package:daily_recipe/providers/recepie.providers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -47,6 +47,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<IngredientController>(
           create: (context) => IngredientController(),
+        ),  
+        ChangeNotifierProvider<ProfileController>(
+          create: (context) => ProfileController(),
         ),
       ],
        child: OverlayKit(

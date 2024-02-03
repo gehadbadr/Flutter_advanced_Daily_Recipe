@@ -1,5 +1,5 @@
 class Ad {
-    String? docId;
+  String? docId;
 
   String? title;
   String? image;

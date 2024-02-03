@@ -40,7 +40,7 @@ class Recipe {
       "title": title,
       "meal_type": mealType,
       "description": description,
-      "rating": rating,
+     "rating": rating,
       "calerios": calerios,
       "prep_time": prepTime,
       "serving": serving,
@@ -48,24 +48,3 @@ class Recipe {
     };
   }
 }
-
-
-// // class Ingredients {
-//   Ingredients({
-//     required this.ingredients,
-//   });
-
-//   String name;
-//   String ingredients;
-
-//   factory Ingredients.fromJson(Map<String, dynamic> json) => Ingredients(
-//         name: json["name"],
-//         ingredients: json["ingredients"],
-//       );
-
-//   Map<String, dynamic> toJson() => {
-//         "name": name,
-//         "ingredients": ingredients,
-    
-//       };
-// }

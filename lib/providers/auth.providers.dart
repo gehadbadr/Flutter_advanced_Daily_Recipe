@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/consts/toastStatus.dart';
 import 'package:daily_recipe/reuseable_function/snackbar.function.dart';
@@ -13,11 +14,9 @@ class AuthController extends ChangeNotifier {
   late TextEditingController? passwordController;
   late TextEditingController? repasswordController;
   late TextEditingController? emailController;
-  String? displayName;
-  bool? obscureText;
-  late bool _isTrue;
+  late bool _isPassword;
   late bool _isConfirmPassword;
-  bool get isTrue => _isTrue;
+  bool get isPassword => _isPassword;
   bool get isConfirmPassword => _isConfirmPassword;
 
   void providerInit() {
@@ -26,10 +25,8 @@ class AuthController extends ChangeNotifier {
     nameController = TextEditingController();
     passwordController = TextEditingController();
     repasswordController = TextEditingController();
-    obscureText = false;
-    _isTrue = true;
+    _isPassword = true;
     _isConfirmPassword = true;
-    displayName = null;
   }
 
   void providerDispose() {
@@ -37,43 +34,13 @@ class AuthController extends ChangeNotifier {
     passwordController = null;
     globalKey = null;
     nameController = null;
-    obscureText = false;
-    _isTrue = true;
+    _isPassword = true;
     _isConfirmPassword = true;
-    displayName = null;
-  }
-
-  get switchPasswordIcon {
-    return _isConfirmPassword
-        ? const Icon(
-            Icons.visibility_off,
-            color: ColorsApp.PKColor,
-          )
-        : const Icon(Icons.visibility);
-  }
-
-  get switchConfirmPasswordIcon {
-    return _isTrue
-        ? const Icon(
-            Icons.visibility_off,
-            color: ColorsApp.PKColor,
-          )
-        : const Icon(Icons.visibility);
-  }
-
-  void toggleConfirmPassword() {
-    _isConfirmPassword = !_isConfirmPassword;
-    notifyListeners();
-  }
-
-  void togglePassword() {
-    _isTrue = !_isTrue;
-    notifyListeners();
   }
 
 //---------------start Sign Up------------------
   Future<void> signUp(BuildContext context) async {
-    OverlayLoadingProgress.start();;
+    OverlayLoadingProgress.start();
     if (passwordController?.text == repasswordController?.text) {
       if (globalKey?.currentState?.validate() ?? false) {
         globalKey?.currentState?.save();
@@ -93,33 +60,6 @@ class AuthController extends ChangeNotifier {
     }
   }
 
-// Future<void> signupMehtod(
-//       String email, String password, String name, BuildContext context) async {
-//     UserCredential? userCredential;
-
-//     try {
-//       userCredential = await auth.createUserWithEmailAndPassword(
-//           email: email, password: password);
-//     } on FirebaseAuthException catch (e) {
-//       if (e.code == 'invalid-email') {
-//         ShowSnackbar.showSnackbar(context, TextApp.invalidEmail);
-//       } else if (e.code == 'email-already-in-use') {
-//         ShowSnackbar.showSnackbar(context, TextApp.errorRegisteredBefore);
-//       } else if (e.code == 'weak-password') {
-//         ShowSnackbar.showSnackbar(context, TextApp.weakPassword);
-//       }
-//       changeisLoading(false);
-//     }
-//     if (userCredential?.user != null) {
-//       await userCredential?.user?.updateDisplayName(name);
-//       notifyListeners();
-//       changeisLoading(false);
-//       VxToast.show(context, msg: TextApp.registeredSuccessfully);
-//       providerDispose();
-//       Navigator.pushReplacementNamed(context,'HomepageScreen');
-//     }
-//   }
-
   Future<void> signupMehtod(
       String email, String password, String name, BuildContext context) async {
     UserCredential? userCredential;
@@ -129,6 +69,7 @@ class AuthController extends ChangeNotifier {
           email: email, password: password);
       if (userCredential.user != null) {
         await userCredential.user?.updateDisplayName(name);
+        storeUserData(name, email, password);
         notifyListeners();
         OverlayLoadingProgress.stop();
         if (context.mounted) {
@@ -145,8 +86,29 @@ class AuthController extends ChangeNotifier {
         ShowSnackbar.showSnackbar(context, TextApp.errorRegisteredBefore);
       } else if (e.code == 'weak-password') {
         ShowSnackbar.showSnackbar(context, TextApp.weakPassword);
+      } else if (e.code == "user-disabled") {
+        ShowSnackbar.showSnackbar(context, TextApp.errorUserDisabled);
+      } else if (e.code == "invalid-credential") {
+        ShowSnackbar.showSnackbar(context, TextApp.errorInvalidCredential);
       }
       OverlayLoadingProgress.stop();
+    }
+  }
+
+  storeUserData(String name, String email, String password) async {
+    try {
+      DocumentReference store = FirebaseFirestore.instance
+          .collection('users')
+          .doc(auth.currentUser!.uid);
+      store.set({
+        'name': name,
+        'password': password,
+        'email': email,
+        'imageUrl': '',
+        'id': auth.currentUser!.uid
+      });
+    } catch (e) {
+      print(e.toString());
     }
   }
 
@@ -190,15 +152,54 @@ class AuthController extends ChangeNotifier {
         ShowSnackbar.showSnackbar(context, TextApp.errorUserNotFound);
       } else if (e.code == 'wrong-password') {
         ShowSnackbar.showSnackbar(context, TextApp.errorWrongPassword);
+      } else if (e.code == "user-disabled") {
+        ShowSnackbar.showSnackbar(context, TextApp.errorUserDisabled);
+      } else if (e.code == "invalid-credential") {
+        ShowSnackbar.showSnackbar(context, TextApp.errorInvalidCredential);
       }
       OverlayLoadingProgress.stop();
     }
   }
 
 //------------end sign in -------
-//--------- getDisplayName-------
-  Future<void> getDisplayName() async {
-    displayName = auth.currentUser?.displayName;
+
+  Future<void> resetPassword(BuildContext context) async {
+    OverlayLoadingProgress.start();
+    if (globalKey?.currentState?.validate() ?? false) {
+      globalKey?.currentState?.save();
+      var user = await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: emailController!.text)
+          .get();
+      if (user.docs.isNotEmpty) {
+        try {
+          await FirebaseAuth.instance
+              .sendPasswordResetEmail(email: emailController!.text.trim());
+          ShowToastMessage.showToast(
+              context, TextApp.resetMsg, 3000, ToastMessageStatus.success);
+          OverlayLoadingProgress.stop();
+          if (context.mounted) {
+            Navigator.pushNamed(context, AppRoutes.loginScreen);
+          }
+        } on FirebaseAuthException catch (e) {
+          if (e.code == 'invalid-email') {
+            ShowSnackbar.showSnackbar(context, TextApp.invalidEmail);
+          } else if (e.code == 'user-not-found') {
+            ShowSnackbar.showSnackbar(context, TextApp.errorUserNotFound);
+          } else if (e.code == "user-disabled") {
+            ShowSnackbar.showSnackbar(context, TextApp.errorUserDisabled);
+          } else if (e.code == "invalid-credential") {
+            ShowSnackbar.showSnackbar(context, TextApp.errorInvalidCredential);
+          }
+          OverlayLoadingProgress.stop();
+        }
+      } else {
+        OverlayLoadingProgress.stop();
+        ShowSnackbar.showSnackbar(context, TextApp.errorUserNotFound);
+      }
+    } else {
+      OverlayLoadingProgress.stop();
+    }
   }
 
 //------------LogOut-------------
@@ -219,13 +220,4 @@ class AuthController extends ChangeNotifier {
     }
     OverlayLoadingProgress.stop();
   }
-
-  // late User _user;
-  // bool get isAuthenticated => _user != null;
-  // Future<void> initAuth() async {
-  //   auth.authStateChanges().listen((User? user) {
-  //     _user = user!;
-  //     notifyListeners();
-  //   });
-  // }
 }

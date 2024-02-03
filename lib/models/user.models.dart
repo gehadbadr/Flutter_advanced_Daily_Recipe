@@ -1,20 +1,17 @@
 class UserModel {
-    String? name, email, password;
-  bool? login;
-  UserModel({this.name, this.email, this.password,this.login});
+    String? name, email, password,imageUrl,docid;
+  UserModel({this.name, this.email, this.password, this.imageUrl});
 
-  UserModel.fromJson(Map<String, dynamic> data) {
-     if (data == null) {
-      return;
-    } else {
+  UserModel.fromJson(Map<String, dynamic> data, [String? id]) {
+      docid = data['id'];
       name = data['name'];
       email = data['email'];
       password = data['password'];
-      login = data['login'];
-    }
+      imageUrl = data['imageUrl'];
+    
   }
 
   Map<String, dynamic> toJson() {
-    return {'name': name, 'email': email, 'password': password, 'login': login};
+    return {'name': name, 'email': email, 'password': password, 'imageUrl': imageUrl};
   }
 }

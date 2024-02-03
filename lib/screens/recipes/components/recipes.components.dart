@@ -1,26 +1,29 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daily_recipe/consts/consts.dart';
+import 'package:daily_recipe/models/recipes.models.dart';
 import 'package:daily_recipe/screens/recipes/recipeDetails.screens.dart';
 import 'package:flutter/material.dart';
 
 class Recipes extends StatelessWidget {
-  final String? id, title, image, mealType;
-  final double? rating;
-  final int? calerios, prepTime, serving;
+/*  final String? id, title, image, mealType;
+  final num? rating;
+  final num? calerios, prepTime, serving;*/
+  final Recipe recipeDetails;
   final int? viewType;
   final Function()? onPressAction;
   final bool? isFavorite;
 
   const Recipes({
     super.key,
-    required this.id,
+    required this.recipeDetails,
+    /*  required this.id,
     required this.title,
     required this.image,
     required this.mealType,
     required this.rating,
     required this.calerios,
     required this.prepTime,
-    required this.serving,
+    required this.serving,*/
     required this.isFavorite,
     this.viewType,
     this.onPressAction,
@@ -35,20 +38,25 @@ class Recipes extends StatelessWidget {
     BuildContext context,
   ) {
     switch (viewType) {
-      case 0:
+      case 0://display recipes in vertical card.
         return freshRecipes(context);
-      case 1:
+      case 1://display recipes in horizontal card.
         return recommendedRecipes(context);
-      case 2:
-        return recipeDetails(context);
+      case 2://display all Details of recipe in page.
+        return recipeDetailsWidget(context);
+      case 3://display recipes in horizontal card without favorite icon in RecentlyViewedScreen.
+        return recommendedRecipes(context); 
+      case 4://display recipes in vertical card change img size.
+        return freshRecipes(context);
+
     }
   }
-
+//display recipes in horizontal order
   Widget freshRecipes(BuildContext context) {
     return Container(
       alignment: Alignment.bottomLeft,
       margin: const EdgeInsets.only(top: 10, right: 30, bottom: 10, left: 10),
-      width: 200,
+      width: viewType == 0 ? 200:200,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: ColorsApp.lightGrey,
@@ -74,12 +82,11 @@ class Recipes extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                RecipeDetailsScreen(recipeId: id)),
+                            builder: (context) => RecipeDetailsScreen(
+                                recipeDetails: recipeDetails)),
                       );
-                      //    context.goNamed(AppRoutes.recipeDetailsScreen, queryParameters: {'recipeId':'$id'});
                     },
-                    child: recipeImage(130, 130, context)),
+                    child:viewType == 0 ? recipeImage(130, 130, context):recipeImage(90, 90, context)),
               ),
             ],
           ),
@@ -91,7 +98,7 @@ class Recipes extends StatelessWidget {
       ),
     );
   }
-
+//display recipes in vertical order
   Widget recommendedRecipes(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     if (MediaQuery.of(context).size.width < 300) {
@@ -125,7 +132,7 @@ class Recipes extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            RecipeDetailsScreen(recipeId: id)),
+                            RecipeDetailsScreen(recipeDetails: recipeDetails)),
                   );
                   //  context.goNamed(AppRoutes.recipeDetailsScreen, queryParameters: {'recipeId':'$id'});
                 },
@@ -145,13 +152,13 @@ class Recipes extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(16.0),
-          child: favoriteIcon(),
+          child:viewType== 3?closeIcon(): favoriteIcon(),
         )
       ],
     );
   }
-
-  Widget recipeDetails(BuildContext context) {
+//display a recipe.
+  Widget recipeDetailsWidget(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width - 50,
       constraints: const BoxConstraints(minHeight: 250),
@@ -166,7 +173,7 @@ class Recipes extends StatelessWidget {
               Expanded(
                 flex: 4,
                 child: Text(
-                  "$title",
+                  recipeDetails.title!,
                   style: const TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.w700,
@@ -178,7 +185,7 @@ class Recipes extends StatelessWidget {
                   width: 20,
                   child: Align(
                     alignment: Alignment.topRight,
-                    child: favoriteIcon(),
+                    child:favoriteIcon(),
                   ),
                 ),
               ),
@@ -229,10 +236,11 @@ class Recipes extends StatelessWidget {
         mealTypeWidget(12),
         InkWell(
             onTap: () {
-              Navigator.push(
+            Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => RecipeDetailsScreen(recipeId: id)),
+                    builder: (context) =>
+                        RecipeDetailsScreen(recipeDetails: recipeDetails)),
               );
               //  context.goNamed(AppRoutes.recipeDetailsScreen, queryParameters: {'recipeId':'$id'});
             },
@@ -261,7 +269,7 @@ class Recipes extends StatelessWidget {
         const SizedBox(
           height: 5,
         ),
-        Row(
+         MediaQuery.of(context).size.width < 450 && viewType == 4?Column(
           children: [
             perpTime(15, 12),
             const SizedBox(
@@ -272,14 +280,23 @@ class Recipes extends StatelessWidget {
               height: 10,
             ),
           ],
-        )
-      ],
+        ):Row(
+          children: [
+            perpTime(15, 12),
+            const SizedBox(
+              width: 10,
+            ),
+            serve(15, 12),
+            const SizedBox(
+              height: 10,
+            ),
+      ],)]
     );
   }
 
   Widget mealTypeWidget(double fontSize) {
     return Text(
-      "$mealType",
+      recipeDetails.mealType!,
       style: TextStyle(fontSize: fontSize, color: ColorsApp.lightBlue),
     );
   }
@@ -305,7 +322,7 @@ class Recipes extends StatelessWidget {
       width: width,
       constraints: BoxConstraints(minHeight: minHeight),
       child: Text(
-        "$title",
+        recipeDetails.title!,
         maxLines: maxLines,
         overflow: TextOverflow.ellipsis,
         style: const TextStyle(
@@ -316,7 +333,7 @@ class Recipes extends StatelessWidget {
 
   Widget ratingStars(double size) {
     return VxRating(
-        value: rating!,
+        value: recipeDetails.rating!,
         onRatingUpdate: (value) {},
         normalColor: ColorsApp.textfieldGrey,
         selectionColor: ColorsApp.PKColor,
@@ -327,7 +344,7 @@ class Recipes extends StatelessWidget {
 
   Widget colories(double fontSize) {
     return Text(
-      "$calerios Colories",
+      "${recipeDetails.calerios} ${TextApp.calories}",
       style: TextStyle(fontSize: fontSize, color: ColorsApp.PKColor),
     );
   }
@@ -344,7 +361,7 @@ class Recipes extends StatelessWidget {
           width: 5,
         ),
         Text(
-          "$serving serving",
+          "${recipeDetails.serving} ${TextApp.serving}",
           style: TextStyle(color: ColorsApp.borderLine, fontSize: fontSize),
         ),
       ],
@@ -363,20 +380,13 @@ class Recipes extends StatelessWidget {
           width: 5,
         ),
         Text(
-          "$prepTime mins",
+          "${recipeDetails.prepTime} ${TextApp.mins}",
           style: TextStyle(color: ColorsApp.borderLine, fontSize: fontSize),
         ),
       ],
     );
   }
 
-  // Widget recipeImage(double width, double height, BuildContext context) {
-  //   return SizedBox(
-  //     height: height,
-  //     width: width,
-  //     child: Image.asset(image!, fit: BoxFit.fill),
-  //   );
-  // }
 
   Widget favoriteIcon() {
     Color favoriteColor;
@@ -386,14 +396,22 @@ class Recipes extends StatelessWidget {
       favoriteIcon = Icons.favorite;
     } else {
       favoriteColor = ColorsApp.borderLine;
-            favoriteIcon = Icons.favorite_outline;
-
+      favoriteIcon = Icons.favorite_outline;
     }
     return IconButton(
         onPressed: onPressAction,
         icon: Icon(
           favoriteIcon,
           color: favoriteColor,
+        ));
+  }
+
+  Widget closeIcon() {
+    return IconButton(
+        onPressed: onPressAction,
+        icon: const Icon(
+          Icons.close,
+          color: ColorsApp.PKColor,
         ));
   }
 
@@ -404,8 +422,8 @@ class Recipes extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
         child: CachedNetworkImage(
-          imageUrl: image!,
-          placeholder: (context, url) => Text(title!),
+          imageUrl: recipeDetails.image!,
+          placeholder: (context, url) => Text(recipeDetails.title!),
           errorWidget: (context, url, error) => const Icon(Icons.error),
           fit: BoxFit.fill,
         ),

@@ -53,6 +53,10 @@ dependencies:
   firebase_storage: ^11.6.0
   flutter_zoom_drawer: ^3.1.1
   overlay_kit: ^1.0.8
+  file_picker: ^6.1.1
+  future_builder_ex: ^3.0.0
+  flutter_offline: ^3.0.1
+  flexible_grid_view: ^0.0.2
 
 dev_dependencies:
   flutter_test:

@@ -5,21 +5,23 @@ import 'package:daily_recipe/widgets/custom_button.dart';
 import 'package:daily_recipe/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:blurry_modal_progress_hud/blurry_modal_progress_hud.dart';
 
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<SignupScreen> createState() => _MyWidgetState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _MyWidgetState extends State<SignupScreen> {
-  
+class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
-    Provider.of<AuthController>(context, listen: false).providerInit();
+    init();
     super.initState();
+  }
+
+  void init() {
+    Provider.of<AuthController>(context, listen: false).providerInit();
   }
 
   @override
@@ -27,13 +29,11 @@ class _MyWidgetState extends State<SignupScreen> {
     double height = context.screenHeight;
 
     return Consumer<AuthController>(
-            builder: (context, authController, _) =>
-      Scaffold(
+      builder: (context, authController, _) => Scaffold(
         backgroundColor: ColorsApp.bgColor,
         body: Stack(
           children: <Widget>[
             const Positioned.fill(
-              //
               child:
                   Image(image: AssetImage(ImagesPath.imgBg), fit: BoxFit.fill),
             ),
@@ -53,7 +53,7 @@ class _MyWidgetState extends State<SignupScreen> {
                           height: 20,
                         ),
                         const Text(
-                          'Sign In',
+                          TextApp.login,
                           style: TextStyle(
                               color: ColorsApp.whiteColor,
                               fontSize: 18,
@@ -68,19 +68,9 @@ class _MyWidgetState extends State<SignupScreen> {
                           padding: const EdgeInsets.all(16),
                           width: context.screenWidth - 70,
                           child: Form(
-                              key:authController.globalKey,
+                              key: authController.globalKey,
                               child: Column(
                                 children: [
-                                  CustomTextField(
-                                    title: TextApp.name,
-                                    hint: TextApp.nameHint,
-                                    controller: authController.nameController,
-                                    icon: Icons.person,
-                                    isPass: false,
-                                    onClick: (value) {
-                                      authController.nameController?.text = value!;
-                                    },
-                                  ),
                                   CustomTextField(
                                     title: TextApp.email,
                                     hint: TextApp.emailHint,
@@ -88,62 +78,93 @@ class _MyWidgetState extends State<SignupScreen> {
                                     icon: Icons.email,
                                     isPass: false,
                                     onClick: (value) {
-                                      authController.emailController?.text = value!;
+                                      authController.emailController!.text =
+                                          value!;
                                     },
                                   ),
                                   CustomTextField(
-                                    title: TextApp.password,
-                                    hint: TextApp.passwordHint,
-                                    controller: authController.passwordController,
-                                    icon: Icons.lock,
-                                    isPass: true,
-                                    onClick: (value) {
-                                      authController.passwordController?.text = value!;
-                                    },
-                                  ),
-                                  CustomTextField(
-                                    title: TextApp.repassword,
-                                    hint: TextApp.repasswordHint,
-                                    controller: authController.repasswordController,
-                                    icon: Icons.lock,
-                                    isPass: true,
-                                    onClick: (value) {
-                                      authController.passwordController?.text = value!;
-                                    },
-                                  ),
+                                      title: TextApp.password,
+                                      hint: TextApp.passwordHint,
+                                      controller:
+                                          authController.passwordController,
+                                      icon: Icons.lock,
+                                      isPass: true,
+                                      onClick: (value) {
+                                        authController
+                                            .passwordController!.text = value!;
+                                      },
+                                      passwordIcon: authController.isPassword,
+                                      ),
+                                  Align(
+                                      alignment: Alignment.topRight,
+                                      child: TextButton(
+                                        onPressed: () {  Navigator.pushNamed(
+                                  context, AppRoutes.forgetScreen);},
+                                        child: const Text(TextApp.forgetPass),
+                                      )),
                                   const SizedBox(
-                                    height: 15,
+                                    height: 5,
                                   ),
                                   SizedBox(
                                       width: context.screenWidth - 50,
                                       child: CustomButton(
                                         bgColor: ColorsApp.PKColor,
                                         textColor: ColorsApp.whiteColor,
-                                        title: TextApp.signup,
+                                        title: TextApp.login,
                                         onPress: () async {
-                                          authController.signUp(context);
+                                          authController.signIn(context);
                                         },
                                       )),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  const Text(
+                                    TextApp.loginWith,
+                                    style:
+                                        TextStyle(color: ColorsApp.whiteColor),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: List.generate(
+                                        3,
+                                        (index) => Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8),
+                                              child: CircleAvatar(
+                                                  backgroundColor:
+                                                      ColorsApp.lightGrey,
+                                                  radius: 25,
+                                                  child: Image.asset(
+                                                    ListsApp
+                                                        .socialIconList[index],
+                                                    width: 30,
+                                                  )),
+                                            )),
+                                  )
                                 ],
                               )),
                         ),
-                        const SizedBox(
-                          height: 70,
+                        SizedBox(
+                          height: context.screenHeight / 5,
                         ),
                         InkWell(
                             onTap: () {
-                               Navigator.pushNamed(context,AppRoutes.loginScreen);
+                              Navigator.pushNamed(
+                                  context, AppRoutes.signupScreen);
                             },
                             child: RichText(
                               text: const TextSpan(children: [
                                 TextSpan(
-                                    text: TextApp.alreadyHaveAccount,
+                                    text: TextApp.creatNewAccount,
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         color: ColorsApp.fontGrey,
                                         fontSize: 16)),
                                 TextSpan(
-                                    text: TextApp.login,
+                                    text: TextApp.register,
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         color: ColorsApp.PKColor,

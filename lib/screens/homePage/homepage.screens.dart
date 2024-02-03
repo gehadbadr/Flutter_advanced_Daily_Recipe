@@ -1,11 +1,6 @@
-import 'package:daily_recipe/consts/consts.dart';
-import 'package:daily_recipe/providers/auth.providers.dart';
-import 'package:daily_recipe/providers/recepie.providers.dart';
+import 'package:daily_recipe/providers/profile.providers.dart';
 import 'package:daily_recipe/screens/homePage/home.components.dart';
-import 'package:daily_recipe/widgets/appbar.widgets.dart';
-import 'package:daily_recipe/screens/homePage/components/carsoul.widget.dart';
 import 'package:daily_recipe/widgets/drawer.widgets.dart';
-import 'package:daily_recipe/screens/recipes/components/recipes.components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:provider/provider.dart';
@@ -23,32 +18,44 @@ class _HomepageScreenState extends State<HomepageScreen> {
   @override
   void initState() {
     controller = ZoomDrawerController();
+    init();
     super.initState();
   }
 
   void init() async {
-    Provider.of<RecipeController>(context, listen: false).getRecipes();
+    await Provider.of<ProfileController>(context, listen: false).getUser();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ZoomDrawer(
-      slideWidth: MediaQuery.of(context).size.width * 0.65,
-      menuBackgroundColor: Colors.white,
-      boxShadow: const [BoxShadow(color: Colors.grey, blurRadius: 5)],
-      disableDragGesture: true,
-      mainScreenTapClose: true,
-      controller: controller,
-      drawerShadowsBackgroundColor: Colors.grey,
-      menuScreen: DrawerWidget(controller:controller),
-      mainScreen: HomeWidget(controller:controller),
-      borderRadius: 24.0,
-      showShadow: true,
-      angle: -12.0,
-    );
+    return Consumer<ProfileController>(
+        builder: (context, profileController, child) {
+      if (profileController.profileDetails.docid == null) {
+       return  const Center(child: CircularProgressIndicator());
+      } else {
+        //  profileController.getUser;
+        return ZoomDrawer(
+          slideWidth: MediaQuery.of(context).size.width * 0.65,
+          menuBackgroundColor: Colors.white,
+          boxShadow: const [BoxShadow(color: Colors.grey, blurRadius: 5)],
+          disableDragGesture: true,
+          mainScreenTapClose: true,
+          controller: controller,
+          drawerShadowsBackgroundColor: Colors.grey,
+          menuScreen: DrawerWidget(
+              controller: controller,
+              profileDetails: profileController.profileDetails),
+          mainScreen: HomeWidget(
+              controller: controller,
+              profileDetails: profileController.profileDetails),
+          borderRadius: 24.0,
+          showShadow: true,
+          angle: -12.0,
+        );
+      }
+    });
   }
 }
-
 // Widget scaffold(controller) {
 //   return 
 //   Scaffold(

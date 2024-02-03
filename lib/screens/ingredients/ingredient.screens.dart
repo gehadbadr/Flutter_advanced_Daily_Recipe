@@ -1,4 +1,3 @@
-import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/providers/ingredient.providers.dart';
 import 'package:daily_recipe/widgets/appbar.widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';

@@ -1,26 +1,40 @@
 //import 'package:daily_recipe/error_screen.dart';
 import 'package:daily_recipe/consts/consts.dart';
+import 'package:daily_recipe/models/recipes.models.dart';
+import 'package:daily_recipe/screens/auth/forget_password.screens.dart';
+import 'package:daily_recipe/screens/filter/filter.screens.dart';
 import 'package:daily_recipe/screens/homePage/homepage.screens.dart';
 import 'package:daily_recipe/screens/ingredients/ingredient.screens.dart';
-import 'package:daily_recipe/screens/intro.screens.dart';
-import 'package:daily_recipe/screens/login_screen.dart';
+import 'package:daily_recipe/screens/auth/intro.screens.dart';
+import 'package:daily_recipe/screens/auth/login_screen.dart';
+import 'package:daily_recipe/screens/recipes/allRecipes.screens.dart';
 import 'package:daily_recipe/screens/recipes/favoriteRecipes.screens.dart';
-import 'package:daily_recipe/screens/recipes/recipeDetails.screens.dart';
 import 'package:daily_recipe/screens/recipes/viewedRecipes.screens.dart';
-import 'package:daily_recipe/screens/signup_screen.dart';
+import 'package:daily_recipe/screens/auth/signup_screen.dart';
 import 'package:daily_recipe/screens/splash.screens.dart';
-
+import 'package:daily_recipe/models/user.models.dart';
 
 class AppRouter {
+    final UserModel profileDetails = UserModel();
+    final Recipe recipeDetails = Recipe();
+
+   String? recipeId = "1";
   static final router = {
-    '/': (context) =>const SplashScreen(),
+    '/': (context) => const SplashScreen(),
     AppRoutes.introScreen: (context) => const IntroScreen(),
     AppRoutes.loginScreen: (context) => const LoginScreen(),
     AppRoutes.signupScreen: (context) => const SignupScreen(),
+    AppRoutes.forgetScreen: (context) => const ForgetPasswordScreen(),
     AppRoutes.homepageScreen: (context) => const HomepageScreen(),
+    AppRoutes.allRecipesScreen: (context) => const AllRecipesScreen(),
+    AppRoutes.filterScreen: (context) => const FilterScreen(),
     AppRoutes.viewedRecipesScreen: (context) => const ViewedRecipesScreen(),
     AppRoutes.favoriteRecipesScreen: (context) => const FavoriteRecipesScreen(),
-    AppRoutes.ingredientsScreen: (context) => const IngredientsScreen()
-
+    AppRoutes.ingredientsScreen: (context) => const IngredientsScreen(),
+  //  AppRoutes.profileScreen: (context) => ProfileScreen(profileDetails:profileDetails),
+  //  AppRoutes.editprofileScreen: (context) => const EditProfileScreen(),
+  /*  AppRoutes.recipeDetailsScreen: (context) => const RecipeDetailsScreen(
+          recipeDetails: recipeDetails,
+        ),*/
   };
 }
