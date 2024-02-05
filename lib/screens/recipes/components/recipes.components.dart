@@ -44,10 +44,12 @@ class Recipes extends StatelessWidget {
         return recommendedRecipes(context);
       case 2://display all Details of recipe in page.
         return recipeDetailsWidget(context);
-      case 3://display recipes in horizontal card without favorite icon in RecentlyViewedScreen.
+      case 3://display recipes in horizontal card with close in=con instead of favorite icon in RecentlyViewedScreen.
         return recommendedRecipes(context); 
       case 4://display recipes in vertical card change img size.
         return freshRecipes(context);
+      case 5://display recipes in horizontal card without favorite icon in FilteredRecipesScreen.
+        return recommendedRecipes(context);  
 
     }
   }
@@ -152,7 +154,7 @@ class Recipes extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(16.0),
-          child:viewType== 3?closeIcon(): favoriteIcon(),
+          child:viewType== 3?closeIcon():viewType== 5?Container(): favoriteIcon(),
         )
       ],
     );
@@ -333,7 +335,7 @@ class Recipes extends StatelessWidget {
 
   Widget ratingStars(double size) {
     return VxRating(
-        value: recipeDetails.rating!,
+        value: recipeDetails.rating!.toDouble(),
         onRatingUpdate: (value) {},
         normalColor: ColorsApp.textfieldGrey,
         selectionColor: ColorsApp.PKColor,

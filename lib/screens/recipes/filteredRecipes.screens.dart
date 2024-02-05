@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daily_recipe/consts/consts.dart';
+import 'package:daily_recipe/models/recipes.models.dart';
 import 'package:daily_recipe/providers/profile.providers.dart';
 import 'package:daily_recipe/providers/recepie.providers.dart';
+import 'package:daily_recipe/screens/filter/filter.screens.dart';
 import 'package:daily_recipe/screens/homePage/homepage.screens.dart';
 import 'package:daily_recipe/widgets/appbar.widgets.dart';
 import 'package:daily_recipe/screens/recipes/components/recipes.components.dart';
@@ -9,22 +12,27 @@ import 'package:daily_recipe/widgets/search_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class FavoriteRecipesScreen extends StatefulWidget {
-  const FavoriteRecipesScreen({super.key});
-
+class FilteredRecipesScreen extends StatefulWidget {
+  //const FilteredRecipesScreen({super.key});
+  final List<Recipe> filteredRecipes;
+  const FilteredRecipesScreen({super.key, required this.filteredRecipes});
   @override
-  State<FavoriteRecipesScreen> createState() => _FavoriteRecipesScreenState();
+  State<FilteredRecipesScreen> createState() => _FilteredRecipesScreenState();
 }
 
-class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
+class _FilteredRecipesScreenState extends State<FilteredRecipesScreen> {
   // ValueNotifier<List<Map>> filtered = ValueNotifier<List<Map>>([]);
   // TextEditingController searchController = TextEditingController();
   // FocusNode searchFocus = FocusNode();
   // bool searching = false;
   @override
   void initState() {
-    Provider.of<RecipeController>(context, listen: false).initFavorite();
+    //init();
     super.initState();
+  }
+
+  init() {
+    Provider.of<RecipeController>(context, listen: false).getFilteredResult();
   }
 
   @override
@@ -32,7 +40,6 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
     Provider.of<RecipeController>(context, listen: false).disposeFoundRecipes();
     super.deactivate();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,16 +50,11 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
               leadingIcon: Icons.arrow_back,
               onPressLeading: () {
                 Provider.of<ProfileController>(context, listen: false)
-                      .getUser();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => HomepageScreen(
-                            profileDetails: Provider.of<ProfileController>(
-                                    context,
-                                    listen: false)
-                                .profileDetails)),
-                  );},
+                    .getUser();
+                Navigator.pushNamed(
+                  context,AppRoutes.filterScreen
+                );
+              },
               actionIcon: Icons.notification_add_outlined,
               onPressAction: () {})),
       body: SafeArea(
@@ -61,100 +63,40 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
                       child: Text(
-                        TextApp.favorite,
+                        TextApp.results,
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 25),
                       ),
                     ),
-                    Text(
-                      TextApp.clear,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: ColorsApp.PKColor,
-                          fontSize: 16),
-                    )
                   ],
-                ),
+                ),          
                 const SizedBox(
-                  height: 10,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 4,
-                      child: Container(
-                          alignment: Alignment.center,
-                          height: 60,
-                          width: 200,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: ColorsApp.lightGrey,
-                          ),
-                          child: SearchTextField(onChanged: (value) {
-                            Provider.of<RecipeController>(context,
-                                    listen: false)
-                                .runFilter(value);
-                          }) /*TextFormField(
-                            cursorColor: ColorsApp.borderLine,
-                            decoration: const InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10.0)),
-                                  borderSide: BorderSide(
-                                    width: 0,
-                                    style: BorderStyle.none,
-                                  ),
-                                ),
-                                prefixIcon: Icon(
-                                  Icons.search,
-                                  color: ColorsApp.borderLine,
-                                ),
-                                filled: true,
-                                fillColor: ColorsApp.lightGrey,
-                                hintText: TextApp.searchAnyKey,
-                                hintStyle:
-                                    TextStyle(color: ColorsApp.borderLine)),
-                          )*/
-                          ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    const Expanded(flex: 1, child: FilterButton()),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const SizedBox(
-                  height: 10,
+                  height: 30,
                 ),
                 Consumer<RecipeController>(
                     builder: (context, recipeController, child) {
                   //recipeController.getFavoriteRecipes();
                   return Column(
                     children: [
-                      recipeController.foundRecipes == null
+                      recipeController.filteredRecipes == null
                           ? const CircularProgressIndicator()
-                          : (recipeController.foundRecipes!.isEmpty ?? false)
+                          : (widget.filteredRecipes.isEmpty ?? false)
                               ? const Text('No Data Found')
-                              : recipeController.foundRecipes!.isEmpty
+                              :widget.filteredRecipes.isEmpty
                                   ? const CircularProgressIndicator()
                                   : SingleChildScrollView(
                                       padding: const EdgeInsets.all(0),
                                       scrollDirection: Axis.horizontal,
                                       child: Column(
                                         children: List.generate(
-                                          recipeController.foundRecipes!.length,
+                                          widget.filteredRecipes.length,
                                           (index) => Recipes(
                                               /*  id: recipeController
                                               .favoriteList![index].docId,
@@ -172,19 +114,16 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
                                               .favoriteList![index].serving,
                                           prepTime: recipeController
                                               .favoriteList![index].prepTime,*/
-                                              recipeDetails: recipeController
-                                                  .foundRecipes![index],
-                                              viewType: 1,
+                                              recipeDetails: widget.filteredRecipes[index],
+                                              viewType: 5,
                                               isFavorite: recipeController
                                                   .isFavoriteById(
-                                                      recipeController
-                                                              .foundRecipes![
+                                                      widget.filteredRecipes[
                                                           index]),
                                               onPressAction: () {
                                                 recipeController
                                                     .addFavoriteMethodById(
-                                                        recipeController
-                                                                .foundRecipes![
+                                                      widget.filteredRecipes[
                                                             index],
                                                         context,
                                                         AppRoutes

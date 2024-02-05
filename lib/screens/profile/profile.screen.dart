@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/models/user.models.dart';
 import 'package:daily_recipe/providers/auth.providers.dart';
 import 'package:daily_recipe/providers/profile.providers.dart';
+import 'package:daily_recipe/screens/homePage/homepage.screens.dart';
 import 'package:daily_recipe/screens/profile/editProfile.screen.dart';
 import 'package:daily_recipe/widgets/appbar.widgets.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +36,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
         appBar: PreferredSize(
             preferredSize: const Size.fromHeight(60.0),
             child: CustomAppBar(
+                    leadingIcon: Icons.arrow_back,
+                onPressLeading: () {
+                  Provider.of<ProfileController>(context, listen: false)
+                      .getUser();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HomepageScreen(
+                            profileDetails: Provider.of<ProfileController>(
+                                    context,
+                                    listen: false)
+                                .profileDetails)),
+                  );
+                },
                 actionIcon: Icons.notification_add_outlined,
                 onPressAction: () {})),
         body: SafeArea(
@@ -73,11 +89,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   )),
                             ).onTap(() {
                                   Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                EditProfileScreen(profileDetails: widget.profileDetails)),
-                      );
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            EditProfileScreen(profileDetails: widget.profileDetails)),
+                                  );
                 //  Navigator.pushNamed(context, AppRoutes.editprofileScreen);
                             }),
                             Padding(
@@ -94,12 +110,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       : ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(50),
-                                          child: Image.network(
-                                            widget.profileDetails.imageUrl!,
+                                          child: CachedNetworkImage(
+                                            imageUrl: widget.profileDetails.imageUrl!,
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const Icon(Icons.error),
                                             width: 100,
                                             height: 100,
                                             fit: BoxFit.cover,
-                                          )),
+                                          ),),
                                   Expanded(
                                       child: Column(
                                     children: [

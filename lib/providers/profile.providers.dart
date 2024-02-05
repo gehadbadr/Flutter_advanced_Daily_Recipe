@@ -22,12 +22,12 @@ class ProfileController extends ChangeNotifier {
   late TextEditingController? oldPasswordController;
   late TextEditingController? newPasswordController;
   late TextEditingController? rePasswordController;
-  late bool _isPassword;
-  late bool _isNewPassword;
-  late bool _isConfirmPassword;
-  bool get isPassword => _isPassword;
-  bool get isNewPassword => _isNewPassword;
-  bool get isConfirmPassword => _isConfirmPassword;
+  // late bool _isPassword;
+  // late bool _isNewPassword;
+  // late bool _isConfirmPassword;
+  // bool get isPassword => _isPassword;
+  // bool get isNewPassword => _isNewPassword;
+  // bool get isConfirmPassword => _isConfirmPassword;
   String firstLetter = '';
 
   void providerInit() {
@@ -36,9 +36,9 @@ class ProfileController extends ChangeNotifier {
     oldPasswordController = TextEditingController();
     newPasswordController = TextEditingController();
     rePasswordController = TextEditingController();
-    _isPassword = true;
-    _isNewPassword = true;
-    _isConfirmPassword = true;
+    // _isPassword = true;
+    // _isNewPassword = true;
+    // _isConfirmPassword = true;
     //  getUser(FirebaseAuth.instance.currentUser!.uid);
   }
 
@@ -48,9 +48,9 @@ class ProfileController extends ChangeNotifier {
     newPasswordController = null;
     globalKey = null;
     nameController = null;
-    _isPassword = true;
-    _isNewPassword = true;
-    _isConfirmPassword = true;
+    // _isPassword = true;
+    // _isNewPassword = true;
+    // _isConfirmPassword = true;
   }
 
   // getUser(uid){
@@ -161,10 +161,10 @@ class ProfileController extends ChangeNotifier {
 
   Future<void> updateUser(BuildContext context) async {
     OverlayLoadingProgress.start();
-    if (newPasswordController?.text == rePasswordController?.text) {
+//    if (newPasswordController?.text == rePasswordController?.text) {
         if (globalKey?.currentState?.validate() ?? false) {
           globalKey?.currentState?.save();
-                if (profileDetails.password == oldPasswordController?.text) {
+  //     if (profileDetails.password == oldPasswordController?.text) {
 
           try {
             changeAuthPassword(profileDetails.email!, profileDetails.password!,
@@ -188,18 +188,18 @@ class ProfileController extends ChangeNotifier {
             print(e.toString());
             OverlayLoadingProgress.stop();
           }
-            } else {
-        OverlayLoadingProgress.stop();
-        ShowSnackbar.showSnackbar(context, TextApp.errorOldPassword);
-      }
+      //       } else {
+      //   OverlayLoadingProgress.stop();
+      //   ShowSnackbar.showSnackbar(context, TextApp.errorOldPassword);
+      // }
         } else {
           OverlayLoadingProgress.stop();
         }
     
-    } else {
-      OverlayLoadingProgress.stop();
-      ShowSnackbar.showSnackbar(context, TextApp.errorRepassword);
-    }
+    // } else {
+    //   OverlayLoadingProgress.stop();
+    //   ShowSnackbar.showSnackbar(context, TextApp.errorRepassword);
+    // }
   }
 
   updateProfile(String? name, String? password) async {

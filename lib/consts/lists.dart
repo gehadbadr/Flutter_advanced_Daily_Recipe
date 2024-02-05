@@ -6,5 +6,11 @@ abstract class ListsApp {
     ImagesPath.icGoogleLogo,
     ImagesPath.icTwitterLogo
   ];
+  
+  static const mealType = [
+    TextApp.breakfast,
+    TextApp.lunch,
+    TextApp.dinner
+  ];
 
 }

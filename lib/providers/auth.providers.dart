@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/consts/toastStatus.dart';
+import 'package:daily_recipe/models/user.models.dart';
 import 'package:daily_recipe/reuseable_function/snackbar.function.dart';
 import 'package:daily_recipe/reuseable_function/toast.function.dart';
+import 'package:daily_recipe/screens/homePage/homepage.screens.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:overlay_kit/overlay_kit.dart';
@@ -18,6 +20,7 @@ class AuthController extends ChangeNotifier {
   late bool _isConfirmPassword;
   bool get isPassword => _isPassword;
   bool get isConfirmPassword => _isConfirmPassword;
+  UserModel profileDetails = UserModel();
 
   void providerInit() {
     globalKey = GlobalKey<FormState>();
@@ -70,14 +73,23 @@ class AuthController extends ChangeNotifier {
       if (userCredential.user != null) {
         await userCredential.user?.updateDisplayName(name);
         storeUserData(name, email, password);
-        notifyListeners();
+        await getUser();
+
         OverlayLoadingProgress.stop();
         if (context.mounted) {
           ShowToastMessage.showToast(context, TextApp.registeredSuccessfully,
               3000, ToastMessageStatus.success);
+                        Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HomepageScreen(
+                            profileDetails: profileDetails)),
+                  );
         }
         providerDispose();
-        Navigator.pushReplacementNamed(context, AppRoutes.homepageScreen);
+      //  Navigator.pushReplacementNamed(context, AppRoutes.homepageScreen);
+        notifyListeners();
+
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
@@ -137,12 +149,19 @@ class AuthController extends ChangeNotifier {
       userCredential = await auth.signInWithEmailAndPassword(
           email: email, password: password);
       if (userCredential.user != null) {
+        await getUser();
         ShowToastMessage.showToast(
             context, TextApp.loggedIn, 3000, ToastMessageStatus.success);
         OverlayLoadingProgress.stop();
         providerDispose();
         if (context.mounted) {
-          Navigator.pushReplacementNamed(context, AppRoutes.homepageScreen);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HomepageScreen(
+                            profileDetails: profileDetails)),
+                  );
+      //  Navigator.pushReplacementNamed(context, AppRoutes.homepageScreen);
         }
       }
     } on FirebaseAuthException catch (e) {
@@ -219,5 +238,22 @@ class AuthController extends ChangeNotifier {
       OverlayLoadingProgress.stop();
     }
     OverlayLoadingProgress.stop();
+  }
+
+  Future<void> getUser() async {
+    try {
+      var result = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+      if (result.data() != null) {
+        profileDetails = UserModel.fromJson(result.data()!, result.id);
+      } else {
+        return;
+      }
+      notifyListeners();
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

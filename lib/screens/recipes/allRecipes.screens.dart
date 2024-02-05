@@ -1,5 +1,7 @@
 import 'package:daily_recipe/consts/consts.dart';
+import 'package:daily_recipe/providers/profile.providers.dart';
 import 'package:daily_recipe/providers/recepie.providers.dart';
+import 'package:daily_recipe/screens/homePage/homepage.screens.dart';
 import 'package:daily_recipe/widgets/appbar.widgets.dart';
 import 'package:daily_recipe/screens/recipes/components/recipes.components.dart';
 import 'package:daily_recipe/widgets/filter_button.dart';
@@ -35,7 +37,21 @@ class _AllRecipesScreenState extends State<AllRecipesScreen> {
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60.0),
           child: CustomAppBar(
-              actionIcon: Icons.notification_add_outlined,
+              leadingIcon: Icons.arrow_back,
+              onPressLeading: ()async {
+                  await Provider.of<ProfileController>(context, listen: false)
+                      .getUser();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HomepageScreen(
+                            profileDetails: Provider.of<ProfileController>(
+                                    context,
+                                    listen: false)
+                                .profileDetails)),
+                  );
+              }
+              ,actionIcon: Icons.notification_add_outlined,
               onPressAction: () {})),
       body:   Padding(
         padding: const EdgeInsets.only(top:20.0,left:20.0,bottom:20.0),

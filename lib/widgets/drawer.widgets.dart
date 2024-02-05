@@ -195,30 +195,16 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     const Icon(Icons.settings, color: ColorsApp.borderLine),
                 title: const Text(TextApp.settings,
                     style: TextStyle(color: ColorsApp.borderLine)),
-                onTap: () {},
-              ),
+                onTap: () {
+                  widget.controller.close?.call();
+                  Navigator.pushNamed(context, AppRoutes.settingsScreen);
+                
+                },
+              ),              
               const SizedBox(
                 height: 5,
               ),
-              ListTile(
-                leading:
-                    const Icon(Icons.contact_mail, color: ColorsApp.borderLine),
-                title: const Text(TextApp.about,
-                    style: TextStyle(color: ColorsApp.borderLine)),
-                onTap: () {},
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              ListTile(
-                leading: const Icon(Icons.help, color: ColorsApp.borderLine),
-                title: const Text(TextApp.help,
-                    style: TextStyle(color: ColorsApp.borderLine)),
-                onTap: () {},
-              ),
-              const SizedBox(
-                height: 5,
-              ),
+            
               ListTile(
                 leading: const Icon(Icons.logout_outlined,
                     color: ColorsApp.borderLine),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/models/user.models.dart';
 import 'package:daily_recipe/providers/profile.providers.dart';
@@ -26,7 +27,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   void init() async {
     Provider.of<ProfileController>(context, listen: false).providerInit();
-    Provider.of<ProfileController>(context, listen: false).getFirstLetter(widget.profileDetails);
+    Provider.of<ProfileController>(context, listen: false)
+        .getFirstLetter(widget.profileDetails);
   }
 
   @override
@@ -42,19 +44,33 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         appBar: PreferredSize(
             preferredSize: const Size.fromHeight(60.0),
             child: CustomAppBar(
+                leadingIcon: Icons.arrow_back,
+                onPressLeading: () {
+                  Provider.of<ProfileController>(context, listen: false)
+                      .getUser();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ProfileScreen(
+                            profileDetails: Provider.of<ProfileController>(
+                                    context,
+                                    listen: false)
+                                .profileDetails)),
+                  );
+                },
                 actionIcon: Icons.notification_add_outlined,
                 onPressAction: () {})),
         body: SafeArea(
           child: SingleChildScrollView(child: Consumer<ProfileController>(
               builder: (context, profileController, child) {
-                    profileController.nameController?.text =widget.profileDetails.name!;
+            profileController.nameController?.text =
+                widget.profileDetails.name!;
 
             //  profileController.getUser(FirebaseAuth.instance.currentUser!.uid);
             //  Future.delayed(const Duration(seconds: 1), () {});
             if (widget.profileDetails == null) {
               return const CircularProgressIndicator();
-            } else if (widget.profileDetails.name!.isEmpty ??
-                false) {
+            } else if (widget.profileDetails.name!.isEmpty ?? false) {
               return const Text('No Data Found');
             } else {
               return Column(
@@ -71,23 +87,31 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               widget.profileDetails.imageUrl == '' &&
                                       profileController.profileImgLink.isEmpty
                                   ? CircleAvatar(
-                        radius: 40,
-                        backgroundColor:ColorsApp.golden,
-                        child: Text(Provider.of<ProfileController>(context, listen: false).firstLetter),
-                      )
-                                  : widget.profileDetails.imageUrl !=
-                                              '' &&
+                                      radius: 40,
+                                      backgroundColor: ColorsApp.golden,
+                                      child: Text(
+                                          Provider.of<ProfileController>(
+                                                  context,
+                                                  listen: false)
+                                              .firstLetter),
+                                    )
+                                  : widget.profileDetails.imageUrl != '' &&
                                           profileController
                                               .profileImgLink.isEmpty
                                       ? ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(50),
-                                          child: Image.network(
-                                            widget.profileDetails.imageUrl!,
+                                          child: CachedNetworkImage(
+                                            imageUrl:
+                                                widget.profileDetails.imageUrl!,
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const Icon(Icons.error),
                                             width: 100,
                                             height: 100,
                                             fit: BoxFit.cover,
-                                          ))
+                                          ),
+                                        )
                                       : ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(50),
@@ -133,8 +157,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           decoration: BoxDecoration(
                               color: ColorsApp.golden,
                               borderRadius: BorderRadius.circular(10)),
-                          child:  Form(
-                              key: profileController.globalKey,
+                          child: Form(
+                            key: profileController.globalKey,
                             child: Column(
                               children: [
                                 CustomTextField(
@@ -148,44 +172,47 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                         value!;
                                   },
                                 ),
-                                CustomTextField(
-                                  title: TextApp.oldPassword,
-                                  hint: TextApp.oldPasswordHint,
-                                  controller:
-                                      profileController.oldPasswordController,
-                                  icon: Icons.lock,
-                                  isPass: true,
-                                  onClick: (value) {
-                                    profileController
-                                        .oldPasswordController?.text = value!;
-                                  },
-                                  passwordIcon: profileController.isPassword,
+                                // CustomTextField(
+                                //   title: TextApp.oldPassword,
+                                //   hint: TextApp.oldPasswordHint,
+                                //   controller:
+                                //       profileController.oldPasswordController,
+                                //   icon: Icons.lock,
+                                //   isPass: true,
+                                //   onClick: (value) {
+                                //     profileController
+                                //         .oldPasswordController?.text = value!;
+                                //   },
+                                //   passwordIcon: profileController.isPassword,
+                                // ),
+                                // CustomTextField(
+                                //   title: TextApp.newPassword,
+                                //   hint: TextApp.newPasswordHint,
+                                //   controller:
+                                //       profileController.newPasswordController,
+                                //   icon: Icons.lock,
+                                //   isPass: true,
+                                //   onClick: (value) {
+                                //     profileController
+                                //         .newPasswordController?.text = value!;
+                                //   },
+                                //   passwordIcon: profileController.isNewPassword,
+                                // ),CustomTextField(
+                                //       title: TextApp.repassword,
+                                //       hint: TextApp.repasswordHint,
+                                //       controller:
+                                //           profileController.rePasswordController,
+                                //       icon: Icons.lock,
+                                //       isPass: true,
+                                //       onClick: (value) {
+                                //         profileController
+                                //             .rePasswordController?.text = value!;
+                                //       },
+                                //       passwordIcon: profileController.isConfirmPassword,
+                                //       ),
+                                const SizedBox(
+                                  height: 10,
                                 ),
-                                CustomTextField(
-                                  title: TextApp.newPassword,
-                                  hint: TextApp.newPasswordHint,
-                                  controller:
-                                      profileController.newPasswordController,
-                                  icon: Icons.lock,
-                                  isPass: true,
-                                  onClick: (value) {
-                                    profileController
-                                        .newPasswordController?.text = value!;
-                                  },
-                                  passwordIcon: profileController.isNewPassword,
-                                ),CustomTextField(
-                                      title: TextApp.repassword,
-                                      hint: TextApp.repasswordHint,
-                                      controller:
-                                          profileController.rePasswordController,
-                                      icon: Icons.lock,
-                                      isPass: true,
-                                      onClick: (value) {
-                                        profileController
-                                            .rePasswordController?.text = value!;
-                                      },
-                                      passwordIcon: profileController.isConfirmPassword,
-                                      ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -196,7 +223,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                           textColor: ColorsApp.whiteColor,
                                           title: TextApp.save,
                                           onPress: () async {
-                                            profileController.updateUser(context);
+                                            profileController
+                                                .updateUser(context);
                                           },
                                         )),
                                     const SizedBox(
@@ -209,12 +237,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                           textColor: ColorsApp.whiteColor,
                                           title: TextApp.back,
                                           onPress: () {
-                                                Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ProfileScreen(profileDetails: widget.profileDetails)),
-                      );
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ProfileScreen(
+                                                          profileDetails: widget
+                                                              .profileDetails)),
+                                            );
                                           },
                                         )),
                                   ],

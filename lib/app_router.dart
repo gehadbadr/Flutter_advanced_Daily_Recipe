@@ -7,16 +7,18 @@ import 'package:daily_recipe/screens/homePage/homepage.screens.dart';
 import 'package:daily_recipe/screens/ingredients/ingredient.screens.dart';
 import 'package:daily_recipe/screens/auth/intro.screens.dart';
 import 'package:daily_recipe/screens/auth/login_screen.dart';
+import 'package:daily_recipe/screens/profile/profile.screen.dart';
 import 'package:daily_recipe/screens/recipes/allRecipes.screens.dart';
 import 'package:daily_recipe/screens/recipes/favoriteRecipes.screens.dart';
 import 'package:daily_recipe/screens/recipes/viewedRecipes.screens.dart';
 import 'package:daily_recipe/screens/auth/signup_screen.dart';
+import 'package:daily_recipe/screens/settings/settings.screens.dart';
 import 'package:daily_recipe/screens/splash.screens.dart';
 import 'package:daily_recipe/models/user.models.dart';
 
 class AppRouter {
     final UserModel profileDetails = UserModel();
-    final Recipe recipeDetails = Recipe();
+     Recipe recipeDetails = Recipe();
 
    String? recipeId = "1";
   static final router = {
@@ -25,12 +27,13 @@ class AppRouter {
     AppRoutes.loginScreen: (context) => const LoginScreen(),
     AppRoutes.signupScreen: (context) => const SignupScreen(),
     AppRoutes.forgetScreen: (context) => const ForgetPasswordScreen(),
-    AppRoutes.homepageScreen: (context) => const HomepageScreen(),
+  //  AppRoutes.homepageScreen: (context) => const HomepageScreen(),
     AppRoutes.allRecipesScreen: (context) => const AllRecipesScreen(),
     AppRoutes.filterScreen: (context) => const FilterScreen(),
     AppRoutes.viewedRecipesScreen: (context) => const ViewedRecipesScreen(),
     AppRoutes.favoriteRecipesScreen: (context) => const FavoriteRecipesScreen(),
     AppRoutes.ingredientsScreen: (context) => const IngredientsScreen(),
+    AppRoutes.settingsScreen: (context) => const SettingsScreen(),
   //  AppRoutes.profileScreen: (context) => ProfileScreen(profileDetails:profileDetails),
   //  AppRoutes.editprofileScreen: (context) => const EditProfileScreen(),
   /*  AppRoutes.recipeDetailsScreen: (context) => const RecipeDetailsScreen(

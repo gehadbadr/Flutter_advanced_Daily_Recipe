@@ -1,7 +1,7 @@
 class Recipe {
   String? docId, title, image, mealType, description;
-  double? rating;
-  int? calerios, prepTime, serving;
+  num? rating;
+  num? calerios, prepTime, serving;
   bool? recommended;
   List? ingredients,directions;
   List<String>? fanId;

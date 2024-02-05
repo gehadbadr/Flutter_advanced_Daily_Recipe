@@ -62,6 +62,9 @@ abstract class TextApp {
 //filter
   static const filter = "Filter";
   static const meals = "Meals";
+  static const breakfast = "breakfast";
+  static const lunch = "lunch";
+  static const dinner = "dinner";
   static const servingFilter = "Serving";
   static const prepTime = "Preparation Time";
   static const apply = "Apply";
@@ -80,6 +83,8 @@ abstract class TextApp {
   static const removeViewedrecipe = "Removed from recently viewed  list";
   //Recipes screen  
     static const recipes = "Recipes";
+  //filteredrecipes screen  
+    static const results = "Results";
   //Recipe details  
     static const serving = "serving";
     static const calories = "Calories";
@@ -90,7 +95,11 @@ abstract class TextApp {
   //Ingredient Screen  
   static const addIngredient = "Ingredient is added successfully";
   static const removeIngredient = "Ingredient is removed successfully";
-  static const error = "Error";
+  static const error = "Error";  
+  //Settings Screen  
+  static const language = "Language";
+  static const english = "English";
+
  // profile
    static const change = "Change";
    static const imgUpdate = "Image profile is updated successfully.";

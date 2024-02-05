@@ -42,6 +42,16 @@ class CustomAppBar extends StatelessWidget {
           ),
         ]);
   }else{  return  AppBar(
+    leading:   Padding(
+            padding: const EdgeInsets.only(right: 20,top: 5),
+            child: IconButton(
+              onPressed: onPressLeading,
+              icon:  Icon(
+                leadingIcon,
+                size: 30,
+              ),
+            ),
+          ),
         shadowColor: ColorsApp.whiteColor,
         backgroundColor: ColorsApp.whiteColor,
         foregroundColor: ColorsApp.darkFontGrey,

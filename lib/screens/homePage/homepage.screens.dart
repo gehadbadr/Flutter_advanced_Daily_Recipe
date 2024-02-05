@@ -1,3 +1,4 @@
+import 'package:daily_recipe/models/user.models.dart';
 import 'package:daily_recipe/providers/profile.providers.dart';
 import 'package:daily_recipe/screens/homePage/home.components.dart';
 import 'package:daily_recipe/widgets/drawer.widgets.dart';
@@ -6,7 +7,9 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:provider/provider.dart';
 
 class HomepageScreen extends StatefulWidget {
-  const HomepageScreen({super.key});
+//  const HomepageScreen({super.key});
+  final UserModel profileDetails;
+  const HomepageScreen({super.key, required this.profileDetails});
 
   @override
   State<HomepageScreen> createState() => _HomepageScreenState();
@@ -28,11 +31,11 @@ class _HomepageScreenState extends State<HomepageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ProfileController>(
-        builder: (context, profileController, child) {
-      if (profileController.profileDetails.docid == null) {
-       return  const Center(child: CircularProgressIndicator());
-      } else {
+    // return Consumer<ProfileController>(
+    //     builder: (context, profileController, child) {
+    //   if (profileController.profileDetails.docid == null) {
+    //    return  const Center(child: CircularProgressIndicator());
+    //   } else {
         //  profileController.getUser;
         return ZoomDrawer(
           slideWidth: MediaQuery.of(context).size.width * 0.65,
@@ -44,16 +47,16 @@ class _HomepageScreenState extends State<HomepageScreen> {
           drawerShadowsBackgroundColor: Colors.grey,
           menuScreen: DrawerWidget(
               controller: controller,
-              profileDetails: profileController.profileDetails),
+              profileDetails: widget.profileDetails),
           mainScreen: HomeWidget(
               controller: controller,
-              profileDetails: profileController.profileDetails),
+              profileDetails: widget.profileDetails),
           borderRadius: 24.0,
           showShadow: true,
           angle: -12.0,
         );
-      }
-    });
+    //   }
+    // });
   }
 }
 // Widget scaffold(controller) {
