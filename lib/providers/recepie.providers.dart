@@ -21,7 +21,9 @@ class RecipeController extends ChangeNotifier {
   Recipe _recipeDetails = Recipe();
   double servingValue = 0;
   double prepTimeValue = 0;
-  double caloriesValue = 0;
+//  double caloriesValue = 0;
+RangeValues currentRangeValues = const RangeValues(25, 300);
+//  RangeValues caloriesStartval = 20 as RangeValues, caloriesEndval = 400 as RangeValues;
 
   List<Recipe>? get recipesList => _recipesList;
   List<Recipe>? get recommendedList => _recommendedList;
@@ -30,11 +32,12 @@ class RecipeController extends ChangeNotifier {
   List<Recipe>? get foundRecipes => _foundRecipes;
   List<Ingredient>? get ingredientsUserList => _ingredientsUserList;
   Recipe get recipeDetails => _recipeDetails;
+   var selectedUserValue = {};
 
   bool? isAdd;
 
   void initFavorite() async {
-    getFavoriteRecipes();
+  await  getFavoriteRecipes();
 //    _foundRecipes = _favoriteList;
   }
 
@@ -42,12 +45,16 @@ class RecipeController extends ChangeNotifier {
     _foundRecipes = [];
   }
 
-
-
   void disposeFilter() async {
+   selectedUserValue = {};
+
     servingValue = 0;
     prepTimeValue = 0;
-    caloriesValue = 0;
+    //  caloriesValue = 0;
+    // caloriesStartval = 20;
+    // caloriesEndval = 500;
+    currentRangeValues = const RangeValues(25, 300);
+    
   }
 
   void disposeRecentlyViewed() async {
@@ -64,8 +71,18 @@ class RecipeController extends ChangeNotifier {
     notifyListeners();
   }
 
+  // void updatecaloriesStartval(value) {
+  //   caloriesStartval = value;
+  //   notifyListeners();
+  // }
+
+  // void updatecaloriesEndval(value) {
+  //   caloriesEndval = value;
+  //   notifyListeners();
+  // }
+
   void updatecaloriesValue(value) {
-    caloriesValue = value;
+    currentRangeValues  = value;
     notifyListeners();
   }
 
@@ -73,13 +90,13 @@ class RecipeController extends ChangeNotifier {
   //   _foundRecipes = [];
   // }
 
-  var selectedUserValue = {};
   // Recipe? openedRecipe = Recipe();
   // var selectedUserValue = {
-  //   'mealType': 'dinner'/*,
+  //   'mealType': 'dinner',
   //   'serving': 4,
   //   'prepTime': 45,
-  //   'calerios': 352,*/
+  //   'caleriosStart': 10,
+  //   'caleriosEnd': 500,
   // };
   //var selectedUserValue = {"mealType": 'dinner', "serving": 4};
 
@@ -163,9 +180,12 @@ class RecipeController extends ChangeNotifier {
           .where('mealType', isEqualTo: selectedUserValue['mealType'])
           .where('serving', isEqualTo: selectedUserValue['serving'])
           .where('prepTime', isEqualTo: selectedUserValue['prepTime'])
-          .where('calerios', isEqualTo: selectedUserValue['calories'])
+          .where('calerios',
+              isGreaterThanOrEqualTo: selectedUserValue['caloriesStartval'],
+              isLessThanOrEqualTo: selectedUserValue["caleriosEndval"])
+          //  .where('calerios', isEqualTo: selectedUserValue['calories'])
           .get();
-      print(result.docs);
+    //  print(result.docs);
 
       if (result.docs.isNotEmpty) {
         filteredRecipes = List<Recipe>.from(
@@ -518,7 +538,7 @@ class RecipeController extends ChangeNotifier {
           .where((e) => e.title!.toLowerCase().contains(value.toLowerCase()))
           .toList();
       _foundRecipes.forEach((e) {
-        print(e.title);
+      //  print(e.title);
       });
     }
 

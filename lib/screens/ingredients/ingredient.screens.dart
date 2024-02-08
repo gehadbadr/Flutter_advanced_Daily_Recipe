@@ -1,4 +1,7 @@
+import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/providers/ingredient.providers.dart';
+import 'package:daily_recipe/providers/profile.providers.dart';
+import 'package:daily_recipe/screens/homePage/homepage.screens.dart';
 import 'package:daily_recipe/widgets/appbar.widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -25,9 +28,23 @@ class _IngredientsScreenState extends State<IngredientsScreen> {
   @override
   Widget build(BuildContext context) {
 return Scaffold(
+        backgroundColor: ColorsApp.whiteColor,
+
           appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60.0),
           child: CustomAppBar(
+              leadingIcon: Icons.arrow_back,
+              onPressLeading: ()async {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HomepageScreen(
+                            profileDetails: Provider.of<ProfileController>(
+                                    context,
+                                    listen: false)
+                                .profileDetails)),
+                  );          
+              },
               actionIcon: Icons.notification_add_outlined,
               onPressAction: () {})),
       body:  Consumer<IngredientController>(

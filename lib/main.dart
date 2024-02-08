@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:daily_recipe/app_router.dart';
 import 'package:daily_recipe/providers/auth.providers.dart';
 import 'package:daily_recipe/providers/home.providers.dart';
@@ -6,8 +8,8 @@ import 'package:daily_recipe/providers/profile.providers.dart';
 import 'package:daily_recipe/providers/recepie.providers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:get_it/get_it.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:get_it/get_it.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:overlay_kit/overlay_kit.dart';
@@ -16,9 +18,16 @@ import 'package:overlay_kit/overlay_kit.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
-    var prefrence = await SharedPreferences.getInstance();
-    GetIt.I.registerSingleton<SharedPreferences>(prefrence);
+    // var prefrence = await SharedPreferences.getInstance();
+    // GetIt.I.registerSingleton<SharedPreferences>(prefrence);
+    /*Platform.isAndroid?
     await Firebase.initializeApp(
+        options: const FirebaseOptions(
+      apiKey: "AIzaSyAGz4gtJHbUyTUorqsNzCCY8Q8Nd_Lb-As",
+      appId: "1:98511826291:android:8796c78d33c7bbfcb32906",
+      messagingSenderId: "98511826291",
+      projectId: "recipe-app-fed63",
+    )):*/await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
     

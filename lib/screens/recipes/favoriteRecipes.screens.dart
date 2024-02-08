@@ -21,10 +21,21 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
   // TextEditingController searchController = TextEditingController();
   // FocusNode searchFocus = FocusNode();
   // bool searching = false;
+  bool startAnimation = false;
   @override
   void initState() {
-    Provider.of<RecipeController>(context, listen: false).initFavorite();
+    init();
     super.initState();
+  }
+
+  init() {
+    Provider.of<RecipeController>(context, listen: false).initFavorite();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      setState(() {
+        startAnimation = true;
+      });
+    });
   }
 
   @override
@@ -33,26 +44,31 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
     super.deactivate();
   }
 
+  double screenHeight = 0;
+  double screenWidth = 0;
   @override
   Widget build(BuildContext context) {
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: ColorsApp.whiteColor,
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60.0),
           child: CustomAppBar(
               leadingIcon: Icons.arrow_back,
-              onPressLeading: () {
-                Provider.of<ProfileController>(context, listen: false)
-                      .getUser();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => HomepageScreen(
-                            profileDetails: Provider.of<ProfileController>(
-                                    context,
-                                    listen: false)
-                                .profileDetails)),
-                  );},
+              onPressLeading: () async {
+                await Provider.of<ProfileController>(context, listen: false)
+                    .getUser();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => HomepageScreen(
+                          profileDetails: Provider.of<ProfileController>(
+                                  context,
+                                  listen: false)
+                              .profileDetails)),
+                );
+              },
               actionIcon: Icons.notification_add_outlined,
               onPressAction: () {})),
       body: SafeArea(
@@ -103,28 +119,7 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
                             Provider.of<RecipeController>(context,
                                     listen: false)
                                 .runFilter(value);
-                          }) /*TextFormField(
-                            cursorColor: ColorsApp.borderLine,
-                            decoration: const InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10.0)),
-                                  borderSide: BorderSide(
-                                    width: 0,
-                                    style: BorderStyle.none,
-                                  ),
-                                ),
-                                prefixIcon: Icon(
-                                  Icons.search,
-                                  color: ColorsApp.borderLine,
-                                ),
-                                filled: true,
-                                fillColor: ColorsApp.lightGrey,
-                                hintText: TextApp.searchAnyKey,
-                                hintStyle:
-                                    TextStyle(color: ColorsApp.borderLine)),
-                          )*/
-                          ),
+                          })),
                     ),
                     const SizedBox(
                       width: 10,
@@ -155,41 +150,65 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
                                       child: Column(
                                         children: List.generate(
                                           recipeController.foundRecipes!.length,
-                                          (index) => Recipes(
-                                              /*  id: recipeController
-                                              .favoriteList![index].docId,
-                                          title: recipeController
-                                              .favoriteList![index].title!,
-                                          image: recipeController
-                                              .favoriteList![index].image,
-                                          mealType: recipeController
-                                              .favoriteList![index].mealType,
-                                          rating: recipeController
-                                              .favoriteList![index].rating,
-                                          calerios: recipeController
-                                              .favoriteList![index].calerios,
-                                          serving: recipeController
-                                              .favoriteList![index].serving,
-                                          prepTime: recipeController
-                                              .favoriteList![index].prepTime,*/
-                                              recipeDetails: recipeController
-                                                  .foundRecipes![index],
-                                              viewType: 1,
-                                              isFavorite: recipeController
-                                                  .isFavoriteById(
-                                                      recipeController
-                                                              .foundRecipes![
-                                                          index]),
-                                              onPressAction: () {
-                                                recipeController
-                                                    .addFavoriteMethodById(
+                                          (index) => AnimatedContainer(
+                                            width: screenWidth,
+                                            curve: Curves.easeInOut,
+                                            duration: Duration(
+                                                milliseconds:
+                                                    3000 + (index * 200)),
+                                            transform:
+                                                Matrix4.translationValues(
+                                                    startAnimation
+                                                        ? 0
+                                                        : screenWidth,
+                                                    0,
+                                                    0),
+                                            margin: const EdgeInsets.only(
+                                              bottom: 12,
+                                            ),
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 241, 13, 13),
+        borderRadius: BorderRadius.circular(10),
+      ),
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: screenWidth / 20,
+                                            ),
+                                            child: Recipes(
+                                                /*  id: recipeController
+                                                .favoriteList![index].docId,
+                                            title: recipeController
+                                                .favoriteList![index].title!,
+                                            image: recipeController
+                                                .favoriteList![index].image,
+                                            mealType: recipeController
+                                                .favoriteList![index].mealType,
+                                            rating: recipeController
+                                                .favoriteList![index].rating,
+                                            calerios: recipeController
+                                                .favoriteList![index].calerios,
+                                            serving: recipeController
+                                                .favoriteList![index].serving,
+                                            prepTime: recipeController
+                                                .favoriteList![index].prepTime,*/
+                                                recipeDetails: recipeController
+                                                    .foundRecipes![index],
+                                                viewType: 1,
+                                                isFavorite: recipeController
+                                                    .isFavoriteById(
                                                         recipeController
                                                                 .foundRecipes![
-                                                            index],
-                                                        context,
-                                                        AppRoutes
-                                                            .favoriteRecipesScreen);
-                                              }),
+                                                            index]),
+                                                onPressAction: () {
+                                                  recipeController
+                                                      .addFavoriteMethodById(
+                                                          recipeController
+                                                                  .foundRecipes![
+                                                              index],
+                                                          context,
+                                                          AppRoutes
+                                                              .favoriteRecipesScreen);
+                                                }),
+                                          ),
                                         ),
                                       ),
                                     ),

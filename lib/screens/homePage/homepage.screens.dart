@@ -21,13 +21,10 @@ class _HomepageScreenState extends State<HomepageScreen> {
   @override
   void initState() {
     controller = ZoomDrawerController();
-    init();
     super.initState();
   }
 
-  void init() async {
-    await Provider.of<ProfileController>(context, listen: false).getUser();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +34,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
     //    return  const Center(child: CircularProgressIndicator());
     //   } else {
         //  profileController.getUser;
-        return ZoomDrawer(
+        return 
+         ZoomDrawer(
           slideWidth: MediaQuery.of(context).size.width * 0.65,
           menuBackgroundColor: Colors.white,
           boxShadow: const [BoxShadow(color: Colors.grey, blurRadius: 5)],

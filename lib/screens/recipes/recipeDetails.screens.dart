@@ -150,7 +150,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                 topLeft: Radius.circular(20),
                                 topRight: Radius.circular(20))),
                         padding: const EdgeInsets.all(20),
-                        height: context.screenHeight,
+                      //  height: context.screenHeight,
                         child: Column(
                           children: [
                             const SizedBox(

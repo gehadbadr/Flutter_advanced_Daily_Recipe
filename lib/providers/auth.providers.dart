@@ -155,6 +155,8 @@ class AuthController extends ChangeNotifier {
         OverlayLoadingProgress.stop();
         providerDispose();
         if (context.mounted) {
+                        //    Navigator.pushNamed(context, AppRoutes.settingsScreen);
+
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
@@ -248,8 +250,9 @@ class AuthController extends ChangeNotifier {
           .get();
       if (result.data() != null) {
         profileDetails = UserModel.fromJson(result.data()!, result.id);
+
       } else {
-        return;
+        return print('errorrrrrrrrrrrrrrrrrrrrrr');
       }
       notifyListeners();
     } catch (e) {

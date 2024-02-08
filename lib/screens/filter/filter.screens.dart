@@ -16,14 +16,18 @@ class FilterScreen extends StatefulWidget {
 }
 
 class _FilterScreenState extends State<FilterScreen> {
+
   @override
   void deactivate() {
     Provider.of<RecipeController>(context, listen: false).disposeFilter();
     super.deactivate();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+            backgroundColor: ColorsApp.whiteColor,
+
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60.0),
           child: CustomAppBar(
@@ -173,11 +177,9 @@ class _FilterScreenState extends State<FilterScreen> {
                   max: 20.0,
                   value: recipeController.servingValue,
                   onChanged: (value) {
-                    //  setState(() {
                     recipeController.updateServingValue(value);
                     recipeController.selectedUserValueUpdate(
                         'serving', recipeController.servingValue);
-                    //    });
                   },
                 ),
                 const SizedBox(
@@ -197,9 +199,9 @@ class _FilterScreenState extends State<FilterScreen> {
                   max: 200.0,
                   value: recipeController.prepTimeValue,
                   onChanged: (value) {
-                      recipeController.updateprepTimeValue(value);
-                      recipeController.selectedUserValueUpdate(
-                          'prepTime', recipeController.prepTimeValue);
+                    recipeController.updateprepTimeValue(value);
+                    recipeController.selectedUserValueUpdate(
+                        'prepTime', recipeController.prepTimeValue);
                   },
                 ),
                 const SizedBox(
@@ -212,20 +214,46 @@ class _FilterScreenState extends State<FilterScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                Slider(
-                  label: recipeController.caloriesValue.toString(),
-                  divisions: 1000,
-                  min: 0.0,
-                  max: 1000.0,
-                  value: recipeController.caloriesValue,
-                  onChanged: (value) {
-                      recipeController.updatecaloriesValue(value);
-                      recipeController.selectedUserValueUpdate(
-                          'calories', recipeController.caloriesValue);
+                RangeSlider(
+                  min: 0,
+                  max: 1000,
+                  divisions: 20, //slide interval
+                  labels: RangeLabels(
+                      recipeController.currentRangeValues.start
+                          .round()
+                          .toString(),
+                      recipeController.currentRangeValues.end
+                          .round()
+                          .toString()),
+                  values: recipeController.currentRangeValues,
+                  onChanged: (RangeValues value) {
+                    // setState(() {
+                    //     startval = value.start;
+                    //     endval = value.end;
+                    //  recipeController.updatecaloriesStartval(value);
+                    // recipeController.updatecaloriesEndval(value);
+                    recipeController.updatecaloriesValue(value);
+                    recipeController.selectedUserValueUpdate(
+                        'caloriesStartval', recipeController.currentRangeValues.start.round());
+                    recipeController.selectedUserValueUpdate(
+                        'caloriesEndval', recipeController.currentRangeValues.end.round());
+                  //  });
                   },
                 ),
-                 SizedBox(
-                  height: context.screenHeight*0.2,
+                // Slider(
+                //   label: recipeController.caloriesValue.toString(),
+                //   divisions: 1000,
+                //   min: 0.0,
+                //   max: 1000.0,
+                //   value: recipeController.caloriesValue,
+                //   onChanged: (value) {
+                //       recipeController.updatecaloriesValue(value);
+                //       recipeController.selectedUserValueUpdate(
+                //           'calories', recipeController.caloriesValue);
+                //   },
+                // ),
+                SizedBox(
+                  height: context.screenHeight * 0.1,
                 ),
                 SizedBox(
                     width: context.screenWidth - 50,

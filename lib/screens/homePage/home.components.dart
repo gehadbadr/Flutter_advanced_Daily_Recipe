@@ -97,7 +97,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                             borderRadius: BorderRadius.circular(10),
                             color: ColorsApp.lightGrey,
                           ),
-                          child: SearchTextField(onChanged: (value) {
+                          child: SearchTextField(onClick: () {
                             Navigator.pushNamed(
                                 context, AppRoutes.filterScreen);
                           })),

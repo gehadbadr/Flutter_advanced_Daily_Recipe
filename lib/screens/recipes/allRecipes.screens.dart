@@ -4,8 +4,6 @@ import 'package:daily_recipe/providers/recepie.providers.dart';
 import 'package:daily_recipe/screens/homePage/homepage.screens.dart';
 import 'package:daily_recipe/widgets/appbar.widgets.dart';
 import 'package:daily_recipe/screens/recipes/components/recipes.components.dart';
-import 'package:daily_recipe/widgets/filter_button.dart';
-import 'package:daily_recipe/widgets/search_textfield.dart';
 import 'package:flexible_grid_view/flexible_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,10 +16,7 @@ class AllRecipesScreen extends StatefulWidget {
 }
 
 class _AllRecipesScreenState extends State<AllRecipesScreen> {
-  // ValueNotifier<List<Map>> filtered = ValueNotifier<List<Map>>([]);
-  // TextEditingController searchController = TextEditingController();
-  // FocusNode searchFocus = FocusNode();
-  // bool searching = false;
+
   @override
   void initState() {
     Provider.of<RecipeController>(context, listen: false).getAllRecipes();

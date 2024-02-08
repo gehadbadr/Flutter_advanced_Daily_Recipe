@@ -9,27 +9,27 @@ import 'package:daily_recipe/widgets/search_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ViewedRecipesScreen extends StatefulWidget {
-  const ViewedRecipesScreen({super.key});
+class FavoriteRecipesScreen extends StatefulWidget {
+  const FavoriteRecipesScreen({super.key});
 
   @override
-  State<ViewedRecipesScreen> createState() => _ViewedRecipesScreenState();
+  State<FavoriteRecipesScreen> createState() => _FavoriteRecipesScreenState();
 }
 
-class _ViewedRecipesScreenState extends State<ViewedRecipesScreen> {
+class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
+  // ValueNotifier<List<Map>> filtered = ValueNotifier<List<Map>>([]);
+  // TextEditingController searchController = TextEditingController();
+  // FocusNode searchFocus = FocusNode();
+  // bool searching = false;
   @override
   void initState() {
-    init();
+    Provider.of<RecipeController>(context, listen: false).initFavorite();
     super.initState();
   }
 
-  void init() async {
-    Provider.of<RecipeController>(context, listen: false).getViewedRecipes();
-  }
-
-    @override
+  @override
   void deactivate() {
-    Provider.of<RecipeController>(context, listen: false).disposeRecentlyViewed();
+    Provider.of<RecipeController>(context, listen: false).disposeFoundRecipes();
     super.deactivate();
   }
 
@@ -41,7 +41,9 @@ class _ViewedRecipesScreenState extends State<ViewedRecipesScreen> {
           preferredSize: const Size.fromHeight(60.0),
           child: CustomAppBar(
               leadingIcon: Icons.arrow_back,
-              onPressLeading: ()async {
+              onPressLeading: () async{
+              await  Provider.of<ProfileController>(context, listen: false)
+                      .getUser();
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -50,8 +52,7 @@ class _ViewedRecipesScreenState extends State<ViewedRecipesScreen> {
                                     context,
                                     listen: false)
                                 .profileDetails)),
-                  );          
-              },
+                  );},
               actionIcon: Icons.notification_add_outlined,
               onPressAction: () {})),
       body: SafeArea(
@@ -66,7 +67,7 @@ class _ViewedRecipesScreenState extends State<ViewedRecipesScreen> {
                   children: [
                     Expanded(
                       child: Text(
-                        TextApp.recentlyViewed,
+                        TextApp.favorite,
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 25),
                       ),
@@ -99,16 +100,16 @@ class _ViewedRecipesScreenState extends State<ViewedRecipesScreen> {
                             color: ColorsApp.lightGrey,
                           ),
                           child: SearchTextField(onChanged: (value) {
-                            Provider.of<RecipeController>(context, listen: false).runFilter(value);
-                          })),
+                            Provider.of<RecipeController>(context,
+                                    listen: false)
+                                .runFilter(value);
+                          }) 
+                          ),
                     ),
                     const SizedBox(
                       width: 10,
                     ),
-                    const Expanded(
-                      flex: 1,
-                      child: FilterButton()
-                    ),
+                    const Expanded(flex: 1, child: FilterButton()),
                   ],
                 ),
                 const SizedBox(
@@ -119,51 +120,59 @@ class _ViewedRecipesScreenState extends State<ViewedRecipesScreen> {
                 ),
                 Consumer<RecipeController>(
                     builder: (context, recipeController, child) {
+                  //recipeController.getFavoriteRecipes();
                   return Column(
                     children: [
                       recipeController.foundRecipes == null
                           ? const CircularProgressIndicator()
-                  :(recipeController.foundRecipes?.isEmpty ?? false)
-                      ? const Text('No Data Found') 
-                          : recipeController.foundRecipes!.isEmpty
-                              ? const CircularProgressIndicator()
-                              : SingleChildScrollView(
-                                  padding: const EdgeInsets.all(0),
-                                  scrollDirection: Axis.horizontal,
-                                  child: Column(
-                                    children: List.generate(
-                                      recipeController.foundRecipes!.length,
-                                      (index) => Recipes(
-                                        /*  id: recipeController
-                                              .foundRecipes![index].docId,
+                          : (recipeController.foundRecipes!.isEmpty ?? false)
+                              ? const Text('No Data Found')
+                              : recipeController.foundRecipes!.isEmpty
+                                  ? const CircularProgressIndicator()
+                                  : SingleChildScrollView(
+                                      padding: const EdgeInsets.all(0),
+                                      scrollDirection: Axis.horizontal,
+                                      child: Column(
+                                        children: List.generate(
+                                          recipeController.foundRecipes!.length,
+                                          (index) => Recipes(
+                                              /*  id: recipeController
+                                              .favoriteList![index].docId,
                                           title: recipeController
-                                              .foundRecipes![index].title!,
+                                              .favoriteList![index].title!,
                                           image: recipeController
-                                              .foundRecipes![index].image,
+                                              .favoriteList![index].image,
                                           mealType: recipeController
-                                              .foundRecipes![index].mealType,
+                                              .favoriteList![index].mealType,
                                           rating: recipeController
-                                              .foundRecipes![index].rating,
+                                              .favoriteList![index].rating,
                                           calerios: recipeController
-                                              .foundRecipes![index].calerios,
+                                              .favoriteList![index].calerios,
                                           serving: recipeController
-                                              .foundRecipes![index].serving,
+                                              .favoriteList![index].serving,
                                           prepTime: recipeController
-                                              .foundRecipes![index].prepTime,*/
-                                                recipeDetails: recipeController
-                                                .foundRecipes![index],
-                                          viewType: 3,
-                                          isFavorite: recipeController
-                                              .isFavoriteById(recipeController
-                                                .foundRecipes![index]),
-                                          onPressAction: () {
-                                            recipeController.removeViewedRecipe(
+                                              .favoriteList![index].prepTime,*/
+                                              recipeDetails: recipeController
+                                                  .foundRecipes![index],
+                                              viewType: 1,
+                                              isFavorite: recipeController
+                                                  .isFavoriteById(
+                                                      recipeController
+                                                              .foundRecipes![
+                                                          index]),
+                                              onPressAction: () {
                                                 recipeController
-                                                .foundRecipes![index].docId!, context);
-                                          }),
+                                                    .addFavoriteMethodById(
+                                                        recipeController
+                                                                .foundRecipes![
+                                                            index],
+                                                        context,
+                                                        AppRoutes
+                                                            .favoriteRecipesScreen);
+                                              }),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
                     ],
                   );
                   //}

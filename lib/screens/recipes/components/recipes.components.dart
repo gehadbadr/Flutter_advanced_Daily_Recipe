@@ -38,27 +38,27 @@ class Recipes extends StatelessWidget {
     BuildContext context,
   ) {
     switch (viewType) {
-      case 0://display recipes in vertical card.
+      case 0: //display recipes in vertical card.
         return freshRecipes(context);
-      case 1://display recipes in horizontal card.
+      case 1: //display recipes in horizontal card.
         return recommendedRecipes(context);
-      case 2://display all Details of recipe in page.
+      case 2: //display all Details of recipe in page.
         return recipeDetailsWidget(context);
-      case 3://display recipes in horizontal card with close in=con instead of favorite icon in RecentlyViewedScreen.
-        return recommendedRecipes(context); 
-      case 4://display recipes in vertical card change img size.
+      case 3: //display recipes in horizontal card with close in=con instead of favorite icon in RecentlyViewedScreen.
+        return recommendedRecipes(context);
+      case 4: //display recipes in vertical card change img size.
         return freshRecipes(context);
-      case 5://display recipes in horizontal card without favorite icon in FilteredRecipesScreen.
-        return recommendedRecipes(context);  
-
+      case 5: //display recipes in horizontal card without favorite icon in FilteredRecipesScreen.
+        return recommendedRecipes(context);
     }
   }
+
 //display recipes in horizontal order
   Widget freshRecipes(BuildContext context) {
     return Container(
       alignment: Alignment.bottomLeft,
       margin: const EdgeInsets.only(top: 10, right: 30, bottom: 10, left: 10),
-      width: viewType == 0 ? 200:200,
+      width: viewType == 0 ? 200 : 300,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: ColorsApp.lightGrey,
@@ -74,6 +74,7 @@ class Recipes extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               favoriteIcon(),
@@ -88,7 +89,9 @@ class Recipes extends StatelessWidget {
                                 recipeDetails: recipeDetails)),
                       );
                     },
-                    child:viewType == 0 ? recipeImage(130, 130, context):recipeImage(90, 90, context)),
+                    child: viewType == 0
+                        ? recipeImage(130, 130, context)
+                        : recipeImage(context.screenWidth / 6, 90, context)),
               ),
             ],
           ),
@@ -100,6 +103,7 @@ class Recipes extends StatelessWidget {
       ),
     );
   }
+
 //display recipes in vertical order
   Widget recommendedRecipes(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -154,11 +158,16 @@ class Recipes extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(16.0),
-          child:viewType== 3?closeIcon():viewType== 5?Container(): favoriteIcon(),
+          child: viewType == 3
+              ? closeIcon()
+              : viewType == 5
+                  ? Container()
+                  : favoriteIcon(),
         )
       ],
     );
   }
+
 //display a recipe.
   Widget recipeDetailsWidget(BuildContext context) {
     return Container(
@@ -184,10 +193,10 @@ class Recipes extends StatelessWidget {
               ),
               SizedBox(
                 child: SizedBox(
-                  width: 20,
+                  width: 30,
                   child: Align(
                     alignment: Alignment.topRight,
-                    child:favoriteIcon(),
+                    child: favoriteIcon(),
                   ),
                 ),
               ),
@@ -220,7 +229,7 @@ class Recipes extends StatelessWidget {
               const SizedBox(
                 width: 5,
               ),
-              recipeImage(220, 170, context),
+              recipeImage(context.screenWidth/2 , 170, context),
               const SizedBox(
                 height: 5,
               )
@@ -232,68 +241,69 @@ class Recipes extends StatelessWidget {
   }
 
   Widget info(BuildContext context, int viewType) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        mealTypeWidget(12),
-        InkWell(
-            onTap: () {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      mealTypeWidget(12),
+      InkWell(
+          onTap: () {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        RecipeDetailsScreen(recipeDetails: recipeDetails)),
-              );
-              //  context.goNamed(AppRoutes.recipeDetailsScreen, queryParameters: {'recipeId':'$id'});
-            },
-            child: titleWidget(context, viewType)),
-        const SizedBox(
-          height: 5,
-        ),
-        viewType == 1
-            ? Row(children: [
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      RecipeDetailsScreen(recipeDetails: recipeDetails)),
+            );
+            //  context.goNamed(AppRoutes.recipeDetailsScreen, queryParameters: {'recipeId':'$id'});
+          },
+          child: titleWidget(context, viewType)),
+      const SizedBox(
+        height: 5,
+      ),
+      viewType == 1
+          ? Row(children: [
+              ratingStars(14),
+              const SizedBox(
+                width: 5,
+              ),
+              colories(10),
+            ])
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 ratingStars(14),
                 const SizedBox(
-                  width: 5,
+                  height: 5,
                 ),
                 colories(10),
-              ])
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ratingStars(14),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  colories(10),
-                ],
-              ),
-        const SizedBox(
-          height: 5,
-        ),
-         MediaQuery.of(context).size.width < 450 && viewType == 4?Column(
-          children: [
-            perpTime(15, 12),
-            const SizedBox(
-              width: 10,
+              ],
             ),
-            serve(15, 12),
-            const SizedBox(
-              height: 10,
-            ),
-          ],
-        ):Row(
-          children: [
-            perpTime(15, 12),
-            const SizedBox(
-              width: 10,
-            ),
-            serve(15, 12),
-            const SizedBox(
-              height: 10,
-            ),
-      ],)]
-    );
+      const SizedBox(
+        height: 5,
+      ),
+      MediaQuery.of(context).size.width < 450 && viewType == 4
+          ? Column(
+              children: [
+                perpTime(15, 12),
+                const SizedBox(
+                  width: 10,
+                ),
+                serve(15, 12),
+                const SizedBox(
+                  height: 10,
+                ),
+              ],
+            )
+          : Row(
+              children: [
+                perpTime(15, 12),
+                const SizedBox(
+                  width: 10,
+                ),
+                serve(15, 12),
+                const SizedBox(
+                  height: 10,
+                ),
+              ],
+            )
+    ]);
   }
 
   Widget mealTypeWidget(double fontSize) {
@@ -389,7 +399,6 @@ class Recipes extends StatelessWidget {
     );
   }
 
-
   Widget favoriteIcon() {
     Color favoriteColor;
     IconData favoriteIcon;
@@ -417,7 +426,7 @@ class Recipes extends StatelessWidget {
         ));
   }
 
-  recipeImage(width, height, BuildContext context) {
+  recipeImage(double width,double height, BuildContext context) {
     return SizedBox(
       height: height,
       width: width,

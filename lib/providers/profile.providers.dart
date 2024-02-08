@@ -88,7 +88,7 @@ class ProfileController extends ChangeNotifier {
   }
 
   void getFirstLetter(UserModel profileDetails) {
-    var name =profileDetails.name!;
+    var name = profileDetails.name!;
     firstLetter = name[0].toUpperCase();
   }
   // changeImage() async {
@@ -145,6 +145,7 @@ class ProfileController extends ChangeNotifier {
         //     let imageRef = storage.refFromURL(URL);
 // imageRef.delete()
         await store.set({'imageUrl': profileImgLink}, SetOptions(merge: true));
+        providerInit();
         await getUser();
 
         if (context.mounted) {
@@ -162,40 +163,40 @@ class ProfileController extends ChangeNotifier {
   Future<void> updateUser(BuildContext context) async {
     OverlayLoadingProgress.start();
 //    if (newPasswordController?.text == rePasswordController?.text) {
-        if (globalKey?.currentState?.validate() ?? false) {
-          globalKey?.currentState?.save();
-  //     if (profileDetails.password == oldPasswordController?.text) {
+    if (globalKey?.currentState?.validate() ?? false) {
+      globalKey?.currentState?.save();
+      //     if (profileDetails.password == oldPasswordController?.text) {
 
-          try {
-            changeAuthPassword(profileDetails.email!, profileDetails.password!,
-                newPasswordController?.text, context);
-            updateProfile(nameController?.text, newPasswordController?.text);
-            ShowToastMessage.showToast(
-                context, TextApp.saveData, 3000, ToastMessageStatus.success);
-            providerDispose();
-            await getUser();
-            OverlayLoadingProgress.stop();
-            if (context.mounted) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        ProfileScreen(profileDetails: profileDetails)),
-              );
-              //  Navigator.pushNamed(context, AppRoutes.profileScreen);
-            }
-          } catch (e) {
-            print(e.toString());
-            OverlayLoadingProgress.stop();
-          }
+      try {
+        changeAuthPassword(profileDetails.email!, profileDetails.password!,
+            newPasswordController?.text, context);
+        updateProfile(nameController?.text, newPasswordController?.text);
+        ShowToastMessage.showToast(
+            context, TextApp.saveData, 3000, ToastMessageStatus.success);
+        providerDispose();
+        await getUser();
+        OverlayLoadingProgress.stop();
+        if (context.mounted) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    ProfileScreen(profileDetails: profileDetails)),
+          );
+          //  Navigator.pushNamed(context, AppRoutes.profileScreen);
+        }
+      } catch (e) {
+        print(e.toString());
+        OverlayLoadingProgress.stop();
+      }
       //       } else {
       //   OverlayLoadingProgress.stop();
       //   ShowSnackbar.showSnackbar(context, TextApp.errorOldPassword);
       // }
-        } else {
-          OverlayLoadingProgress.stop();
-        }
-    
+    } else {
+      OverlayLoadingProgress.stop();
+    }
+
     // } else {
     //   OverlayLoadingProgress.stop();
     //   ShowSnackbar.showSnackbar(context, TextApp.errorRepassword);
@@ -222,8 +223,8 @@ class ProfileController extends ChangeNotifier {
         .reauthenticateWithCredential(credential)
         .then((value) {
       FirebaseAuth.instance.currentUser!.updatePassword(newPassword!);
-    }).catchError((error) {
-      VxToast.show(context, msg: error.toString());
+    }).catchError((e) {
+      print(e.toString());
     });
     //   await store.set({'name': name,'password': password,'imageUrl': imgUrl},SetOptions(merge: true));
   }
