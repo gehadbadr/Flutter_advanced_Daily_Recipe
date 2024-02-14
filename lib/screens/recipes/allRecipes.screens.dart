@@ -16,14 +16,11 @@ class AllRecipesScreen extends StatefulWidget {
 }
 
 class _AllRecipesScreenState extends State<AllRecipesScreen> {
-
   @override
   void initState() {
     Provider.of<RecipeController>(context, listen: false).getAllRecipes();
     super.initState();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -33,155 +30,48 @@ class _AllRecipesScreenState extends State<AllRecipesScreen> {
           preferredSize: const Size.fromHeight(60.0),
           child: CustomAppBar(
               leadingIcon: Icons.arrow_back,
-              onPressLeading: ()async {
-                  await Provider.of<ProfileController>(context, listen: false)
-                      .getUser();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => HomepageScreen(
-                            profileDetails: Provider.of<ProfileController>(
-                                    context,
-                                    listen: false)
-                                .profileDetails)),
-                  );
-              }
-              ,actionIcon: Icons.notification_add_outlined,
+              onPressLeading: () async {
+                await Provider.of<ProfileController>(context, listen: false)
+                    .getUser();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => HomepageScreen(
+                          profileDetails: Provider.of<ProfileController>(
+                                  context,
+                                  listen: false)
+                              .profileDetails)),
+                );
+              },
+              actionIcon: Icons.language,
               onPressAction: () {})),
-      body:   Padding(
-        padding: const EdgeInsets.only(top:20.0,left:20.0,bottom:20.0),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 20.0, left: 20.0, bottom: 20.0),
         child: Consumer<RecipeController>(
-              builder: (ctx, recipeController, _) =>
-                  recipeController.recipesList == null
-                      ? const CircularProgressIndicator()
-                      : (recipeController.recipesList?.isEmpty ?? false)
-                          ? const Text('No Data Found')
-                          : FlexibleGridView(
-                              axisCount: MediaQuery.of(context).size.width < 450?GridLayoutEnum.twoElementsInRow:GridLayoutEnum.threeElementsInRow,
-                              crossAxisSpacing:1,
-                              mainAxisSpacing: 1,
-                               children: recipeController.recipesList!
-                                  .map((e) =>Recipes(
-                                              recipeDetails: e,
-                                              viewType: 4,
-                                              isFavorite: recipeController
-                                                  .isFavoriteById(e),
-                                              onPressAction: () {
-                                                recipeController
-                                                    .addFavoriteMethodById(
-                                                        e,
-                                                        context,
-                                                        AppRoutes.homepageScreen);
-                                              }))
-                                  .toList(),
-                            /*  children: recipeController.recipesList!
-                                  .map((e) =>  Recipes(
-                                              /*  id: recipeController
-                                                  .recipesList![index].docId,
-                                              title: recipeController
-                                                  .recipesList![index].title!,
-                                              image: recipeController
-                                                  .recipesList![index].image,
-                                              mealType: recipeController
-                                                  .recipesList![index].mealType,
-                                              rating: recipeController
-                                                  .recipesList![index].rating,
-                                              calerios: recipeController
-                                                  .recipesList![index].calerios,
-                                              serving: recipeController
-                                                  .recipesList![index].serving,
-                                              prepTime: recipeController
-                                                  .recipesList![index].prepTime,*/
-                                              recipeDetails: e,
-                                              viewType: 0,
-                                              isFavorite: recipeController
-                                                  .isFavoriteById(e),
-                                              onPressAction: () {
-                                                recipeController
-                                                    .addFavoriteMethodById(
-                                                        e,
-                                                        context,
-                                                        AppRoutes.homepageScreen);
-                                              }))
-                                  .toList(),*/
-                            )),
+            builder: (ctx, recipeController, _) => recipeController
+                        .recipesList ==
+                    null
+                ? const CircularProgressIndicator()
+                : (recipeController.recipesList?.isEmpty ?? false)
+                    ? const Text('No Data Found')
+                    : FlexibleGridView(
+                        axisCount: MediaQuery.of(context).size.width < 450
+                            ? GridLayoutEnum.twoElementsInRow
+                            : GridLayoutEnum.threeElementsInRow,
+                        crossAxisSpacing: 1,
+                        mainAxisSpacing: 1,
+                        children: recipeController.recipesList!
+                            .map((e) => Recipes(
+                                recipeDetails: e,
+                                viewType: 4,
+                                isFavorite: recipeController.isFavoriteById(e),
+                                onPressAction: () {
+                                  recipeController.addFavoriteMethodById(
+                                      e, context, AppRoutes.homepageScreen);
+                                }))
+                            .toList(),
+                      )),
       ),
-            
-    //  SafeArea(
-    //     child: Padding(
-    //       padding: const EdgeInsets.all(20.0),
-    //       child: SingleChildScrollView(
-    //         physics: const BouncingScrollPhysics(),
-    //         child: Column(
-    //           children: [
-    //             const Row(
-    //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //               children: [
-    //                 Expanded(
-    //                   child: Text(
-    //                     TextApp.recipes,
-    //                     style: TextStyle(
-    //                         fontWeight: FontWeight.w500, fontSize: 25),
-    //                   ),
-    //                 ),
-            
-    //               ],
-    //             ),
-    //             const SizedBox(
-    //               height: 10,
-    //             ),
-    //             const SizedBox(
-    //               height: 10,
-    //             ),
-    //          Consumer<RecipeController>(
-    //         builder: (ctx, recipeController, _) =>
-    //             recipeController.recipesList == null
-    //                 ? const CircularProgressIndicator()
-    //                 : (recipeController.recipesList?.isEmpty ?? false)
-    //                     ? const Text('No Data Found')
-    //                     : FlexibleGridView(
-
-    //                         axisCount: GridLayoutEnum.twoElementsInRow,
-    //                         crossAxisSpacing: 8,
-    //                         mainAxisSpacing: 8,
-    //                          children: recipeController.recipesList!
-    //                             .map((e) => Text(e.title!))
-    //                             .toList(),
-    //                       /*  children: recipeController.recipesList!
-    //                             .map((e) =>  Recipes(
-    //                                         /*  id: recipeController
-    //                                             .recipesList![index].docId,
-    //                                         title: recipeController
-    //                                             .recipesList![index].title!,
-    //                                         image: recipeController
-    //                                             .recipesList![index].image,
-    //                                         mealType: recipeController
-    //                                             .recipesList![index].mealType,
-    //                                         rating: recipeController
-    //                                             .recipesList![index].rating,
-    //                                         calerios: recipeController
-    //                                             .recipesList![index].calerios,
-    //                                         serving: recipeController
-    //                                             .recipesList![index].serving,
-    //                                         prepTime: recipeController
-    //                                             .recipesList![index].prepTime,*/
-    //                                         recipeDetails: e,
-    //                                         viewType: 0,
-    //                                         isFavorite: recipeController
-    //                                             .isFavoriteById(e),
-    //                                         onPressAction: () {
-    //                                           recipeController
-    //                                               .addFavoriteMethodById(
-    //                                                   e,
-    //                                                   context,
-    //                                                   AppRoutes.homepageScreen);
-    //                                         }))
-    //                             .toList(),*/
-    //                       ))],
-    //         ),
-    //       ),
-    //     ),
-    //   ),
     );
   }
 }

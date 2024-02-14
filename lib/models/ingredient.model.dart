@@ -1,7 +1,7 @@
 class Ingredient {
   String? docId;
   String? name;
-  String? imageUrl;
+//  String? imageUrl;
   List<String>? users_ids;
 
   Ingredient();
@@ -9,7 +9,7 @@ class Ingredient {
   Ingredient.fromJson(Map<String, dynamic> data, [String? id]) {
     docId = id;
     name = data['name'];
-    imageUrl = data['imageUrl'];
+    //imageUrl = data['imageUrl'];
     users_ids = data['users_ids'] != null
         ? List<String>.from(data['users_ids'].map((e) => e.toString()))
         : null;
@@ -18,7 +18,7 @@ class Ingredient {
   Map<String, dynamic> toJson() {
     return {
       "name": name,
-      "imageUrl": imageUrl,
+    //  "imageUrl": imageUrl,
       "users_ids": users_ids,
     };
   }

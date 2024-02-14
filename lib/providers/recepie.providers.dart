@@ -7,22 +7,22 @@ import 'package:daily_recipe/reuseable_function/toast.function.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:core';
-
+import 'package:intl/intl.dart';
 import 'package:overlay_kit/overlay_kit.dart';
 
 class RecipeController extends ChangeNotifier {
-  List<Recipe> _recommendedList = [];
-  List<Recipe> _recipesList = [];
-  List<Recipe> _favoriteList = [];
-  List<Recipe> _viewedList = [];
-  List<Recipe> _foundRecipes = [];
+  List<Recipe>? _recommendedList;
+  List<Recipe>? _recipesList;
+  List<Recipe>? _favoriteList;
+  List<Recipe>? _viewedList;
+  List<Recipe>? _foundRecipes;
   List<Recipe> filteredRecipes = [];
   List<Ingredient> _ingredientsUserList = [];
   Recipe _recipeDetails = Recipe();
   double servingValue = 0;
   double prepTimeValue = 0;
 //  double caloriesValue = 0;
-RangeValues currentRangeValues = const RangeValues(25, 300);
+  RangeValues currentRangeValues = const RangeValues(25, 300);
 //  RangeValues caloriesStartval = 20 as RangeValues, caloriesEndval = 400 as RangeValues;
 
   List<Recipe>? get recipesList => _recipesList;
@@ -32,34 +32,33 @@ RangeValues currentRangeValues = const RangeValues(25, 300);
   List<Recipe>? get foundRecipes => _foundRecipes;
   List<Ingredient>? get ingredientsUserList => _ingredientsUserList;
   Recipe get recipeDetails => _recipeDetails;
-   var selectedUserValue = {};
+  var selectedUserValue = {};
 
   bool? isAdd;
 
+  bool isArabic() {
+    return Intl.getCurrentLocale() == 'ar';
+  }
+
   void initFavorite() async {
-  await  getFavoriteRecipes();
+    await getFavoriteRecipes();
 //    _foundRecipes = _favoriteList;
   }
 
-  void disposeFoundRecipes() async {
+  void disposeFoundRecipes()  {
     _foundRecipes = [];
   }
 
   void disposeFilter() async {
-   selectedUserValue = {};
+    selectedUserValue = {};
 
     servingValue = 0;
     prepTimeValue = 0;
-    //  caloriesValue = 0;
-    // caloriesStartval = 20;
-    // caloriesEndval = 500;
+  
     currentRangeValues = const RangeValues(25, 300);
-    
   }
 
-  void disposeRecentlyViewed() async {
-    _foundRecipes = [];
-  }
+
 
   void updateServingValue(value) {
     servingValue = value;
@@ -70,112 +69,23 @@ RangeValues currentRangeValues = const RangeValues(25, 300);
     prepTimeValue = value;
     notifyListeners();
   }
-
-  // void updatecaloriesStartval(value) {
-  //   caloriesStartval = value;
-  //   notifyListeners();
-  // }
-
-  // void updatecaloriesEndval(value) {
-  //   caloriesEndval = value;
-  //   notifyListeners();
-  // }
+  
 
   void updatecaloriesValue(value) {
-    currentRangeValues  = value;
+    currentRangeValues = value;
     notifyListeners();
   }
 
-  // void updateServingValue() async {
-  //   _foundRecipes = [];
-  // }
-
-  // Recipe? openedRecipe = Recipe();
-  // var selectedUserValue = {
-  //   'mealType': 'dinner',
-  //   'serving': 4,
-  //   'prepTime': 45,
-  //   'caleriosStart': 10,
-  //   'caleriosEnd': 500,
-  // };
-  //var selectedUserValue = {"mealType": 'dinner', "serving": 4};
-
-//  var value = {"type": "breakfast", "serving": 4, "total_time": 20};
-
+  
   Future<void> getFilteredResult() async {
-    var ref = FirebaseFirestore.instance.collection('recipes');
-    // print(selectedUserValue["mealType"]);
-    // for (var entry in selectedUserValue.entries) {
-    //   print(selectedUserValue.entries);
-    //   print(entry.key);
-    //   print(entry.value);
-    //   ref.where(entry.key, isEqualTo: entry.value).get();
-    // }
+    var ref;
+    if (isArabic()) {
+      ref = FirebaseFirestore.instance.collection('recipes_ar');
+    } else {
+      ref = FirebaseFirestore.instance.collection('recipes');
+    }
+  
     try {
-      //  var result = await ref
-      //       .where(Filter.and(
-      //           Filter('mealType',
-      //               isEqualTo: 'dinner' /* selectedUserValue['mealType']*/),
-      //           Filter('serving',
-      //               isGreaterThanOrEqualTo: selectedUserValue['servingStart']),
-      //         // Filter('serving',
-      //         //       isLessThanOrEqualTo: selectedUserValue['servingEnd']),
-      //           /*,isLessThanOrEqualTo: selectedUserValue["servingEnd"]*/ /*,[*/
-      //          Filter('prepTime',
-      //               isGreaterThanOrEqualTo: selectedUserValue['prepTimeStart']),
-      // Filter('prepTime',
-      //     isLessThanOrEqualTo: selectedUserValue["prepTimeEnd"]),*/
-      // Filter('calerios',
-      //     isGreaterThanOrEqualTo: selectedUserValue['caleriosStart']),
-      // Filter('calerios',
-      //     isLessThanOrEqualTo: selectedUserValue["caleriosEnd"])
-
-      /*  ] /*as Filter?*/
-              /*,
-      Filter('prepTime',
-          isGreaterThanOrEqualTo: selectedUserValue['prepTimeStart'],isLessThanOrEqualTo: selectedUserValue["prepTimeEnd"]),
-      Filter('calerios',
-          isGreaterThanOrEqualTo: selectedUserValue['caleriosStart']),
-      Filter('calerios',
-          isLessThanOrEqualTo: selectedUserValue["caleriosEnd"]),*/
-     ))*/
-      //     ))
-      // .get();
-
-      /*    var query =
-          ref.where('mealType', isEqualTo: selectedUserValue['mealType']);
-      var query1 = query.where('serving',
-          isGreaterThanOrEqualTo: selectedUserValue['servingStart']); 
-     var query2 = query1.where('serving',
-          isLessThanOrEqualTo: selectedUserValue["servingEnd"]);
-   var query3 = query2.where('prepTime',
-          isGreaterThanOrEqualTo: selectedUserValue['prepTimeStart']); */ /*
-    var query4 = query3.where('prepTime',
-          isLessThanOrEqualTo: selectedUserValue["prepTimeEnd"]);*/ /*
-      var reff3 = reff2.where('calerios',
-          isGreaterThanOrEqualTo: selectedUserValue['caleriosEnd'],
-          isLessThanOrEqualTo: selectedUserValue["caleriosEnd"]);
-      var reff4 = reff3.where('serving',
-          isGreaterThanOrEqualTo: selectedUserValue["servingStart"],
-          isLessThanOrEqualTo: selectedUserValue["servingEnd"]);
-      var reff5 =
-          reff4.where('prepTime', isEqualTo: selectedUserValue["prepTime"]);
-
-      /*    ref
-          .where('mealType', isEqualTo: selectedUserValue['mealType'])
-          .where('serving',
-              isGreaterThanOrEqualTo: selectedUserValue['servingEnd'],
-              isLessThanOrEqualTo: selectedUserValue["servingEnd"])
-          .where('prepTime',
-              isGreaterThanOrEqualTo: selectedUserValue['prepTimeEnd'],
-              isLessThanOrEqualTo: selectedUserValue["prepTimeEnd"])
-          .where('calerios',
-              isGreaterThanOrEqualTo: selectedUserValue['caleriosEnd'],
-              isLessThanOrEqualTo: selectedUserValue["caleriosEnd"])
-          .where('serving',
-              isGreaterThanOrEqualTo: selectedUserValue["servingStart"],
-              isLessThanOrEqualTo: selectedUserValue["servingEnd"])
-          .where('prepTime', isEqualTo: selectedUserValue["prepTime"]);*/*/
       var result = await ref
           .where('mealType', isEqualTo: selectedUserValue['mealType'])
           .where('serving', isEqualTo: selectedUserValue['serving'])
@@ -185,7 +95,7 @@ RangeValues currentRangeValues = const RangeValues(25, 300);
               isLessThanOrEqualTo: selectedUserValue["caleriosEndval"])
           //  .where('calerios', isEqualTo: selectedUserValue['calories'])
           .get();
-    //  print(result.docs);
+      //  print(result.docs);
 
       if (result.docs.isNotEmpty) {
         filteredRecipes = List<Recipe>.from(
@@ -202,15 +112,24 @@ RangeValues currentRangeValues = const RangeValues(25, 300);
     //  selectedUserValue.update(key, value);
     selectedUserValue.update(key, (v) => value, ifAbsent: () => value);
     notifyListeners();
-  //  print(selectedUserValue.toString());
+    //  print(selectedUserValue.toString());
   }
 
   Future<void> getOpenedRecipe(recipeId) async {
     try {
-      var result = await FirebaseFirestore.instance
-          .collection('recipes')
-          .doc(recipeId)
-          .get();
+      var result;
+      if (isArabic()) {
+        result = await FirebaseFirestore.instance
+            .collection('recipes_ar')
+            .doc(recipeId)
+            .get();
+      } else {
+        result = await FirebaseFirestore.instance
+            .collection('recipes')
+            .doc(recipeId)
+            .get();
+      }
+
       if (result.data() != null) {
         _recipeDetails = Recipe.fromJson(result.data()!, result.id);
       } else {
@@ -224,8 +143,19 @@ RangeValues currentRangeValues = const RangeValues(25, 300);
 
   void getAllRecipes() async {
     try {
-      var result =
-          await FirebaseFirestore.instance.collection('recipes').limit(6).get();
+      var result;
+      if (isArabic()) {
+        result = await FirebaseFirestore.instance
+            .collection('recipes_ar')
+            .limit(6)
+            .get();
+      } else {
+        result = await FirebaseFirestore.instance
+            .collection('recipes')
+            .limit(6)
+            .get();
+      }
+
       if (result.docs.isNotEmpty) {
         _recipesList = List<Recipe>.from(
             result.docs.map((doc) => Recipe.fromJson(doc.data(), doc.id)));
@@ -242,16 +172,41 @@ RangeValues currentRangeValues = const RangeValues(25, 300);
 
   void getRecipes() async {
     try {
-      var result = await FirebaseFirestore.instance
-          .collection('recipes')
-          .where('isFresh', isEqualTo: true)
-          .limit(6)
-          .get();
-      var recommendedResult = await FirebaseFirestore.instance
-          .collection('recipes')
-          .where('recommended', isEqualTo: true)
-          .limit(9)
-          .get();
+      // var result = await FirebaseFirestore.instance
+      //     .collection('recipes')
+      //     .where('isFresh', isEqualTo: true)
+      //     .limit(6)
+      //     .get();
+      // var recommendedResult = await FirebaseFirestore.instance
+      //     .collection('recipes')
+      //     .where('recommended', isEqualTo: true)
+      //     .limit(9)
+      //     .get();
+      var result;
+      var recommendedResult;
+      if (isArabic()) {
+        result = await FirebaseFirestore.instance
+            .collection('recipes_ar')
+            .where('isFresh', isEqualTo: true)
+            .limit(6)
+            .get();
+        recommendedResult = await FirebaseFirestore.instance
+            .collection('recipes_ar')
+            .where('recommended', isEqualTo: true)
+            .limit(9)
+            .get();
+      } else {
+        result = await FirebaseFirestore.instance
+            .collection('recipes')
+            .where('isFresh', isEqualTo: true)
+            .limit(6)
+            .get();
+        recommendedResult = await FirebaseFirestore.instance
+            .collection('recipes')
+            .where('recommended', isEqualTo: true)
+            .limit(9)
+            .get();
+      }
       if (result.docs.isNotEmpty) {
         _recipesList = List<Recipe>.from(
             result.docs.map((doc) => Recipe.fromJson(doc.data(), doc.id)));
@@ -274,11 +229,21 @@ RangeValues currentRangeValues = const RangeValues(25, 300);
 
   Future<void> getFavoriteRecipes() async {
     try {
-      var result = await FirebaseFirestore.instance
-          .collection('recipes')
-          .where('fans_ids',
-              arrayContains: FirebaseAuth.instance.currentUser?.uid)
-          .get();
+      var result;
+      if (isArabic()) {
+        result = await FirebaseFirestore.instance
+            .collection('recipes_ar')
+            .where('fans_ids',
+                arrayContains: FirebaseAuth.instance.currentUser?.uid)
+            .get();
+      } else {
+        result = await FirebaseFirestore.instance
+            .collection('recipes')
+            .where('fans_ids',
+                arrayContains: FirebaseAuth.instance.currentUser?.uid)
+            .get();
+      }
+    
       if (result.docs.isNotEmpty) {
         _favoriteList = List<Recipe>.from(
             result.docs.map((doc) => Recipe.fromJson(doc.data(), doc.id)));
@@ -300,11 +265,25 @@ RangeValues currentRangeValues = const RangeValues(25, 300);
 
   Future<void> getViewedRecipes() async {
     try {
-      var result = await FirebaseFirestore.instance
-          .collection('recipes')
-          .where('viewers_ids',
-              arrayContains: FirebaseAuth.instance.currentUser?.uid)
-          .get();
+      var result;
+      if (isArabic()) {
+        result = await FirebaseFirestore.instance
+            .collection('recipes_ar')
+            .where('viewers_ids',
+                arrayContains: FirebaseAuth.instance.currentUser?.uid)
+            .get();
+      } else {
+        result = await FirebaseFirestore.instance
+            .collection('recipes')
+            .where('viewers_ids',
+                arrayContains: FirebaseAuth.instance.currentUser?.uid)
+            .get();
+      }
+      // var result = await FirebaseFirestore.instance
+      //     .collection('recipes')
+      //     .where('viewers_ids',
+      //         arrayContains: FirebaseAuth.instance.currentUser?.uid)
+      //     .get();
       if (result.docs.isNotEmpty) {
         _viewedList = List<Recipe>.from(
             result.docs.map((doc) => Recipe.fromJson(doc.data(), doc.id)));
@@ -324,36 +303,31 @@ RangeValues currentRangeValues = const RangeValues(25, 300);
     }
   }
 
-  // Future<void> getRecipeById(id) async {
-  //   try {
-  //     var result = await FirebaseFirestore.instance
-  //         .collection('recipes')
-  //         .where('id', isEqualTo: id.toString())
-  //         .get();
-  //     if (result.docs.isNotEmpty) {
-  //       _recipeDetails = List<Recipe>.from(
-  //           result.docs.map((doc) => Recipe.fromJson(doc.data(), doc.id)));
-  //     } else {
-  //       _recipeDetails = [];
-  //     }
-  //     notifyListeners();
-  //   } catch (e) {
-  //     _recipesList = [];
-  //     notifyListeners();
-  //     print(e.toString());
-  //   }
-  // }
-
+  
   Future<void> addViewedRecipe(String recipeId, isAdd) async {
     try {
       if (!isAdd) {
-        await FirebaseFirestore.instance
-            .collection('recipes')
-            .doc(recipeId)
-            .update({
-          "viewers_ids":
-              FieldValue.arrayUnion([FirebaseAuth.instance.currentUser?.uid])
-        });
+          await FirebaseFirestore.instance
+              .collection('recipes_ar')
+              .doc(recipeId)
+              .update({
+            "viewers_ids":
+                FieldValue.arrayUnion([FirebaseAuth.instance.currentUser?.uid])
+          });
+          await FirebaseFirestore.instance
+              .collection('recipes')
+              .doc(recipeId)
+              .update({
+            "viewers_ids":
+                FieldValue.arrayUnion([FirebaseAuth.instance.currentUser?.uid])
+          });
+        // await FirebaseFirestore.instance
+        //     .collection('recipes')
+        //     .doc(recipeId)
+        //     .update({
+        //   "viewers_ids":
+        //       FieldValue.arrayUnion([FirebaseAuth.instance.currentUser?.uid])
+        // });
       } else {
         return;
       }
@@ -371,17 +345,30 @@ RangeValues currentRangeValues = const RangeValues(25, 300);
   Future<void> removeViewedRecipe(String recipeId, BuildContext context) async {
     try {
       OverlayLoadingProgress.start();
-
-      await FirebaseFirestore.instance
-          .collection('recipes')
-          .doc(recipeId)
-          .update({
-        "viewers_ids":
-            FieldValue.arrayRemove([FirebaseAuth.instance.currentUser?.uid])
-      });
+        await FirebaseFirestore.instance
+            .collection('recipes_ar')
+            .doc(recipeId)
+            .update({
+          "viewers_ids":
+              FieldValue.arrayRemove([FirebaseAuth.instance.currentUser?.uid])
+        });
+        await FirebaseFirestore.instance
+            .collection('recipes')
+            .doc(recipeId)
+            .update({
+          "viewers_ids":
+              FieldValue.arrayRemove([FirebaseAuth.instance.currentUser?.uid])
+        });
+      // await FirebaseFirestore.instance
+      //     .collection('recipes')
+      //     .doc(recipeId)
+      //     .update({
+      //   "viewers_ids":
+      //       FieldValue.arrayRemove([FirebaseAuth.instance.currentUser?.uid])
+      // });
       if (context.mounted) {
-        ShowToastMessage.showToast(context, TextApp.removeViewedrecipe, 3000,
-            ToastMessageStatus.success);
+        ShowToastMessage.showToast(context, S.of(context).removeViewedrecipe,
+            3000, ToastMessageStatus.success);
       }
       getViewedRecipes();
 
@@ -393,11 +380,7 @@ RangeValues currentRangeValues = const RangeValues(25, 300);
     }
   }
 
-  // bool? isViewedRecipeById(Recipe recipeDetails) {
-  //   isAdd =
-  //       recipeDetails.viewerId?.contains(FirebaseAuth.instance.currentUser?.uid);
-  //   return isAdd;
-  // }
+
 
   // check isfavorite from recipeDetailsScreen
   void addFavoriteMethodById(
@@ -419,29 +402,58 @@ RangeValues currentRangeValues = const RangeValues(25, 300);
     try {
       OverlayLoadingProgress.start();
       if (!isAdd) {
-        await FirebaseFirestore.instance
-            .collection('recipes')
-            .doc(recipeId)
-            .update({
-          "fans_ids":
-              FieldValue.arrayUnion([FirebaseAuth.instance.currentUser?.uid])
-        });
+          await FirebaseFirestore.instance
+              .collection('recipes_ar')
+              .doc(recipeId)
+              .update({
+            "fans_ids":
+                FieldValue.arrayUnion([FirebaseAuth.instance.currentUser?.uid])
+          });
+          await FirebaseFirestore.instance
+              .collection('recipes')
+              .doc(recipeId)
+              .update({
+            "fans_ids":
+                FieldValue.arrayUnion([FirebaseAuth.instance.currentUser?.uid])
+          });
+        
+        // await FirebaseFirestore.instance
+        //     .collection('recipes')
+        //     .doc(recipeId)
+        //     .update({
+        //   "fans_ids":
+        //       FieldValue.arrayUnion([FirebaseAuth.instance.currentUser?.uid])
+        // });
         if (context.mounted) {
-          ShowToastMessage.showToast(
-              context, TextApp.addFavorite, 3000, ToastMessageStatus.success);
+          ShowToastMessage.showToast(context, S.of(context).addFavorite, 3000,
+              ToastMessageStatus.success);
         }
         notifyListeners();
       } else {
-        await FirebaseFirestore.instance
-            .collection('recipes')
-            .doc(recipeId)
-            .update({
-          "fans_ids":
-              FieldValue.arrayRemove([FirebaseAuth.instance.currentUser?.uid])
-        });
+          await FirebaseFirestore.instance
+              .collection('recipes_ar')
+              .doc(recipeId)
+              .update({
+            "fans_ids":
+                FieldValue.arrayRemove([FirebaseAuth.instance.currentUser?.uid])
+          });
+          await FirebaseFirestore.instance
+              .collection('recipes')
+              .doc(recipeId)
+              .update({
+            "fans_ids":
+                FieldValue.arrayRemove([FirebaseAuth.instance.currentUser?.uid])
+          });
+        // await FirebaseFirestore.instance
+        //     .collection('recipes')
+        //     .doc(recipeId)
+        //     .update({
+        //   "fans_ids":
+        //       FieldValue.arrayRemove([FirebaseAuth.instance.currentUser?.uid])
+        // });
         if (context.mounted) {
-          ShowToastMessage.showToast(context, TextApp.removeFavorite, 3000,
-              ToastMessageStatus.success);
+          ShowToastMessage.showToast(context, S.of(context).removeFavorite,
+              3000, ToastMessageStatus.success);
         }
         notifyListeners();
       }
@@ -459,32 +471,33 @@ RangeValues currentRangeValues = const RangeValues(25, 300);
       print(e.toString());
       if (context.mounted) {
         ShowToastMessage.showToast(
-            context, TextApp.error, 3000, ToastMessageStatus.failed);
+            context, S.of(context).error, 3000, ToastMessageStatus.failed);
       }
     }
   }
-/*
-// check isfavorite from lists of homePageScreen,ViewedRecipesScreen,favoritesScreen and recentlyViewedScreen
-  void addFavoriteMethod(int index, BuildContext context, String screen) {
-    isAdd = isFavorite(index);
-    addFavoriteToUser(_recipesList[index].docId!, isAdd, context, screen);
-  }
-//to call favorite value in ui to toggle favorite icon
-  bool? isFavorite(int index) {
-    isAdd = _recipesList[index]
-        .fanId
-        ?.contains(FirebaseAuth.instance.currentUser?.uid);
-    return isAdd;
-  }
-*/
+
 
   Future<void> getUserIngredients() async {
     try {
-      var result = await FirebaseFirestore.instance
-          .collection('ingredients')
-          .where('users_ids',
-              arrayContains: FirebaseAuth.instance.currentUser!.uid)
-          .get();
+      var result;
+      if (isArabic()) {
+        result = await FirebaseFirestore.instance
+            .collection('ingredients_ar')
+            .where('users_ids',
+                arrayContains: FirebaseAuth.instance.currentUser!.uid)
+            .get();
+      } else {
+        result = await FirebaseFirestore.instance
+            .collection('ingredients')
+            .where('users_ids',
+                arrayContains: FirebaseAuth.instance.currentUser!.uid)
+            .get();
+      }
+      // var result = await FirebaseFirestore.instance
+      //     .collection('ingredients')
+      //     .where('users_ids',
+      //         arrayContains: FirebaseAuth.instance.currentUser!.uid)
+      //     .get();
       if (result.docs.isNotEmpty) {
         _ingredientsUserList = List<Ingredient>.from(
             result.docs.map((doc) => Ingredient.fromJson(doc.data(), doc.id)));
@@ -528,37 +541,35 @@ RangeValues currentRangeValues = const RangeValues(25, 300);
     }
   }
 
-  void runFilter(String? value) {
+  void runFilter(String? value, String? screen) {
     List<Recipe> results = [];
-
-    if (value!.isEmpty) {
-      results = _favoriteList;
+    if (screen == AppRoutes.favoriteRecipesScreen) {
+        if (value!.isEmpty) {
+        results = _favoriteList!;
+      } else {
+        results = _favoriteList!
+            .where((e) => e.title!.toLowerCase().contains(value.toLowerCase()))
+            .toList();
+        _foundRecipes!.forEach((e) {
+          //  print(e.title);
+        });
+      }
     } else {
-      results = _favoriteList
-          .where((e) => e.title!.toLowerCase().contains(value.toLowerCase()))
-          .toList();
-      _foundRecipes.forEach((e) {
-      //  print(e.title);
-      });
+      if (value!.isEmpty) {
+        results = _viewedList!;
+      } else {
+        results = _viewedList!
+            .where((e) => e.title!.toLowerCase().contains(value.toLowerCase()))
+            .toList();
+        _foundRecipes!.forEach((e) {
+          //  print(e.title);
+        });
+      }
     }
 
     _foundRecipes = results;
     notifyListeners();
   }
 
-  // void addFavoriteMethodById(
-  //     List recipeDetailList, BuildContext context, String screen) {
-  //   isAdd = recipeDetailList[0]
-  //       .fanId
-  //       ?.contains(FirebaseAuth.instance.currentUser?.uid);
-  //   addFavoriteToUser(recipeDetailList[0].docId!, isAdd, context, screen);
-  // }
 
-  // bool? isFavoriteById(List recipeDetailList) {
-  //   isAdd = recipeDetailList[0]
-  //       .fanId
-  //       ?.contains(FirebaseAuth.instance.currentUser?.uid);
-  //   //print(isAdd);
-  //   return isAdd;
-  // }
 }

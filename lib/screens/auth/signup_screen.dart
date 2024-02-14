@@ -51,9 +51,9 @@ class _SignupScreenState extends State<SignupScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const Text(
-                          TextApp.signup,
-                          style: TextStyle(
+                         Text(
+                          S.of(context).signup,
+                          style: const TextStyle(
                               color: ColorsApp.whiteColor,
                               fontSize: 18,
                               fontWeight: FontWeight.w700),
@@ -71,8 +71,8 @@ class _SignupScreenState extends State<SignupScreen> {
                               child: Column(
                                 children: [
                                   CustomTextField(
-                                    title: TextApp.name,
-                                    hint: TextApp.nameHint,
+                                    title: S.of(context).name,
+                                    hint: S.of(context).nameHint,
                                     controller: authController.nameController,
                                     icon: Icons.person,
                                     isPass: false,
@@ -82,8 +82,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                     },
                                   ),
                                   CustomTextField(
-                                    title: TextApp.email,
-                                    hint: TextApp.emailHint,
+                                    title: S.of(context).email,
+                                    hint: S.of(context).emailHint,
                                     controller: authController.emailController,
                                     icon: Icons.email,
                                     isPass: false,
@@ -93,8 +93,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                     },
                                   ),
                                   CustomTextField(
-                                      title: TextApp.password,
-                                      hint: TextApp.passwordHint,
+                                      title: S.of(context).password,
+                                      hint: S.of(context).passwordHint,
                                       controller:
                                           authController.passwordController,
                                       icon: Icons.lock,
@@ -106,8 +106,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                       passwordIcon: authController.isPassword,
                                       ),
                                   CustomTextField(
-                                    title: TextApp.repassword,
-                                    hint: TextApp.repasswordHint,
+                                    title: S.of(context).repassword,
+                                    hint: S.of(context).repasswordHint,
                                     controller:
                                         authController.repasswordController,
                                     icon: Icons.lock,
@@ -126,7 +126,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                       child: CustomButton(
                                         bgColor: ColorsApp.PKColor,
                                         textColor: ColorsApp.whiteColor,
-                                        title: TextApp.signup,
+                                        title: S.of(context).signup,
                                         onPress: () async {
                                           authController.signUp(context);
                                         },
@@ -143,15 +143,15 @@ class _SignupScreenState extends State<SignupScreen> {
                                   context, AppRoutes.loginScreen);
                             },
                             child: RichText(
-                              text: const TextSpan(children: [
+                              text:  TextSpan(children: [
                                 TextSpan(
-                                    text: TextApp.alreadyHaveAccount,
-                                    style: TextStyle(
+                                    text: S.of(context).alreadyHaveAccount,
+                                    style: const TextStyle(
                                         fontWeight: FontWeight.w700,
                                         color: ColorsApp.fontGrey,
                                         fontSize: 16)),
                                 TextSpan(
-                                    text: TextApp.login,
+                                    text: S.of(context).login,
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         color: ColorsApp.PKColor,

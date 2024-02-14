@@ -21,7 +21,7 @@ class _IngredientsScreenState extends State<IngredientsScreen> {
     super.initState();
   }
 
-    void init() async {
+    void init()  {
     Provider.of<IngredientController>(context, listen: false).getIngredients();
   }
 
@@ -35,6 +35,8 @@ return Scaffold(
           child: CustomAppBar(
               leadingIcon: Icons.arrow_back,
               onPressLeading: ()async {
+                  await Provider.of<ProfileController>(context, listen: false)
+                    .getUser();
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -45,32 +47,36 @@ return Scaffold(
                                 .profileDetails)),
                   );          
               },
-              actionIcon: Icons.notification_add_outlined,
+              actionIcon: Icons.language,
               onPressAction: () {})),
-      body:  Consumer<IngredientController>(
-                  builder: (ctx, ingredientController, _) =>
-                      ingredientController.ingredientsList == null
-                          ? const CircularProgressIndicator()
-                          : (ingredientController.ingredientsList?.isEmpty ?? false)
-                              ? const Text('No Data Found')
-                              : ListView.builder(
-                                  itemCount: ingredientController.ingredientsList!.length,
-                                  itemBuilder: (ctx, index) => ListTile(
-                                        leading: Checkbox(
-                                            value: ingredientController
-                                                .ingredientsList![index].users_ids
-                                                ?.contains(FirebaseAuth
-                                                    .instance.currentUser?.uid),
-                                            onChanged: (value) {
-                                              ingredientController.addIngredientToUser(
-                                                  ingredientController
-                                                      .ingredientsList![index].docId!,
-                                                  value ?? false,context);
-                                            }),
-                                        title: Text(ingredientController
-                                                .ingredientsList![index].name ??
-                                            'No Name'),
-                                      ))),
+      body:  Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Consumer<IngredientController>(
+                    builder: (ctx, ingredientController, _) =>
+                        ingredientController.ingredientsList == null
+                            ? const CircularProgressIndicator()
+                            : (ingredientController.ingredientsList?.isEmpty ?? false)
+                                ? const Text('No Data Found')
+                                : ListView.builder(
+                                    itemCount: ingredientController.ingredientsList!.length,
+                                    itemBuilder: (ctx, index) => ListTile(
+                                          leading: Checkbox(
+                                          //   tristate : true,
+                                              value: ingredientController
+                                                  .ingredientsList![index].users_ids
+                                                  ?.contains(FirebaseAuth
+                                                      .instance.currentUser?.uid),
+                                              onChanged: (value) {
+                                                ingredientController.addIngredientToUser(
+                                                    ingredientController
+                                                        .ingredientsList![index].docId!,
+                                                    value ?? false,context);
+                                              }),
+                                          title: Text(ingredientController
+                                                  .ingredientsList![index].name ??
+                                              'No Name'),
+                                        ))),
+      ),
             
         
         

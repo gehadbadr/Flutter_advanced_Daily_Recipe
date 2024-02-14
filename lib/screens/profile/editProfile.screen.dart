@@ -21,7 +21,7 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
-    init();
+      init();
     super.initState();
   }
 
@@ -45,8 +45,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             preferredSize: const Size.fromHeight(60.0),
             child: CustomAppBar(
                 leadingIcon: Icons.arrow_back,
-                onPressLeading: () {
-                  Provider.of<ProfileController>(context, listen: false)
+                onPressLeading: () async {
+                  await Provider.of<ProfileController>(context, listen: false)
                       .getUser();
                   Navigator.push(
                     context,
@@ -58,7 +58,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 .profileDetails)),
                   );
                 },
-                actionIcon: Icons.notification_add_outlined,
+                actionIcon: Icons.language,
                 onPressAction: () {})),
         body: SafeArea(
           child: SingleChildScrollView(child: Consumer<ProfileController>(
@@ -66,11 +66,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             profileController.nameController?.text =
                 widget.profileDetails.name!;
 
-            //  profileController.getUser(FirebaseAuth.instance.currentUser!.uid);
-            //  Future.delayed(const Duration(seconds: 1), () {});
             if (widget.profileDetails == null) {
               return const CircularProgressIndicator();
-            } else if (widget.profileDetails.name!.isEmpty ?? false) {
+            } else if (widget.profileDetails.name!.isEmpty /* ?? false*/) {
               return const Text('No Data Found');
             } else {
               return Column(
@@ -127,7 +125,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               CustomButton(
                                 bgColor: ColorsApp.golden,
                                 textColor: ColorsApp.whiteColor,
-                                title: TextApp.change,
+                                title: S.of(context).change,
                                 onPress: () async {
                                   profileController.uploadProfileImage(context);
                                 },
@@ -138,16 +136,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               ),
                             ],
                           )),
-
-                      /*Image.file(
-                                      File(profileController
-                                          .profileImgLink.value),
-                                      width: 100,
-                                      fit: BoxFit.cover)
-                                  .box
-                                  .roundedFull
-                                  .clip(Clip.antiAlias)
-                                  .make(),*/
                       const SizedBox(
                         height: 30,
                       ),
@@ -162,8 +150,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             child: Column(
                               children: [
                                 CustomTextField(
-                                  title: TextApp.name,
-                                  hint: TextApp.nameHint,
+                                  title: S.of(context).name,
+                                  hint: S.of(context).nameHint,
                                   controller: profileController.nameController,
                                   icon: Icons.person,
                                   isPass: false,
@@ -173,8 +161,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   },
                                 ),
                                 // CustomTextField(
-                                //   title: TextApp.oldPassword,
-                                //   hint: TextApp.oldPasswordHint,
+                                //   title: S.of(context).oldPassword,
+                                //   hint: S.of(context).oldPasswordHint,
                                 //   controller:
                                 //       profileController.oldPasswordController,
                                 //   icon: Icons.lock,
@@ -186,8 +174,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 //   passwordIcon: profileController.isPassword,
                                 // ),
                                 // CustomTextField(
-                                //   title: TextApp.newPassword,
-                                //   hint: TextApp.newPasswordHint,
+                                //   title: S.of(context).newPassword,
+                                //   hint: S.of(context).newPasswordHint,
                                 //   controller:
                                 //       profileController.newPasswordController,
                                 //   icon: Icons.lock,
@@ -198,8 +186,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 //   },
                                 //   passwordIcon: profileController.isNewPassword,
                                 // ),CustomTextField(
-                                //       title: TextApp.repassword,
-                                //       hint: TextApp.repasswordHint,
+                                //       title: S.of(context).repassword,
+                                //       hint: S.of(context).repasswordHint,
                                 //       controller:
                                 //           profileController.rePasswordController,
                                 //       icon: Icons.lock,
@@ -221,7 +209,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                         child: CustomButton(
                                           bgColor: ColorsApp.PKColor,
                                           textColor: ColorsApp.whiteColor,
-                                          title: TextApp.save,
+                                          title: S.of(context).save,
                                           onPress: () async {
                                             profileController
                                                 .updateUser(context);
@@ -235,7 +223,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                         child: CustomButton(
                                           bgColor: ColorsApp.PKColor,
                                           textColor: ColorsApp.whiteColor,
-                                          title: TextApp.back,
+                                          title: S.of(context).back,
                                           onPress: () {
                                             Navigator.push(
                                               context,
@@ -252,94 +240,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               ],
                             ),
                           )),
-
-                      // customTextField(
-                      //     title: name,
-                      //     hint: nameHint,
-                      //     controller: profileController1.nameController,
-                      //     isPass: false,
-                      //     onClick: (value) {
-                      //       profileController.nameController.text = value;
-                      //     }),
-                      // customTextField(
-                      //     title: oldPassword,
-                      //     hint: passwordHint,
-                      //     controller: profileController.oldPasswordController,
-                      //     isPass: true,
-                      //     onClick: (value) {
-                      //       profileController.oldPasswordController.text =
-                      //           value;
-                      //     }),
-                      // customTextField(
-                      //     title: newPassword,
-                      //     hint: passwordHint,
-                      //     controller: profileController.newPasswordController,
-                      //     isPass: true,
-                      //     onClick: (value) {
-                      //       profileController.newPasswordController.text =
-                      //           value;
-                      //     }),
-                      // 20.heightBox,
-                      // profileController.isLoading.value
-                      //     ? CircularProgressIndicator(
-                      //         valueColor: AlwaysStoppedAnimation(redColor),
-                      //       )
-                      //     : SizedBox(
-                      //         child: 'save'
-                      //             .text
-                      //             .fontFamily(semibold)
-                      //             .align(TextAlign.center)
-                      //             .white
-                      //             .make(),
-                      //       )
-                      //         .box
-                      //         .color(redColor)
-                      //         .width(context.screenWidth - 60)
-                      //         .roundedSM
-                      //         .padding(EdgeInsets.all(10))
-                      //         .make()
-                      //         .onTap(() async {
-                      //         /*  profileController.isLoading(true);
-                      // if(globalkey.currentState!.validate()) {
-                      //   globalkey.currentState?.save();
-                      //   if(profileController.profileImgPath.value.isNotEmpty){
-                      //     await profileController.uploadProfileImage();
-                      //   }else{
-                      //     profileController.profileImgLink = data['imageUrl'];
-                      //   }
-                      //   if( data['password'] == profileController.oldPasswordController.text){
-                      //     await profileController.changeAuthPassword(
-                      //         email: data['email'],
-                      //         password: profileController.oldPasswordController.text,
-                      //         newPassword: profileController.newPasswordController.text,
-                      //         context: context
-                      //     );
-                      //     await profileController.updateProfile(
-                      //         name: profileController.nameController.text,
-                      //         password: profileController.newPasswordController.text,
-                      //         imgUrl: profileController.profileImgLink
-                      //     );
-                      //     profileController.isLoading(false);
-                      //     VxToast.show(context, msg: "Your data are updated");
-                      //     Get.offAll(ProfileScreen());
-                      //   }else{
-                      //     VxToast.show(context, msg: "Wrong old password");
-                      //     profileController.isLoading(false);
-                      //   }
-                      // }else{
-                      //   profileController.isLoading(false);
-                      // }*/
-                      //       }),
                       10.heightBox,
                     ],
                   )
-                  // .box
-                  // .white
-                  // .padding(EdgeInsets.all(18))
-                  // .margin(EdgeInsets.symmetric(horizontal: 10))
-                  // .roundedSM
-                  // .shadowSm
-                  // .make(),
                 ],
               );
             }

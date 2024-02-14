@@ -59,7 +59,7 @@ class AuthController extends ChangeNotifier {
       }
     } else {
       OverlayLoadingProgress.stop();
-      ShowSnackbar.showSnackbar(context, TextApp.errorRepassword);
+      ShowSnackbar.showSnackbar(context, S.of(context).errorRepassword);
     }
   }
 
@@ -77,7 +77,7 @@ class AuthController extends ChangeNotifier {
 
         OverlayLoadingProgress.stop();
         if (context.mounted) {
-          ShowToastMessage.showToast(context, TextApp.registeredSuccessfully,
+          ShowToastMessage.showToast(context, S.of(context).registeredSuccessfully,
               3000, ToastMessageStatus.success);
                         Navigator.pushReplacement(
                     context,
@@ -93,15 +93,15 @@ class AuthController extends ChangeNotifier {
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
-        ShowSnackbar.showSnackbar(context, TextApp.invalidEmail);
+        ShowSnackbar.showSnackbar(context, S.of(context).invalidEmail);
       } else if (e.code == 'email-already-in-use') {
-        ShowSnackbar.showSnackbar(context, TextApp.errorRegisteredBefore);
+        ShowSnackbar.showSnackbar(context, S.of(context).errorRegisteredBefore);
       } else if (e.code == 'weak-password') {
-        ShowSnackbar.showSnackbar(context, TextApp.weakPassword);
+        ShowSnackbar.showSnackbar(context, S.of(context).weakPassword);
       } else if (e.code == "user-disabled") {
-        ShowSnackbar.showSnackbar(context, TextApp.errorUserDisabled);
+        ShowSnackbar.showSnackbar(context, S.of(context).errorUserDisabled);
       } else if (e.code == "invalid-credential") {
-        ShowSnackbar.showSnackbar(context, TextApp.errorInvalidCredential);
+        ShowSnackbar.showSnackbar(context, S.of(context).errorInvalidCredential);
       }
       OverlayLoadingProgress.stop();
     }
@@ -151,7 +151,7 @@ class AuthController extends ChangeNotifier {
       if (userCredential.user != null) {
         await getUser();
         ShowToastMessage.showToast(
-            context, TextApp.loggedIn, 3000, ToastMessageStatus.success);
+            context, S.of(context).loggedIn, 3000, ToastMessageStatus.success);
         OverlayLoadingProgress.stop();
         providerDispose();
         if (context.mounted) {
@@ -168,15 +168,15 @@ class AuthController extends ChangeNotifier {
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
-        ShowSnackbar.showSnackbar(context, TextApp.invalidEmail);
+        ShowSnackbar.showSnackbar(context, S.of(context).invalidEmail);
       } else if (e.code == 'user-not-found') {
-        ShowSnackbar.showSnackbar(context, TextApp.errorUserNotFound);
+        ShowSnackbar.showSnackbar(context, S.of(context).errorUserNotFound);
       } else if (e.code == 'wrong-password') {
-        ShowSnackbar.showSnackbar(context, TextApp.errorWrongPassword);
+        ShowSnackbar.showSnackbar(context, S.of(context).errorWrongPassword);
       } else if (e.code == "user-disabled") {
-        ShowSnackbar.showSnackbar(context, TextApp.errorUserDisabled);
+        ShowSnackbar.showSnackbar(context, S.of(context).errorUserDisabled);
       } else if (e.code == "invalid-credential") {
-        ShowSnackbar.showSnackbar(context, TextApp.errorInvalidCredential);
+        ShowSnackbar.showSnackbar(context, S.of(context).errorInvalidCredential);
       }
       OverlayLoadingProgress.stop();
     }
@@ -197,26 +197,26 @@ class AuthController extends ChangeNotifier {
           await FirebaseAuth.instance
               .sendPasswordResetEmail(email: emailController!.text.trim());
           ShowToastMessage.showToast(
-              context, TextApp.resetMsg, 3000, ToastMessageStatus.success);
+              context, S.of(context).resetMsg, 3000, ToastMessageStatus.success);
           OverlayLoadingProgress.stop();
           if (context.mounted) {
             Navigator.pushNamed(context, AppRoutes.loginScreen);
           }
         } on FirebaseAuthException catch (e) {
           if (e.code == 'invalid-email') {
-            ShowSnackbar.showSnackbar(context, TextApp.invalidEmail);
+            ShowSnackbar.showSnackbar(context, S.of(context).invalidEmail);
           } else if (e.code == 'user-not-found') {
-            ShowSnackbar.showSnackbar(context, TextApp.errorUserNotFound);
+            ShowSnackbar.showSnackbar(context, S.of(context).errorUserNotFound);
           } else if (e.code == "user-disabled") {
-            ShowSnackbar.showSnackbar(context, TextApp.errorUserDisabled);
+            ShowSnackbar.showSnackbar(context, S.of(context).errorUserDisabled);
           } else if (e.code == "invalid-credential") {
-            ShowSnackbar.showSnackbar(context, TextApp.errorInvalidCredential);
+            ShowSnackbar.showSnackbar(context, S.of(context).errorInvalidCredential);
           }
           OverlayLoadingProgress.stop();
         }
       } else {
         OverlayLoadingProgress.stop();
-        ShowSnackbar.showSnackbar(context, TextApp.errorUserNotFound);
+        ShowSnackbar.showSnackbar(context, S.of(context).errorUserNotFound);
       }
     } else {
       OverlayLoadingProgress.stop();
@@ -230,7 +230,7 @@ class AuthController extends ChangeNotifier {
       await Future.delayed(const Duration(seconds: 1));
       auth.signOut();
       ShowToastMessage.showToast(
-          context, TextApp.loggedOut, 3000, ToastMessageStatus.success);
+          context, S.of(context).loggedOut, 3000, ToastMessageStatus.success);
       if (context.mounted) {
         Navigator.pushNamedAndRemoveUntil(
             context, AppRoutes.introScreen, (route) => false);

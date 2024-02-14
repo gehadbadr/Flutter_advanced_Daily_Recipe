@@ -1,19 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/models/recipes.models.dart';
-import 'package:daily_recipe/providers/profile.providers.dart';
 import 'package:daily_recipe/providers/recepie.providers.dart';
-import 'package:daily_recipe/screens/filter/filter.screens.dart';
-import 'package:daily_recipe/screens/homePage/homepage.screens.dart';
 import 'package:daily_recipe/widgets/appbar.widgets.dart';
 import 'package:daily_recipe/screens/recipes/components/recipes.components.dart';
-import 'package:daily_recipe/widgets/filter_button.dart';
-import 'package:daily_recipe/widgets/search_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class FilteredRecipesScreen extends StatefulWidget {
-  //const FilteredRecipesScreen({super.key});
   final List<Recipe> filteredRecipes;
   const FilteredRecipesScreen({super.key, required this.filteredRecipes});
   @override
@@ -21,10 +14,7 @@ class FilteredRecipesScreen extends StatefulWidget {
 }
 
 class _FilteredRecipesScreenState extends State<FilteredRecipesScreen> {
-  // ValueNotifier<List<Map>> filtered = ValueNotifier<List<Map>>([]);
-  // TextEditingController searchController = TextEditingController();
-  // FocusNode searchFocus = FocusNode();
-  // bool searching = false;
+
   @override
   void initState() {
     //init();
@@ -49,13 +39,13 @@ class _FilteredRecipesScreenState extends State<FilteredRecipesScreen> {
           child: CustomAppBar(
               leadingIcon: Icons.arrow_back,
               onPressLeading: () {
-                Provider.of<ProfileController>(context, listen: false)
-                    .getUser();
+                // Provider.of<ProfileController>(context, listen: false)
+                //     .getUser();
                 Navigator.pushNamed(
                   context,AppRoutes.filterScreen
                 );
               },
-              actionIcon: Icons.notification_add_outlined,
+              actionIcon: Icons.language,
               onPressAction: () {})),
       body: SafeArea(
         child: Padding(
@@ -65,13 +55,13 @@ class _FilteredRecipesScreenState extends State<FilteredRecipesScreen> {
             child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Row(
+                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
                       child: Text(
-                        TextApp.results,
-                        style: TextStyle(
+                        S.of(context).results,
+                        style: const TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 25),
                       ),
                     ),
@@ -98,22 +88,6 @@ class _FilteredRecipesScreenState extends State<FilteredRecipesScreen> {
                                         children: List.generate(
                                           widget.filteredRecipes.length,
                                           (index) => Recipes(
-                                              /*  id: recipeController
-                                              .favoriteList![index].docId,
-                                          title: recipeController
-                                              .favoriteList![index].title!,
-                                          image: recipeController
-                                              .favoriteList![index].image,
-                                          mealType: recipeController
-                                              .favoriteList![index].mealType,
-                                          rating: recipeController
-                                              .favoriteList![index].rating,
-                                          calerios: recipeController
-                                              .favoriteList![index].calerios,
-                                          serving: recipeController
-                                              .favoriteList![index].serving,
-                                          prepTime: recipeController
-                                              .favoriteList![index].prepTime,*/
                                               recipeDetails: widget.filteredRecipes[index],
                                               viewType: 5,
                                               isFavorite: recipeController

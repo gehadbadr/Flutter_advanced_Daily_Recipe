@@ -16,7 +16,6 @@ class FilterScreen extends StatefulWidget {
 }
 
 class _FilterScreenState extends State<FilterScreen> {
-
   @override
   void deactivate() {
     Provider.of<RecipeController>(context, listen: false).disposeFilter();
@@ -26,8 +25,7 @@ class _FilterScreenState extends State<FilterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            backgroundColor: ColorsApp.whiteColor,
-
+      backgroundColor: ColorsApp.whiteColor,
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60.0),
           child: CustomAppBar(
@@ -56,13 +54,13 @@ class _FilterScreenState extends State<FilterScreen> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
                       child: Text(
-                        TextApp.filter,
-                        style: TextStyle(
+                        S.of(context).filter,
+                        style: const TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 25),
                       ),
                     ),
@@ -71,9 +69,10 @@ class _FilterScreenState extends State<FilterScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Text(
-                  TextApp.meals,
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+                Text(
+                  S.of(context).meals,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w700, fontSize: 20),
                 ),
                 const SizedBox(
                   height: 20,
@@ -85,22 +84,32 @@ class _FilterScreenState extends State<FilterScreen> {
                     children: [
                       InkWell(
                         onTap: () {
+                            if (recipeController.isArabic()) {
+                            recipeController.selectedUserValueUpdate(
+                              'mealType', 'فطار');
+                          } else {
                           recipeController.selectedUserValueUpdate(
                               'mealType', 'breakfast');
+                          }
+                        
                         },
                         child: Chip(
-                          label: Text(TextApp.breakfast,
+                          label: Text(S.of(context).breakfast,
                               style: TextStyle(
                                 fontSize: 16,
                                 color: recipeController
                                             .selectedUserValue['mealType'] ==
-                                        "breakfast"
+                                        "breakfast"|| recipeController
+                                            .selectedUserValue['mealType'] ==
+                                        "فطار"
                                     ? ColorsApp.PKColor
                                     : ColorsApp.fontGrey,
                               )),
                           backgroundColor:
                               recipeController.selectedUserValue['mealType'] ==
-                                      "breakfast"
+                                      "breakfast"|| recipeController
+                                            .selectedUserValue['mealType'] ==
+                                        "فطار"
                                   ? ColorsApp.chips
                                   : ColorsApp.lightGrey,
                           padding: const EdgeInsets.symmetric(
@@ -109,22 +118,32 @@ class _FilterScreenState extends State<FilterScreen> {
                       ),
                       InkWell(
                         onTap: () {
+                            if (recipeController.isArabic()) {
+                            recipeController.selectedUserValueUpdate(
+                              'mealType', 'غداء');
+                          } else {
                           recipeController.selectedUserValueUpdate(
                               'mealType', 'lunch');
+                          }
+                          
                         },
                         child: Chip(
-                          label: Text(TextApp.lunch,
+                          label: Text(S.of(context).lunch,
                               style: TextStyle(
                                 fontSize: 16,
                                 color: recipeController
                                             .selectedUserValue['mealType'] ==
-                                        "lunch"
+                                        "lunch"|| recipeController
+                                            .selectedUserValue['mealType'] ==
+                                        "غداء"
                                     ? ColorsApp.PKColor
                                     : ColorsApp.fontGrey,
                               )),
                           backgroundColor:
                               recipeController.selectedUserValue['mealType'] ==
-                                      "lunch"
+                                      "lunch"|| recipeController
+                                            .selectedUserValue['mealType'] ==
+                                        "غداء"
                                   ? ColorsApp.chips
                                   : ColorsApp.lightGrey,
                           padding: const EdgeInsets.symmetric(
@@ -133,22 +152,32 @@ class _FilterScreenState extends State<FilterScreen> {
                       ),
                       InkWell(
                         onTap: () {
-                          recipeController.selectedUserValueUpdate(
+                          if (recipeController.isArabic()) {
+                            recipeController.selectedUserValueUpdate(
+                              'mealType', 'عشاء');
+                          } else {
+                            recipeController.selectedUserValueUpdate(
                               'mealType', 'dinner');
+                          }
+                          
                         },
                         child: Chip(
-                          label: Text(TextApp.dinner,
+                          label: Text(S.of(context).dinner,
                               style: TextStyle(
                                 fontSize: 16,
                                 color: recipeController
                                             .selectedUserValue['mealType'] ==
-                                        "dinner"
+                                        "dinner"|| recipeController
+                                            .selectedUserValue['mealType'] ==
+                                        "عشاء"
                                     ? ColorsApp.PKColor
                                     : ColorsApp.fontGrey,
                               )),
                           backgroundColor:
                               recipeController.selectedUserValue['mealType'] ==
-                                      "dinner"
+                                      "dinner"|| recipeController
+                                            .selectedUserValue['mealType'] ==
+                                        "عشاء"
                                   ? ColorsApp.chips
                                   : ColorsApp.lightGrey,
                           padding: const EdgeInsets.symmetric(
@@ -163,9 +192,10 @@ class _FilterScreenState extends State<FilterScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Text(
-                  TextApp.servingFilter,
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+                Text(
+                  S.of(context).servingFilter,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w700, fontSize: 20),
                 ),
                 const SizedBox(
                   height: 20,
@@ -185,9 +215,10 @@ class _FilterScreenState extends State<FilterScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Text(
-                  TextApp.prepTime,
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+                Text(
+                  S.of(context).prepTime,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w700, fontSize: 20),
                 ),
                 const SizedBox(
                   height: 20,
@@ -207,9 +238,10 @@ class _FilterScreenState extends State<FilterScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Text(
-                  TextApp.calories,
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+                Text(
+                  S.of(context).calories,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w700, fontSize: 20),
                 ),
                 const SizedBox(
                   height: 20,
@@ -233,11 +265,11 @@ class _FilterScreenState extends State<FilterScreen> {
                     //  recipeController.updatecaloriesStartval(value);
                     // recipeController.updatecaloriesEndval(value);
                     recipeController.updatecaloriesValue(value);
-                    recipeController.selectedUserValueUpdate(
-                        'caloriesStartval', recipeController.currentRangeValues.start.round());
-                    recipeController.selectedUserValueUpdate(
-                        'caloriesEndval', recipeController.currentRangeValues.end.round());
-                  //  });
+                    recipeController.selectedUserValueUpdate('caloriesStartval',
+                        recipeController.currentRangeValues.start.round());
+                    recipeController.selectedUserValueUpdate('caloriesEndval',
+                        recipeController.currentRangeValues.end.round());
+                    //  });
                   },
                 ),
                 // Slider(
@@ -261,7 +293,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     child: CustomButton(
                       bgColor: ColorsApp.PKColor,
                       textColor: ColorsApp.whiteColor,
-                      title: TextApp.apply,
+                      title: S.of(context).apply,
                       onPress: () async {
                         await recipeController.getFilteredResult();
                         Navigator.push(

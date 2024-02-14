@@ -29,7 +29,7 @@ class _ViewedRecipesScreenState extends State<ViewedRecipesScreen> {
 
     @override
   void deactivate() {
-    Provider.of<RecipeController>(context, listen: false).disposeRecentlyViewed();
+    Provider.of<RecipeController>(context, listen: false).disposeFoundRecipes();
     super.deactivate();
   }
 
@@ -41,7 +41,9 @@ class _ViewedRecipesScreenState extends State<ViewedRecipesScreen> {
           preferredSize: const Size.fromHeight(60.0),
           child: CustomAppBar(
               leadingIcon: Icons.arrow_back,
-              onPressLeading: ()async {
+              onPressLeading: () async{
+              await  Provider.of<ProfileController>(context, listen: false)
+                      .getUser();
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -50,9 +52,8 @@ class _ViewedRecipesScreenState extends State<ViewedRecipesScreen> {
                                     context,
                                     listen: false)
                                 .profileDetails)),
-                  );          
-              },
-              actionIcon: Icons.notification_add_outlined,
+                  );},
+              actionIcon: Icons.language,
               onPressAction: () {})),
       body: SafeArea(
         child: Padding(
@@ -61,23 +62,17 @@ class _ViewedRecipesScreenState extends State<ViewedRecipesScreen> {
             physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Expanded(
                       child: Text(
-                        TextApp.recentlyViewed,
-                        style: TextStyle(
+                        S.of(context).recentlyViewed,
+                        style: const TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 25),
                       ),
                     ),
-                    Text(
-                      TextApp.clear,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: ColorsApp.PKColor,
-                          fontSize: 16),
-                    )
+                
                   ],
                 ),
                 const SizedBox(
@@ -99,7 +94,7 @@ class _ViewedRecipesScreenState extends State<ViewedRecipesScreen> {
                             color: ColorsApp.lightGrey,
                           ),
                           child: SearchTextField(onChanged: (value) {
-                            Provider.of<RecipeController>(context, listen: false).runFilter(value);
+                            Provider.of<RecipeController>(context, listen: false).runFilter(value,AppRoutes.viewedRecipesScreen);
                           })),
                     ),
                     const SizedBox(
@@ -121,12 +116,13 @@ class _ViewedRecipesScreenState extends State<ViewedRecipesScreen> {
                     builder: (context, recipeController, child) {
                   return Column(
                     children: [
-                      recipeController.foundRecipes == null
+                           recipeController.foundRecipes == null
                           ? const CircularProgressIndicator()
-                  :(recipeController.foundRecipes?.isEmpty ?? false)
-                      ? const Text('No Data Found') 
-                          : recipeController.foundRecipes!.isEmpty
-                              ? const CircularProgressIndicator()
+                          : (recipeController.foundRecipes!.isEmpty ?? false)
+                              ? Text(S.of(context).noDataFound)
+                              : recipeController.foundRecipes!.isEmpty
+                                  ? const CircularProgressIndicator()
+
                               : SingleChildScrollView(
                                   padding: const EdgeInsets.all(0),
                                   scrollDirection: Axis.horizontal,
@@ -134,23 +130,7 @@ class _ViewedRecipesScreenState extends State<ViewedRecipesScreen> {
                                     children: List.generate(
                                       recipeController.foundRecipes!.length,
                                       (index) => Recipes(
-                                        /*  id: recipeController
-                                              .foundRecipes![index].docId,
-                                          title: recipeController
-                                              .foundRecipes![index].title!,
-                                          image: recipeController
-                                              .foundRecipes![index].image,
-                                          mealType: recipeController
-                                              .foundRecipes![index].mealType,
-                                          rating: recipeController
-                                              .foundRecipes![index].rating,
-                                          calerios: recipeController
-                                              .foundRecipes![index].calerios,
-                                          serving: recipeController
-                                              .foundRecipes![index].serving,
-                                          prepTime: recipeController
-                                              .foundRecipes![index].prepTime,*/
-                                                recipeDetails: recipeController
+                                       recipeDetails: recipeController
                                                 .foundRecipes![index],
                                           viewType: 3,
                                           isFavorite: recipeController

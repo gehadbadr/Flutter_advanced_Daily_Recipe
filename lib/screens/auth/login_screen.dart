@@ -52,9 +52,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const Text(
-                          TextApp.login,
-                          style: TextStyle(
+                         Text(
+                          S.of(context).login,
+                          style: const TextStyle(
                               color: ColorsApp.whiteColor,
                               fontSize: 18,
                               fontWeight: FontWeight.w700),
@@ -72,8 +72,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: Column(
                                 children: [
                                   CustomTextField(
-                                    title: TextApp.email,
-                                    hint: TextApp.emailHint,
+                                    title: S.of(context).email,
+                                    hint: S.of(context).emailHint,
                                     controller: authController.emailController,
                                     icon: Icons.email,
                                     isPass: false,
@@ -83,8 +83,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     },
                                   ),
                                   CustomTextField(
-                                      title: TextApp.password,
-                                      hint: TextApp.passwordHint,
+                                      title: S.of(context).password,
+                                      hint: S.of(context).passwordHint,
                                       controller:
                                           authController.passwordController,
                                       icon: Icons.lock,
@@ -100,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       child: TextButton(
                                         onPressed: () {  Navigator.pushNamed(
                                   context, AppRoutes.forgetScreen);},
-                                        child: const Text(TextApp.forgetPass),
+                                        child:  Text(S.of(context).forgetPass),
                                       )),
                                   const SizedBox(
                                     height: 5,
@@ -110,45 +110,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                       child: CustomButton(
                                         bgColor: ColorsApp.PKColor,
                                         textColor: ColorsApp.whiteColor,
-                                        title: TextApp.login,
+                                        title: S.of(context).login,
                                         onPress: () async {
                                           authController.signIn(context);
                                         },
                                       )),
                                   const SizedBox(
-                                    height: 10,
+                                    height: 5,
                                   ),
-                                  const Text(
-                                    TextApp.loginWith,
-                                    style:
-                                        TextStyle(color: ColorsApp.whiteColor),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: List.generate(
-                                        3,
-                                        (index) => Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8),
-                                              child: CircleAvatar(
-                                                  backgroundColor:
-                                                      ColorsApp.lightGrey,
-                                                  radius: 25,
-                                                  child: Image.asset(
-                                                    ListsApp
-                                                        .socialIconList[index],
-                                                    width: 30,
-                                                  )),
-                                            )),
-                                  )
+                                  
                                 ],
                               )),
                         ),
                         SizedBox(
-                          height: context.screenHeight / 5,
+                          height: context.screenHeight / 3.30,
                         ),
                         InkWell(
                             onTap: () {
@@ -156,16 +131,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                   context, AppRoutes.signupScreen);
                             },
                             child: RichText(
-                              text: const TextSpan(children: [
+                              text:  TextSpan(children: [
                                 TextSpan(
-                                    text: TextApp.creatNewAccount,
-                                    style: TextStyle(
+                                    text: S.of(context).creatNewAccount,
+                                    style: const TextStyle(
                                         fontWeight: FontWeight.w700,
                                         color: ColorsApp.fontGrey,
                                         fontSize: 16)),
                                 TextSpan(
-                                    text: TextApp.register,
-                                    style: TextStyle(
+                                    text: S.of(context).register,
+                                    style: const TextStyle(
                                         fontWeight: FontWeight.w700,
                                         color: ColorsApp.PKColor,
                                         fontSize: 16))

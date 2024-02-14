@@ -28,20 +28,33 @@ class CustomTextField extends StatefulWidget {
 
 class _CustomTextFieldState extends State<CustomTextField> {
   String? errorMessage(String str) {
-    switch (widget.hint) {
-      case TextApp.nameHint:
-        return TextApp.nameRequired;
-      case TextApp.emailHint:
-        return TextApp.emailRequired;
-      case TextApp.passwordHint:
-        return TextApp.passwordRequired;
-      case TextApp.repasswordHint:
-        return TextApp.repasswordRequired;
-      case TextApp.oldPasswordHint:
-        return TextApp.oldPasswordRequired;
-      case TextApp.newPasswordHint:
-        return TextApp.newPasswordRequired;
+    if(widget.hint == S.of(context).nameHint){
+        return S.of(context).nameRequired;
+    }else if(widget.hint == S.of(context).emailHint){
+        return S.of(context).emailRequired;
+    }else if(widget.hint == S.of(context).passwordHint){
+        return S.of(context).passwordRequired;
+    }else if(widget.hint == S.of(context).repasswordHint){
+        return S.of(context).repasswordRequired;
+    }else if(widget.hint == S.of(context).oldPasswordHint){
+        return S.of(context).oldPasswordRequired;
+    }else if(widget.hint == S.of(context).newPasswordHint){
+        return S.of(context).newPasswordRequired;
     }
+    // switch (widget.hint) {
+    //   case TextApp.nameHint:
+    //     return S.of(context).nameRequired;
+    //   case S.of(context).emailHint:
+    //     return S.of(context).emailRequired;
+    //   case TextApp.passwordHint:
+    //     return S.of(context).passwordRequired;
+    //   case TextApp.repasswordHint:
+    //     return S.of(context).repasswordRequired;
+    //   case TextApp.oldPasswordHint:
+    //     return S.of(context).oldPasswordRequired;
+    //   case TextApp.newPasswordHint:
+    //     return S.of(context).newPasswordRequired;
+    // }
     return null;
   }
 
@@ -66,13 +79,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
           if (value!.isEmpty) {
             return errorMessage(widget.hint);
           }
-          // if (title == TextApp.email) {
+          // if (title == S.of(context).email) {
           //   return EmailValidator.validate(value)
           //       ? null
-          //       :TextApp.invalidEmail;
+          //       :S.of(context).invalidEmail;
           // }
-          if(widget.title == TextApp.name && value.length > 20) {
-             return TextApp.invalidName;
+          if(widget.title == S.of(context).name && value.length > 20) {
+             return S.of(context).invalidName;
           }
               return null;
 

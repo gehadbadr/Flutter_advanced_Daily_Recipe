@@ -1,4 +1,5 @@
 import 'package:daily_recipe/consts/consts.dart';
+import 'package:daily_recipe/generated/l10n.dart';
 import 'package:daily_recipe/models/user.models.dart';
 import 'package:daily_recipe/providers/recepie.providers.dart';
 import 'package:daily_recipe/screens/homePage/components/carsoul.widget.dart';
@@ -13,8 +14,12 @@ import 'package:provider/provider.dart';
 class HomeWidget extends StatefulWidget {
   final ZoomDrawerController? controller;
   final UserModel profileDetails;
+  final bool isArabic;
   const HomeWidget(
-      {super.key, required this.controller, required this.profileDetails});
+      {super.key,
+      required this.controller,
+      required this.profileDetails,
+      required this.isArabic});
   //const HomeWidget({super.key, required this.controller});
 
   @override
@@ -34,6 +39,7 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: ColorsApp.whiteColor,
       appBar: PreferredSize(
@@ -61,25 +67,29 @@ class _HomeWidgetState extends State<HomeWidget> {
                 //           : Align(
                 //               alignment: Alignment.centerLeft,
                 //               child: Text(
-                //                   '${TextApp.bonjour}, ${widget.profileDetails.name}',
+                //                   '${S.of(context).bonjour}, ${widget.profileDetails.name}',
                 //                   style: const TextStyle(
                 //                       fontSize: 20,
                 //                       color: ColorsApp.fontGrey)))
                 // ),
                 Align(
-                    alignment: Alignment.centerLeft,
+                    alignment: !widget.isArabic
+                        ? Alignment.centerLeft
+                        : Alignment.centerRight,
                     child: Text(
-                        '${TextApp.bonjour}, ${widget.profileDetails.name}',
+                        '${S.of(context).bonjour}, ${widget.profileDetails.name}',
                         style: const TextStyle(
                             fontSize: 20, color: ColorsApp.fontGrey))),
                 const SizedBox(
                   height: 10,
                 ),
-                const Align(
-                  alignment: Alignment.centerLeft,
+                Align(
+                  alignment:
+                      !widget.isArabic ? Alignment.centerLeft : Alignment.centerRight,
                   child: Text(
-                    TextApp.whatToCook,
-                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 25),
+                    S.of(context).whatToCook,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w700, fontSize: 25),
                   ),
                 ),
                 const SizedBox(
@@ -122,22 +132,23 @@ class _HomeWidgetState extends State<HomeWidget> {
                   return Column(
                     children: [
                       Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Expanded(
+                          Expanded(
                             child: Text(
-                              TextApp.todayFreshRecipe,
-                              style: TextStyle(
+                              S.of(context).todayFreshRecipe,
+                              style:const TextStyle(
                                   fontWeight: FontWeight.w700, fontSize: 20),
                             ),
                           ),
                           InkWell(
-                            onTap: () {    Navigator.pushNamed(
+                            onTap: () {
+                              Navigator.pushNamed(
                                   context, AppRoutes.allRecipesScreen);
                             },
-                            child: const Text(
-                              TextApp.seeAll,
-                              style: TextStyle(
+                            child: Text(
+                              S.of(context).seeAll,
+                              style: const TextStyle(
                                   color: ColorsApp.PKColor, fontSize: 16),
                             ),
                           )
@@ -146,10 +157,10 @@ class _HomeWidgetState extends State<HomeWidget> {
                       const SizedBox(
                         height: 10,
                       ),
-                      recipeController.recipesList! == null
-                          ? const Text('No Data Found')
-                          : recipeController.recipesList!.isEmpty
-                              ? const CircularProgressIndicator()
+                        recipeController.recipesList == null
+                      ?const CircularProgressIndicator()
+                          : recipeController.recipesList?.isEmpty ?? false
+                              ? Text( S.of(context).noDataFound)
                               : SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   physics: const BouncingScrollPhysics(),
@@ -192,23 +203,24 @@ class _HomeWidgetState extends State<HomeWidget> {
                                   ),
                                 ),
                       const Divider(),
-                       Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Expanded(
+                          Expanded(
                             child: Text(
-                              TextApp.recomended,
+                              S.of(context).recomended,
                               style: TextStyle(
                                   fontWeight: FontWeight.w700, fontSize: 20),
                             ),
                           ),
-                      InkWell(
-                            onTap: () {    Navigator.pushNamed(
+                          InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(
                                   context, AppRoutes.allRecipesScreen);
                             },
-                            child: const Text(
-                              TextApp.seeAll,
-                              style: TextStyle(
+                            child: Text(
+                              S.of(context).seeAll,
+                              style: const TextStyle(
                                   color: ColorsApp.PKColor, fontSize: 16),
                             ),
                           )
@@ -217,8 +229,10 @@ class _HomeWidgetState extends State<HomeWidget> {
                       const SizedBox(
                         height: 10,
                       ),
-                      recipeController.recommendedList!.isEmpty
-                          ? const CircularProgressIndicator()
+                        recipeController.recommendedList == null
+                      ?const CircularProgressIndicator()
+                          : recipeController.recommendedList?.isEmpty ?? false
+                              ? Text( S.of(context).noDataFound)
                           : SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Column(

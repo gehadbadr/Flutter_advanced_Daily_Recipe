@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/consts/toastStatus.dart';
 import 'package:daily_recipe/models/user.models.dart';
-import 'package:daily_recipe/reuseable_function/snackbar.function.dart';
 import 'package:daily_recipe/reuseable_function/toast.function.dart';
 import 'package:daily_recipe/screens/profile/profile.screen.dart';
 import 'package:file_picker/file_picker.dart';
@@ -17,58 +16,30 @@ class ProfileController extends ChangeNotifier {
   var profileImgLink = '';
   UserModel profileDetails = UserModel();
 
-  late GlobalKey<FormState>? globalKey;
+  late GlobalKey<FormState>? _globalKey;
   late TextEditingController? nameController;
   late TextEditingController? oldPasswordController;
   late TextEditingController? newPasswordController;
   late TextEditingController? rePasswordController;
-  // late bool _isPassword;
-  // late bool _isNewPassword;
-  // late bool _isConfirmPassword;
-  // bool get isPassword => _isPassword;
-  // bool get isNewPassword => _isNewPassword;
-  // bool get isConfirmPassword => _isConfirmPassword;
+  GlobalKey<FormState>? get globalKey => _globalKey;
+
   String firstLetter = '';
 
   void providerInit() {
-    globalKey = GlobalKey<FormState>();
+    _globalKey = GlobalKey<FormState>();
     nameController = TextEditingController();
     oldPasswordController = TextEditingController();
     newPasswordController = TextEditingController();
     rePasswordController = TextEditingController();
-    // _isPassword = true;
-    // _isNewPassword = true;
-    // _isConfirmPassword = true;
-    //  getUser(FirebaseAuth.instance.currentUser!.uid);
   }
 
   void providerDispose() {
     oldPasswordController = null;
     rePasswordController = null;
     newPasswordController = null;
-    globalKey = null;
+    _globalKey = null;
     nameController = null;
-    // _isPassword = true;
-    // _isNewPassword = true;
-    // _isConfirmPassword = true;
   }
-
-  // getUser(uid){
-
-  //   return FirebaseFirestore.instance.collection('users').where('id',isEqualTo: uid).snapshots();
-  // }
-
-  // Future<void> getUser(uid) async {
-  //   try {
-  //     var result =
-  //         await FirebaseFirestore.instance.collection('users').doc(uid).get();
-
-  //     notifyListeners();
-  //   } catch (e) {
-  //     print(e.toString());
-  //   }
-  // //  return result;
-  // }
 
   Future<void> getUser() async {
     try {
@@ -91,25 +62,6 @@ class ProfileController extends ChangeNotifier {
     var name = profileDetails.name!;
     firstLetter = name[0].toUpperCase();
   }
-  // changeImage() async {
-  //   OverlayLoadingProgress.start();
-
-  //   try {
-  //     var imageResult = await FilePicker.platform
-  //         .pickFiles(type: FileType.image, withData: true);
-
-  //     if (imageResult == null) {
-  //       return;
-  //     } else {
-  //       profileImgPath = imageResult.paths;
-  //       print(profileImgPath);
-  //       notifyListeners();
-  //     }
-  //   } catch (e) {
-  //     print(e.toString());
-  //   }
-  //   OverlayLoadingProgress.stop();
-  // }
 
   void uploadProfileImage(BuildContext context) async {
     OverlayLoadingProgress.start();
@@ -145,12 +97,12 @@ class ProfileController extends ChangeNotifier {
         //     let imageRef = storage.refFromURL(URL);
 // imageRef.delete()
         await store.set({'imageUrl': profileImgLink}, SetOptions(merge: true));
+        providerDispose();
         providerInit();
         await getUser();
-
         if (context.mounted) {
-          ShowToastMessage.showToast(
-              context, TextApp.imgUpdate, 3000, ToastMessageStatus.success);
+          ShowToastMessage.showToast(context, S.of(context).imgUpdate, 3000,
+              ToastMessageStatus.success);
         }
 
         notifyListeners();
@@ -163,16 +115,16 @@ class ProfileController extends ChangeNotifier {
   Future<void> updateUser(BuildContext context) async {
     OverlayLoadingProgress.start();
 //    if (newPasswordController?.text == rePasswordController?.text) {
-    if (globalKey?.currentState?.validate() ?? false) {
-      globalKey?.currentState?.save();
+    if (_globalKey?.currentState?.validate() ?? false) {
+      _globalKey?.currentState?.save();
       //     if (profileDetails.password == oldPasswordController?.text) {
 
       try {
-        changeAuthPassword(profileDetails.email!, profileDetails.password!,
-            newPasswordController?.text, context);
+        // changeAuthPassword(profileDetails.email!, profileDetails.password!,
+        //     newPasswordController?.text, context);
         updateProfile(nameController?.text, newPasswordController?.text);
         ShowToastMessage.showToast(
-            context, TextApp.saveData, 3000, ToastMessageStatus.success);
+            context, S.of(context).saveData, 3000, ToastMessageStatus.success);
         providerDispose();
         await getUser();
         OverlayLoadingProgress.stop();
@@ -191,7 +143,7 @@ class ProfileController extends ChangeNotifier {
       }
       //       } else {
       //   OverlayLoadingProgress.stop();
-      //   ShowSnackbar.showSnackbar(context, TextApp.errorOldPassword);
+      //   ShowSnackbar.showSnackbar(context, S.of(context).errorOldPassword);
       // }
     } else {
       OverlayLoadingProgress.stop();
@@ -199,7 +151,7 @@ class ProfileController extends ChangeNotifier {
 
     // } else {
     //   OverlayLoadingProgress.stop();
-    //   ShowSnackbar.showSnackbar(context, TextApp.errorRepassword);
+    //   ShowSnackbar.showSnackbar(context, S.of(context).errorRepassword);
     // }
   }
 
@@ -226,6 +178,5 @@ class ProfileController extends ChangeNotifier {
     }).catchError((e) {
       print(e.toString());
     });
-    //   await store.set({'name': name,'password': password,'imageUrl': imgUrl},SetOptions(merge: true));
   }
 }

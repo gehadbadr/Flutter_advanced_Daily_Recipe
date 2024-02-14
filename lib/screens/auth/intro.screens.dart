@@ -27,10 +27,10 @@ class IntroScreen extends StatelessWidget {
                         height: context.screenHeight / 3,
                       ),
                       const AppLogoWidget(),
-                      const Text(
-                        TextApp.slogen,
+                       Text(
+                        S.of(context).slogen,
                         style:
-                            TextStyle(fontSize: 20, color: ColorsApp.fontGrey),
+                            const TextStyle(fontSize: 20, color: ColorsApp.fontGrey),
                       ),
                       SizedBox(
                         height: context.screenHeight / 4,
@@ -41,7 +41,7 @@ class IntroScreen extends StatelessWidget {
                         child: CustomButton(
                           bgColor: ColorsApp.PKColor,
                           textColor: ColorsApp.whiteColor,
-                          title: TextApp.login,
+                          title: S.of(context).login,
                           onPress: () async {
                           //  context.goNamed(AppRoutes.loginScreen);
            Navigator.pushNamed(context,AppRoutes.loginScreen);
@@ -59,7 +59,7 @@ class IntroScreen extends StatelessWidget {
                         child: CustomButton(
                           bgColor: Colors.transparent,
                           textColor: ColorsApp.whiteColor,
-                          title: TextApp.signup,
+                          title: S.of(context).signup,
                           onPress: () async {
                              Navigator.pushNamed(context,AppRoutes.signupScreen);
                           },

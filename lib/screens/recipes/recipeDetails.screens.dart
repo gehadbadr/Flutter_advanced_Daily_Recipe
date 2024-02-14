@@ -50,13 +50,12 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                                     listen: false)
                                 .profileDetails)),
                   );              },
-              actionIcon: Icons.notification_add_outlined,
+              actionIcon: Icons.language,
               onPressAction: () {})),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Container(
-            //  padding: const EdgeInsets.all(20.0),
             width: context.screenWidth,
             color: ColorsApp.lightGrey,
             child: Column(
@@ -66,32 +65,14 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                 ),
                 Consumer<RecipeController>(
                     builder: (context, recipeController, child) {
-                  /*    if (recipeController.openedRecipe == null) {
-                    return const CircularProgressIndicator();
-                  } else if (recipeController.openedRecipe!.docId!.isEmpty ?? false) {
-                    return const Text('No Data Found');
-                  } else {*/
+                
                   return Column(
                     children: [
                       Column(children: [
                         Padding(
                           padding: const EdgeInsets.all(20.0),
                           child: Recipes(
-                              /* id: recipeController.openedRecipe!.docId,
-                                title:
-                                    recipeController.openedRecipe!.title,
-                                image: recipeController.openedRecipe!.image,
-                                mealType:
-                                    recipeController.openedRecipe!.mealType,
-                                rating:
-                                    recipeController.openedRecipe!.rating,
-                                calerios:
-                                    recipeController.openedRecipe!.calerios,
-                                serving:
-                                    recipeController.openedRecipe!.serving,
-                                prepTime: recipeController
-                                    .openedRecipe!.prepTime,*/
-                              recipeDetails: widget.recipeDetails,
+                            recipeDetails: widget.recipeDetails,
                               viewType: 2,
                               isFavorite:
                                   recipeController.recipeDetails.docId != null && recipeController.recipeDetails.docId== widget.recipeDetails.docId
@@ -120,11 +101,11 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Padding(
-                              padding: EdgeInsets.only(bottom: 5),
+                             Padding(
+                              padding: const EdgeInsets.only(bottom: 5),
                               child: Text(
-                                TextApp.ingredients,
-                                style: TextStyle(
+                                S.of(context).ingredients,
+                                style: const TextStyle(
                                     fontWeight: FontWeight.w700, fontSize: 16),
                               ),
                             ),
@@ -167,11 +148,11 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Padding(
-                                  padding: EdgeInsets.only(bottom: 5, left: 10),
+                                 Padding(
+                                  padding: const EdgeInsets.only(bottom: 5, left: 10),
                                   child: Text(
-                                    TextApp.directions,
-                                    style: TextStyle(
+                                    S.of(context).directions,
+                                    style: const TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 16),
                                   ),

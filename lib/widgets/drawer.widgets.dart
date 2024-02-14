@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/models/user.models.dart';
 import 'package:daily_recipe/providers/auth.providers.dart';
+import 'package:daily_recipe/providers/profile.providers.dart';
+import 'package:daily_recipe/screens/homePage/homepage.screens.dart';
 import 'package:daily_recipe/screens/profile/profile.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
@@ -10,35 +12,28 @@ import 'package:provider/provider.dart';
 class DrawerWidget extends StatefulWidget {
   final ZoomDrawerController controller;
   final UserModel profileDetails;
-  const DrawerWidget({super.key, required this.controller, required this.profileDetails});
+  const DrawerWidget(
+      {super.key, required this.controller, required this.profileDetails});
 //  const DrawerWidget({super.key, required this.controller});
 
   @override
   State<DrawerWidget> createState() => _DrawerWidgetState();
 }
- 
+
 class _DrawerWidgetState extends State<DrawerWidget> {
   String name = '';
   String firstLetter = '';
   String imageUrl = '';
   @override
   void initState() {
-   init();
+    init();
     super.initState();
   }
 
   void init() async {
-    
-    //     .name!;
-    // firstLetter = name[0].toUpperCase();
-    // imageUrl = Provider.of<ProfileController>(context, listen: false)
-    //     .profileDetails
-        // .imageUrl!;
-
-    name =widget.profileDetails.name!;
+    name = widget.profileDetails.name!;
     firstLetter = name[0].toUpperCase();
-    imageUrl = widget.profileDetails.imageUrl!;    
-
+    imageUrl = widget.profileDetails.imageUrl!;
   }
 
   @override
@@ -50,17 +45,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Consumer<ProfileController>(
-            //     builder: (context, profileController, child) {
-            //          if (widget.profileDetails.docid == null) {
-            //           return const CircularProgressIndicator();
-            //         } else {
-            //   String? name = widget.profileDetails.name;
-            //   String? firstLetter = name?[0].toUpperCase();
-            //   String? imageUrl = widget.profileDetails.imageUrl;
-            //   return header(context, name!, firstLetter!, imageUrl!);}
-            // }),
-           header(context, name, firstLetter,imageUrl),
+            header(context, name, firstLetter, imageUrl),
             menuItem(context),
           ],
         ),
@@ -68,16 +53,16 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     );
   }
 
-  Widget header(
-      BuildContext context, String? name, String firstLetter, String? imageUrl) {
+  Widget header(BuildContext context, String? name, String firstLetter,
+      String? imageUrl) {
     return InkWell(
         onTap: () {
-              Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ProfileScreen(profileDetails: widget.profileDetails)),
-                      );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    ProfileScreen(profileDetails: widget.profileDetails)),
+          );
         },
         child: Container(
           padding: EdgeInsets.only(
@@ -93,12 +78,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(50),
                         child: CachedNetworkImage(
-          imageUrl: imageUrl!,
-          placeholder: (context, url) => Text(name!),
-          errorWidget: (context, url, error) => const Icon(Icons.error),
-          fit: BoxFit.cover,width: 80,
+                          imageUrl: imageUrl!,
+                          placeholder: (context, url) => Text(name!),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                          fit: BoxFit.cover,
+                          width: 80,
                           height: 80,
-        ))
+                        ))
                     : CircleAvatar(
                         radius: 40,
                         backgroundColor: ColorsApp.golden,
@@ -116,9 +103,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     const SizedBox(
                       height: 5,
                     ),
-                    const Text(
-                      "view profile",
-                      style: TextStyle(
+                    Text(
+                      S.of(context).viewProfile,
+                      style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
                           color: ColorsApp.borderLine),
@@ -140,23 +127,31 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           Column(
             children: [
               ListTile(
-                leading: const Icon(Icons.home, color: ColorsApp.PKColor),
-                title: const Text(TextApp.home,
-                    style: TextStyle(color: ColorsApp.PKColor)),
-                onTap: () {
-                  //  context.goNamed( 'HomepageScreen/');
-                  Navigator.pushNamed(context, AppRoutes.homepageScreen);
-                },
-              ),
+                  leading: const Icon(Icons.home, color: ColorsApp.PKColor),
+                  title: Text(S.of(context).home,
+                      style: const TextStyle(color: ColorsApp.PKColor)),
+                  onTap: () async {
+                    await Provider.of<ProfileController>(context, listen: false)
+                        .getUser();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HomepageScreen(
+                              profileDetails: Provider.of<ProfileController>(
+                                      context,
+                                      listen: false)
+                                  .profileDetails)),
+                    );
+                  }),
               const SizedBox(
                 height: 5,
               ),
               ListTile(
                 leading: const Icon(Icons.favorite_border_outlined,
                     color: ColorsApp.borderLine),
-                title: const Text(
-                  TextApp.favorite,
-                  style: TextStyle(color: ColorsApp.borderLine),
+                title: Text(
+                  S.of(context).favorite,
+                  style: const TextStyle(color: ColorsApp.borderLine),
                 ),
                 onTap: () {
                   widget.controller.close?.call();
@@ -169,9 +164,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               ListTile(
                 leading: const Icon(Icons.play_arrow_outlined,
                     color: ColorsApp.borderLine),
-                title: const Text(
-                  TextApp.recentlyViewed,
-                  style: TextStyle(color: ColorsApp.borderLine),
+                title: Text(
+                  S.of(context).recentlyViewed,
+                  style: const TextStyle(color: ColorsApp.borderLine),
                 ),
                 onTap: () {
                   widget.controller.close?.call();
@@ -181,9 +176,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               ListTile(
                 leading:
                     const Icon(Icons.food_bank, color: ColorsApp.borderLine),
-                title: const Text(
-                  TextApp.ingredients,
-                  style: TextStyle(color: ColorsApp.borderLine),
+                title: Text(
+                  S.of(context).ingredients,
+                  style: const TextStyle(color: ColorsApp.borderLine),
                 ),
                 onTap: () {
                   widget.controller.close?.call();
@@ -193,23 +188,21 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               ListTile(
                 leading:
                     const Icon(Icons.settings, color: ColorsApp.borderLine),
-                title: const Text(TextApp.settings,
-                    style: TextStyle(color: ColorsApp.borderLine)),
+                title: Text(S.of(context).settings,
+                    style: const TextStyle(color: ColorsApp.borderLine)),
                 onTap: () {
                   widget.controller.close?.call();
                   Navigator.pushNamed(context, AppRoutes.settingsScreen);
-                
                 },
-              ),              
+              ),
               const SizedBox(
                 height: 5,
               ),
-            
               ListTile(
                 leading: const Icon(Icons.logout_outlined,
                     color: ColorsApp.borderLine),
-                title: const Text(TextApp.logout,
-                    style: TextStyle(color: ColorsApp.borderLine)),
+                title: Text(S.of(context).logout,
+                    style: const TextStyle(color: ColorsApp.borderLine)),
                 onTap: () async {
                   widget.controller.close?.call();
                   final authController =

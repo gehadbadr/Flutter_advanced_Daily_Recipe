@@ -52,9 +52,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const Text(
-                          TextApp.resetPassword,
-                          style: TextStyle(
+                         Text(
+                          S.of(context).resetPassword,
+                          style: const TextStyle(
                               color: ColorsApp.whiteColor,
                               fontSize: 18,
                               fontWeight: FontWeight.w700),
@@ -72,8 +72,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                               child: Column(
                                 children: [
                                   CustomTextField(
-                                    title: TextApp.email,
-                                    hint: TextApp.emailHint,
+                                    title: S.of(context).email,
+                                    hint: S.of(context).emailHint,
                                     controller: authController.emailController,
                                     icon: Icons.email,
                                     isPass: false,
@@ -83,14 +83,14 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                     },
                                   ),
                                   const SizedBox(
-                                    height: 15,
+                                    height: 20,
                                   ),
                                   SizedBox(
                                       width: context.screenWidth - 50,
                                       child: CustomButton(
                                         bgColor: ColorsApp.PKColor,
                                         textColor: ColorsApp.whiteColor,
-                                        title: TextApp.resetPassword,
+                                        title: S.of(context).resetPassword,
                                         onPress: () async {
                                           authController.resetPassword(context);
                                         },
@@ -110,15 +110,15 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                   context, AppRoutes.loginScreen);
                             },
                             child: RichText(
-                              text: const TextSpan(children: [
+                              text:  TextSpan(children: [
                                 TextSpan(
-                                    text: TextApp.alreadyHaveAccount,
-                                    style: TextStyle(
+                                    text: S.of(context).alreadyHaveAccount,
+                                    style: const TextStyle(
                                         fontWeight: FontWeight.w700,
                                         color: ColorsApp.fontGrey,
                                         fontSize: 16)),
                                 TextSpan(
-                                    text: TextApp.login,
+                                    text: S.of(context).login,
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         color: ColorsApp.PKColor,

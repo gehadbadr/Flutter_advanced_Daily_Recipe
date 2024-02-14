@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/models/recipes.models.dart';
+import 'package:daily_recipe/providers/lang.providers.dart';
 import 'package:daily_recipe/screens/recipes/recipeDetails.screens.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class Recipes extends StatelessWidget {
-/*  final String? id, title, image, mealType;
-  final num? rating;
-  final num? calerios, prepTime, serving;*/
+class Recipes extends StatefulWidget {
+
   final Recipe recipeDetails;
   final int? viewType;
   final Function()? onPressAction;
@@ -16,18 +16,20 @@ class Recipes extends StatelessWidget {
   const Recipes({
     super.key,
     required this.recipeDetails,
-    /*  required this.id,
-    required this.title,
-    required this.image,
-    required this.mealType,
-    required this.rating,
-    required this.calerios,
-    required this.prepTime,
-    required this.serving,*/
     required this.isFavorite,
     this.viewType,
     this.onPressAction,
   });
+
+  @override
+  State<Recipes> createState() => _RecipesState();
+}
+
+class _RecipesState extends State<Recipes> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class Recipes extends StatelessWidget {
   typeView(
     BuildContext context,
   ) {
-    switch (viewType) {
+    switch (widget.viewType) {
       case 0: //display recipes in vertical card.
         return freshRecipes(context);
       case 1: //display recipes in horizontal card.
@@ -58,7 +60,7 @@ class Recipes extends StatelessWidget {
     return Container(
       alignment: Alignment.bottomLeft,
       margin: const EdgeInsets.only(top: 10, right: 30, bottom: 10, left: 10),
-      width: viewType == 0 ? 200 : 300,
+      width: widget.viewType == 0 ? 200 : 300,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: ColorsApp.lightGrey,
@@ -73,10 +75,11 @@ class Recipes extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+       //isArabic?
+            Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children:[
               favoriteIcon(),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
@@ -86,19 +89,42 @@ class Recipes extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) => RecipeDetailsScreen(
-                                recipeDetails: recipeDetails)),
+                                recipeDetails: widget.recipeDetails)),
                       );
                     },
-                    child: viewType == 0
+                    child: widget.viewType == 0
                         ? recipeImage(130, 130, context)
                         : recipeImage(context.screenWidth / 6, 90, context)),
               ),
             ],
-          ),
-          const SizedBox(
+          )
+          //  :  Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   crossAxisAlignment: CrossAxisAlignment.start,
+          //   children:[
+          //     Padding(
+          //       padding: const EdgeInsets.only(top: 8.0),
+          //       child: InkWell(
+          //           onTap: () {
+          //             Navigator.push(
+          //               context,
+          //               MaterialPageRoute(
+          //                   builder: (context) => RecipeDetailsScreen(
+          //                       recipeDetails: widget.recipeDetails)),
+          //             );
+          //           },
+          //           child: widget.viewType == 0
+          //               ? recipeImage(130, 130, context)
+          //               : recipeImage(context.screenWidth / 6, 90, context)),
+          //     ),
+          //     favoriteIcon(),
+
+          //   ],
+          // ),
+          ,const SizedBox(
             height: 5,
           ),
-          info(context, viewType!)
+          info(context, widget.viewType!)
         ],
       ),
     );
@@ -113,7 +139,7 @@ class Recipes extends StatelessWidget {
       width = MediaQuery.of(context).size.width - 50;
     }
     return Stack(
-      alignment: Alignment.topRight,
+      alignment: !Provider.of<LangController>(context, listen: false).isArabic()?Alignment.topRight:Alignment.topLeft,
       children: [
         Container(
           alignment: Alignment.bottomLeft,
@@ -138,7 +164,7 @@ class Recipes extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            RecipeDetailsScreen(recipeDetails: recipeDetails)),
+                            RecipeDetailsScreen(recipeDetails: widget.recipeDetails)),
                   );
                   //  context.goNamed(AppRoutes.recipeDetailsScreen, queryParameters: {'recipeId':'$id'});
                 },
@@ -151,16 +177,16 @@ class Recipes extends StatelessWidget {
               ),
               Align(
                 alignment: Alignment.centerLeft,
-                child: info(context, viewType!),
+                child: info(context, widget.viewType!),
               ),
             ],
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(16.0),
-          child: viewType == 3
+          child: widget.viewType == 3
               ? closeIcon()
-              : viewType == 5
+              : widget.viewType == 5
                   ? Container()
                   : favoriteIcon(),
         )
@@ -184,7 +210,7 @@ class Recipes extends StatelessWidget {
               Expanded(
                 flex: 4,
                 child: Text(
-                  recipeDetails.title!,
+                  widget.recipeDetails.title!,
                   style: const TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.w700,
@@ -211,7 +237,7 @@ class Recipes extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  colories(14),
+                  colories(14,context),
                   const SizedBox(
                     height: 10,
                   ),
@@ -219,11 +245,11 @@ class Recipes extends StatelessWidget {
                   const SizedBox(
                     height: 25,
                   ),
-                  perpTime(20, 14),
+                  perpTime(20, 14,context),
                   const SizedBox(
                     height: 15,
                   ),
-                  serve(20, 14),
+                  serve(20, 14,context),
                 ],
               ),
               const SizedBox(
@@ -249,7 +275,7 @@ class Recipes extends StatelessWidget {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      RecipeDetailsScreen(recipeDetails: recipeDetails)),
+                      RecipeDetailsScreen(recipeDetails: widget.recipeDetails)),
             );
             //  context.goNamed(AppRoutes.recipeDetailsScreen, queryParameters: {'recipeId':'$id'});
           },
@@ -263,7 +289,7 @@ class Recipes extends StatelessWidget {
               const SizedBox(
                 width: 5,
               ),
-              colories(10),
+              colories(10,context),
             ])
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -272,7 +298,7 @@ class Recipes extends StatelessWidget {
                 const SizedBox(
                   height: 5,
                 ),
-                colories(10),
+                colories(10,context),
               ],
             ),
       const SizedBox(
@@ -281,11 +307,11 @@ class Recipes extends StatelessWidget {
       MediaQuery.of(context).size.width < 450 && viewType == 4
           ? Column(
               children: [
-                perpTime(15, 12),
+                perpTime(15, 12,context),
                 const SizedBox(
                   width: 10,
                 ),
-                serve(15, 12),
+                serve(15, 12,context),
                 const SizedBox(
                   height: 10,
                 ),
@@ -293,11 +319,11 @@ class Recipes extends StatelessWidget {
             )
           : Row(
               children: [
-                perpTime(15, 12),
+                perpTime(15, 12,context),
                 const SizedBox(
                   width: 10,
                 ),
-                serve(15, 12),
+                serve(15, 12,context),
                 const SizedBox(
                   height: 10,
                 ),
@@ -308,7 +334,7 @@ class Recipes extends StatelessWidget {
 
   Widget mealTypeWidget(double fontSize) {
     return Text(
-      recipeDetails.mealType!,
+      widget.recipeDetails.mealType!,
       style: TextStyle(fontSize: fontSize, color: ColorsApp.lightBlue),
     );
   }
@@ -334,7 +360,7 @@ class Recipes extends StatelessWidget {
       width: width,
       constraints: BoxConstraints(minHeight: minHeight),
       child: Text(
-        recipeDetails.title!,
+        widget.recipeDetails.title!,
         maxLines: maxLines,
         overflow: TextOverflow.ellipsis,
         style: const TextStyle(
@@ -345,7 +371,7 @@ class Recipes extends StatelessWidget {
 
   Widget ratingStars(double size) {
     return VxRating(
-        value: recipeDetails.rating!.toDouble(),
+        value: widget.recipeDetails.rating!.toDouble(),
         onRatingUpdate: (value) {},
         normalColor: ColorsApp.textfieldGrey,
         selectionColor: ColorsApp.PKColor,
@@ -354,14 +380,14 @@ class Recipes extends StatelessWidget {
         count: 5);
   }
 
-  Widget colories(double fontSize) {
+  Widget colories(double fontSize,BuildContext context) {
     return Text(
-      "${recipeDetails.calerios} ${TextApp.calories}",
+      "${widget.recipeDetails.calerios} ${S.of(context).calories}",
       style: TextStyle(fontSize: fontSize, color: ColorsApp.PKColor),
     );
   }
 
-  Widget serve(double iconSize, double fontSize) {
+  Widget serve(double iconSize, double fontSize ,BuildContext context) {
     return Row(
       children: [
         Icon(
@@ -373,14 +399,14 @@ class Recipes extends StatelessWidget {
           width: 5,
         ),
         Text(
-          "${recipeDetails.serving} ${TextApp.serving}",
+          "${widget.recipeDetails.serving} ${S.of(context).serving}",
           style: TextStyle(color: ColorsApp.borderLine, fontSize: fontSize),
         ),
       ],
     );
   }
 
-  Widget perpTime(double iconSize, double fontSize) {
+  Widget perpTime(double iconSize, double fontSize ,BuildContext context) {
     return Row(
       children: [
         Icon(
@@ -392,7 +418,7 @@ class Recipes extends StatelessWidget {
           width: 5,
         ),
         Text(
-          "${recipeDetails.prepTime} ${TextApp.mins}",
+          "${widget.recipeDetails.prepTime} ${S.of(context).mins}",
           style: TextStyle(color: ColorsApp.borderLine, fontSize: fontSize),
         ),
       ],
@@ -402,7 +428,7 @@ class Recipes extends StatelessWidget {
   Widget favoriteIcon() {
     Color favoriteColor;
     IconData favoriteIcon;
-    if (isFavorite!) {
+    if (widget.isFavorite!) {
       favoriteColor = ColorsApp.PKColor;
       favoriteIcon = Icons.favorite;
     } else {
@@ -410,7 +436,7 @@ class Recipes extends StatelessWidget {
       favoriteIcon = Icons.favorite_outline;
     }
     return IconButton(
-        onPressed: onPressAction,
+        onPressed: widget.onPressAction,
         icon: Icon(
           favoriteIcon,
           color: favoriteColor,
@@ -419,7 +445,7 @@ class Recipes extends StatelessWidget {
 
   Widget closeIcon() {
     return IconButton(
-        onPressed: onPressAction,
+        onPressed: widget.onPressAction,
         icon: const Icon(
           Icons.close,
           color: ColorsApp.PKColor,
@@ -433,8 +459,8 @@ class Recipes extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
         child: CachedNetworkImage(
-          imageUrl: recipeDetails.image!,
-          placeholder: (context, url) => Text(recipeDetails.title!),
+          imageUrl: widget.recipeDetails.image!,
+          placeholder: (context, url) => Text(widget.recipeDetails.title!),
           errorWidget: (context, url, error) => const Icon(Icons.error),
           fit: BoxFit.fill,
         ),

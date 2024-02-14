@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/providers/profile.providers.dart';
 import 'package:daily_recipe/screens/homePage/homepage.screens.dart';
+import 'package:daily_recipe/services/prefrences.services.dart';
 import 'package:daily_recipe/widgets/applogo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -25,26 +26,31 @@ class _SplashScreenState extends State<SplashScreen> {
 
   _navigatetohome() async {
     await Future.delayed(const Duration(seconds: 3), () {});
-  
-    _listener = FirebaseAuth.instance.authStateChanges().listen((User? user) async {
+    _listener =
+        FirebaseAuth.instance.authStateChanges().listen((User? user) async {
       if (user == null) {
-        Navigator.pushReplacementNamed(context, AppRoutes.introScreen);
+        await PrefrencesService.getLang();
+        if (PrefrencesService.lang == null) {
+          Navigator.pushReplacementNamed(context, AppRoutes.languageScreen);
+
+        } else {
+          Navigator.pushReplacementNamed(context, AppRoutes.introScreen);
+        }
       } else {
-          await Provider.of<ProfileController>(context, listen: false)
-                      .getUser();
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => HomepageScreen(
-                            profileDetails: Provider.of<ProfileController>(
-                                    context,
-                                    listen: false)
-                                .profileDetails)),
-                  );
-      //  Navigator.pushReplacementNamed(context, AppRoutes.homepageScreen);
+        await Provider.of<ProfileController>(context, listen: false).getUser();
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomepageScreen(
+                  profileDetails:
+                      Provider.of<ProfileController>(context, listen: false)
+                          .profileDetails),
+            ));
+        //  Navigator.pushReplacementNamed(context, AppRoutes.homepageScreen);
       }
     });
   }
+
 
   @override
   void dispose() {

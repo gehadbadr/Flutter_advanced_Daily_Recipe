@@ -2,7 +2,7 @@ class Recipe {
   String? docId, title, image, mealType, description;
   num? rating;
   num? calerios, prepTime, serving;
-  bool? recommended;
+  bool? recommended,isFresh;
   List? ingredients,directions;
   List<String>? fanId;
   List<String>? viewerId;
@@ -10,7 +10,7 @@ class Recipe {
   Recipe();
 
   Recipe.fromJson(Map<String, dynamic> data, [String? id]) {
-    docId = id;
+    docId = id; 
     title = data['title'];
     image = data['image'];
     mealType = data['mealType'];
@@ -26,6 +26,7 @@ class Recipe {
         ? List<String>.from(data['directions'].map((e) => e.toString()))
         : null;
     recommended = data['recommended'];
+    isFresh = data['isFresh'];
     fanId = data['fans_ids'] != null
         ? List<String>.from(data['fans_ids'].map((e) => e.toString()))
         : null;

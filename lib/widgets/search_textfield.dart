@@ -21,7 +21,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
         cursorColor: ColorsApp.borderLine,
         onChanged: widget.onChanged,
         onTap:widget.onClick,
-        decoration: const InputDecoration(
+        decoration:  InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
               borderSide: BorderSide(
@@ -35,7 +35,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
             ),
             filled: true,
             fillColor: ColorsApp.lightGrey,
-            hintText: TextApp.searchAnyThing,
+            hintText: S.of(context).searchAnyThing,
             hintStyle: TextStyle(color: ColorsApp.borderLine)));
   }
 }

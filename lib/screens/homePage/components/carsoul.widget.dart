@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/providers/home.providers.dart';
+import 'package:daily_recipe/providers/lang.providers.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +15,7 @@ class CarsoulWidget extends StatefulWidget {
 }
 
 class _CarsoulWidgetState extends State<CarsoulWidget> {
+  bool isArabic = false;
   @override
   void initState() {
     init();
@@ -23,6 +25,7 @@ class _CarsoulWidgetState extends State<CarsoulWidget> {
   void init() async {
     Provider.of<HomeController>(context, listen: false).getAds();
     Provider.of<HomeController>(context, listen: false).initCarousal();
+    isArabic = Provider.of<LangController>(context, listen: false).isArabic();
   }
 
   // @override
@@ -42,9 +45,9 @@ class _CarsoulWidgetState extends State<CarsoulWidget> {
     return Consumer<HomeController>(builder: (context, homeController, child) {
       homeController.getAds();
       if (homeController.adsList == null) {
-        return const Text('No Data Found');
-      } else if (homeController.adsList!.isEmpty) {
         return const CircularProgressIndicator();
+      } else if (homeController.adsList!.isEmpty /*?? false*/) {
+        return Text(S.of(context).noDataFound);
       } else {
         return Stack(
           alignment: Alignment.centerLeft,
@@ -66,7 +69,7 @@ class _CarsoulWidgetState extends State<CarsoulWidget> {
                           },
                           enlargeFactor: .3),
                       itemCount: homeController.adsList!.length,
-                      itemBuilder: (BuildContext, index, int) => Stack(
+                      itemBuilder: (context, index, int) => Stack(
                             alignment: Alignment.topLeft,
                             children: [
                               Container(
@@ -77,7 +80,7 @@ class _CarsoulWidgetState extends State<CarsoulWidget> {
                                   child: CachedNetworkImage(
                                     imageUrl:
                                         homeController.adsList![index].image!,
-                                  //  placeholder: (context, url) => const CircularProgressIndicator(),
+                                    //  placeholder: (context, url) => const CircularProgressIndicator(),
                                     errorWidget: (context, url, error) =>
                                         const Icon(Icons.error),
                                     fit: BoxFit.fill,
@@ -129,13 +132,15 @@ class _CarsoulWidgetState extends State<CarsoulWidget> {
                 color: ColorsApp.lightGrey.withOpacity(0.5),
                 child: IconButton(
                   onPressed: () {
-                    homeController.previousSlider();
+                    !isArabic
+                        ? homeController.previousSlider()
+                        : homeController.nextSlider();
                   },
-                  icon: const Icon(
-                    Icons.navigate_before,
-                    size: 25,
-                    color: ColorsApp.PKColor,
-                  ),
+                  icon: !isArabic
+                      ? const Icon(Icons.navigate_before,
+                          size: 30, color: ColorsApp.PKColor)
+                      : const Icon(Icons.navigate_next,
+                          size: 30, color: ColorsApp.PKColor),
                 ),
               ),
             ),
@@ -149,10 +154,15 @@ class _CarsoulWidgetState extends State<CarsoulWidget> {
                   color: ColorsApp.lightGrey.withOpacity(0.5),
                   child: IconButton(
                     onPressed: () {
-                      homeController.nextSlider();
+                      !isArabic
+                          ? homeController.nextSlider()
+                          : homeController.previousSlider();
                     },
-                    icon: const Icon(Icons.navigate_next,
-                        size: 30, color: ColorsApp.PKColor),
+                    icon: !isArabic
+                        ? const Icon(Icons.navigate_next,
+                            size: 30, color: ColorsApp.PKColor)
+                        : const Icon(Icons.navigate_before,
+                            size: 30, color: ColorsApp.PKColor),
                   ),
                 ),
               ),

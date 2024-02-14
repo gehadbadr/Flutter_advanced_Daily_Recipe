@@ -6,9 +6,9 @@ import 'package:daily_recipe/screens/filter/filter.screens.dart';
 import 'package:daily_recipe/screens/ingredients/ingredient.screens.dart';
 import 'package:daily_recipe/screens/auth/intro.screens.dart';
 import 'package:daily_recipe/screens/auth/login_screen.dart';
+import 'package:daily_recipe/screens/language.screens.dart';
 import 'package:daily_recipe/screens/recipes/allRecipes.screens.dart';
 import 'package:daily_recipe/screens/recipes/favoriteRecipes.screens.dart';
-import 'package:daily_recipe/screens/recipes/lists.dart';
 import 'package:daily_recipe/screens/recipes/viewedRecipes.screens.dart';
 import 'package:daily_recipe/screens/auth/signup_screen.dart';
 import 'package:daily_recipe/screens/settings/settings.screens.dart';
@@ -23,6 +23,7 @@ class AppRouter {
   static final router = {
     '/': (context) => const SplashScreen(),
     AppRoutes.introScreen: (context) => const IntroScreen(),
+    AppRoutes.languageScreen: (context) => const LanguageScreen(),
     AppRoutes.loginScreen: (context) => const LoginScreen(),
     AppRoutes.signupScreen: (context) => const SignupScreen(),
     AppRoutes.forgetScreen: (context) => const ForgetPasswordScreen(),
@@ -30,7 +31,7 @@ class AppRouter {
     AppRoutes.allRecipesScreen: (context) => const AllRecipesScreen(),
     AppRoutes.filterScreen: (context) => const FilterScreen(),
     AppRoutes.viewedRecipesScreen: (context) => const ViewedRecipesScreen(),
-    AppRoutes.favoriteRecipesScreen: (context) => const ListScreen(),
+    AppRoutes.favoriteRecipesScreen: (context) => const FavoriteRecipesScreen(),
     AppRoutes.ingredientsScreen: (context) => const IngredientsScreen(),
     AppRoutes.settingsScreen: (context) => const SettingsScreen(),
   //  AppRoutes.profileScreen: (context) => ProfileScreen(profileDetails:profileDetails),

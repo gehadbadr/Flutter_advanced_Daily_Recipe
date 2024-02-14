@@ -21,21 +21,10 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
   // TextEditingController searchController = TextEditingController();
   // FocusNode searchFocus = FocusNode();
   // bool searching = false;
-  bool startAnimation = false;
   @override
   void initState() {
-    init();
-    super.initState();
-  }
-
-  init() {
     Provider.of<RecipeController>(context, listen: false).initFavorite();
-
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      setState(() {
-        startAnimation = true;
-      });
-    });
+    super.initState();
   }
 
   @override
@@ -44,12 +33,8 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
     super.deactivate();
   }
 
-  double screenHeight = 0;
-  double screenWidth = 0;
   @override
   Widget build(BuildContext context) {
-    screenHeight = MediaQuery.of(context).size.height;
-    screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: ColorsApp.whiteColor,
       appBar: PreferredSize(
@@ -69,7 +54,7 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
                               .profileDetails)),
                 );
               },
-              actionIcon: Icons.notification_add_outlined,
+              actionIcon: Icons.language,
               onPressAction: () {})),
       body: SafeArea(
         child: Padding(
@@ -78,23 +63,16 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
             physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Expanded(
                       child: Text(
-                        TextApp.favorite,
-                        style: TextStyle(
+                        S.of(context).favorite,
+                        style: const TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 25),
                       ),
                     ),
-                    Text(
-                      TextApp.clear,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: ColorsApp.PKColor,
-                          fontSize: 16),
-                    )
                   ],
                 ),
                 const SizedBox(
@@ -118,7 +96,8 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
                           child: SearchTextField(onChanged: (value) {
                             Provider.of<RecipeController>(context,
                                     listen: false)
-                                .runFilter(value);
+                                .runFilter(
+                                    value, AppRoutes.favoriteRecipesScreen);
                           })),
                     ),
                     const SizedBox(
@@ -141,7 +120,7 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
                       recipeController.foundRecipes == null
                           ? const CircularProgressIndicator()
                           : (recipeController.foundRecipes!.isEmpty ?? false)
-                              ? const Text('No Data Found')
+                              ? Text(S.of(context).noDataFound)
                               : recipeController.foundRecipes!.isEmpty
                                   ? const CircularProgressIndicator()
                                   : SingleChildScrollView(
@@ -150,65 +129,25 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
                                       child: Column(
                                         children: List.generate(
                                           recipeController.foundRecipes!.length,
-                                          (index) => AnimatedContainer(
-                                            width: screenWidth,
-                                            curve: Curves.easeInOut,
-                                            duration: Duration(
-                                                milliseconds:
-                                                    3000 + (index * 200)),
-                                            transform:
-                                                Matrix4.translationValues(
-                                                    startAnimation
-                                                        ? 0
-                                                        : screenWidth,
-                                                    0,
-                                                    0),
-                                            margin: const EdgeInsets.only(
-                                              bottom: 12,
-                                            ),
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 241, 13, 13),
-        borderRadius: BorderRadius.circular(10),
-      ),
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: screenWidth / 20,
-                                            ),
-                                            child: Recipes(
-                                                /*  id: recipeController
-                                                .favoriteList![index].docId,
-                                            title: recipeController
-                                                .favoriteList![index].title!,
-                                            image: recipeController
-                                                .favoriteList![index].image,
-                                            mealType: recipeController
-                                                .favoriteList![index].mealType,
-                                            rating: recipeController
-                                                .favoriteList![index].rating,
-                                            calerios: recipeController
-                                                .favoriteList![index].calerios,
-                                            serving: recipeController
-                                                .favoriteList![index].serving,
-                                            prepTime: recipeController
-                                                .favoriteList![index].prepTime,*/
-                                                recipeDetails: recipeController
-                                                    .foundRecipes![index],
-                                                viewType: 1,
-                                                isFavorite: recipeController
-                                                    .isFavoriteById(
+                                          (index) => Recipes(
+                                              recipeDetails: recipeController
+                                                  .foundRecipes![index],
+                                              viewType: 1,
+                                              isFavorite: recipeController
+                                                  .isFavoriteById(
+                                                      recipeController
+                                                              .foundRecipes![
+                                                          index]),
+                                              onPressAction: () {
+                                                recipeController
+                                                    .addFavoriteMethodById(
                                                         recipeController
                                                                 .foundRecipes![
-                                                            index]),
-                                                onPressAction: () {
-                                                  recipeController
-                                                      .addFavoriteMethodById(
-                                                          recipeController
-                                                                  .foundRecipes![
-                                                              index],
-                                                          context,
-                                                          AppRoutes
-                                                              .favoriteRecipesScreen);
-                                                }),
-                                          ),
+                                                            index],
+                                                        context,
+                                                        AppRoutes
+                                                            .favoriteRecipesScreen);
+                                              }),
                                         ),
                                       ),
                                     ),
