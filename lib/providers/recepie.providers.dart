@@ -22,7 +22,7 @@ class RecipeController extends ChangeNotifier {
   double servingValue = 0;
   double prepTimeValue = 0;
 //  double caloriesValue = 0;
-  RangeValues currentRangeValues = const RangeValues(25, 300);
+  RangeValues currentRangeValues = const RangeValues(0, 300);
 //  RangeValues caloriesStartval = 20 as RangeValues, caloriesEndval = 400 as RangeValues;
 
   List<Recipe>? get recipesList => _recipesList;
@@ -45,20 +45,17 @@ class RecipeController extends ChangeNotifier {
 //    _foundRecipes = _favoriteList;
   }
 
-  void disposeFoundRecipes()  {
+  void disposeFoundRecipes() {
     _foundRecipes = [];
   }
 
   void disposeFilter() async {
     selectedUserValue = {};
-
     servingValue = 0;
     prepTimeValue = 0;
-  
     currentRangeValues = const RangeValues(25, 300);
+    notifyListeners();
   }
-
-
 
   void updateServingValue(value) {
     servingValue = value;
@@ -69,14 +66,12 @@ class RecipeController extends ChangeNotifier {
     prepTimeValue = value;
     notifyListeners();
   }
-  
 
   void updatecaloriesValue(value) {
     currentRangeValues = value;
     notifyListeners();
   }
 
-  
   Future<void> getFilteredResult() async {
     var ref;
     if (isArabic()) {
@@ -84,7 +79,7 @@ class RecipeController extends ChangeNotifier {
     } else {
       ref = FirebaseFirestore.instance.collection('recipes');
     }
-  
+
     try {
       var result = await ref
           .where('mealType', isEqualTo: selectedUserValue['mealType'])
@@ -109,10 +104,8 @@ class RecipeController extends ChangeNotifier {
   }
 
   selectedUserValueUpdate(String key, dynamic value) {
-    //  selectedUserValue.update(key, value);
     selectedUserValue.update(key, (v) => value, ifAbsent: () => value);
     notifyListeners();
-    //  print(selectedUserValue.toString());
   }
 
   Future<void> getOpenedRecipe(recipeId) async {
@@ -243,7 +236,7 @@ class RecipeController extends ChangeNotifier {
                 arrayContains: FirebaseAuth.instance.currentUser?.uid)
             .get();
       }
-    
+
       if (result.docs.isNotEmpty) {
         _favoriteList = List<Recipe>.from(
             result.docs.map((doc) => Recipe.fromJson(doc.data(), doc.id)));
@@ -303,24 +296,23 @@ class RecipeController extends ChangeNotifier {
     }
   }
 
-  
   Future<void> addViewedRecipe(String recipeId, isAdd) async {
     try {
       if (!isAdd) {
-          await FirebaseFirestore.instance
-              .collection('recipes_ar')
-              .doc(recipeId)
-              .update({
-            "viewers_ids":
-                FieldValue.arrayUnion([FirebaseAuth.instance.currentUser?.uid])
-          });
-          await FirebaseFirestore.instance
-              .collection('recipes')
-              .doc(recipeId)
-              .update({
-            "viewers_ids":
-                FieldValue.arrayUnion([FirebaseAuth.instance.currentUser?.uid])
-          });
+        await FirebaseFirestore.instance
+            .collection('recipes_ar')
+            .doc(recipeId)
+            .update({
+          "viewers_ids":
+              FieldValue.arrayUnion([FirebaseAuth.instance.currentUser?.uid])
+        });
+        await FirebaseFirestore.instance
+            .collection('recipes')
+            .doc(recipeId)
+            .update({
+          "viewers_ids":
+              FieldValue.arrayUnion([FirebaseAuth.instance.currentUser?.uid])
+        });
         // await FirebaseFirestore.instance
         //     .collection('recipes')
         //     .doc(recipeId)
@@ -345,20 +337,20 @@ class RecipeController extends ChangeNotifier {
   Future<void> removeViewedRecipe(String recipeId, BuildContext context) async {
     try {
       OverlayLoadingProgress.start();
-        await FirebaseFirestore.instance
-            .collection('recipes_ar')
-            .doc(recipeId)
-            .update({
-          "viewers_ids":
-              FieldValue.arrayRemove([FirebaseAuth.instance.currentUser?.uid])
-        });
-        await FirebaseFirestore.instance
-            .collection('recipes')
-            .doc(recipeId)
-            .update({
-          "viewers_ids":
-              FieldValue.arrayRemove([FirebaseAuth.instance.currentUser?.uid])
-        });
+      await FirebaseFirestore.instance
+          .collection('recipes_ar')
+          .doc(recipeId)
+          .update({
+        "viewers_ids":
+            FieldValue.arrayRemove([FirebaseAuth.instance.currentUser?.uid])
+      });
+      await FirebaseFirestore.instance
+          .collection('recipes')
+          .doc(recipeId)
+          .update({
+        "viewers_ids":
+            FieldValue.arrayRemove([FirebaseAuth.instance.currentUser?.uid])
+      });
       // await FirebaseFirestore.instance
       //     .collection('recipes')
       //     .doc(recipeId)
@@ -380,8 +372,6 @@ class RecipeController extends ChangeNotifier {
     }
   }
 
-
-
   // check isfavorite from recipeDetailsScreen
   void addFavoriteMethodById(
       Recipe recipeDetails, BuildContext context, String screen) {
@@ -402,21 +392,21 @@ class RecipeController extends ChangeNotifier {
     try {
       OverlayLoadingProgress.start();
       if (!isAdd) {
-          await FirebaseFirestore.instance
-              .collection('recipes_ar')
-              .doc(recipeId)
-              .update({
-            "fans_ids":
-                FieldValue.arrayUnion([FirebaseAuth.instance.currentUser?.uid])
-          });
-          await FirebaseFirestore.instance
-              .collection('recipes')
-              .doc(recipeId)
-              .update({
-            "fans_ids":
-                FieldValue.arrayUnion([FirebaseAuth.instance.currentUser?.uid])
-          });
-        
+        await FirebaseFirestore.instance
+            .collection('recipes_ar')
+            .doc(recipeId)
+            .update({
+          "fans_ids":
+              FieldValue.arrayUnion([FirebaseAuth.instance.currentUser?.uid])
+        });
+        await FirebaseFirestore.instance
+            .collection('recipes')
+            .doc(recipeId)
+            .update({
+          "fans_ids":
+              FieldValue.arrayUnion([FirebaseAuth.instance.currentUser?.uid])
+        });
+
         // await FirebaseFirestore.instance
         //     .collection('recipes')
         //     .doc(recipeId)
@@ -430,20 +420,20 @@ class RecipeController extends ChangeNotifier {
         }
         notifyListeners();
       } else {
-          await FirebaseFirestore.instance
-              .collection('recipes_ar')
-              .doc(recipeId)
-              .update({
-            "fans_ids":
-                FieldValue.arrayRemove([FirebaseAuth.instance.currentUser?.uid])
-          });
-          await FirebaseFirestore.instance
-              .collection('recipes')
-              .doc(recipeId)
-              .update({
-            "fans_ids":
-                FieldValue.arrayRemove([FirebaseAuth.instance.currentUser?.uid])
-          });
+        await FirebaseFirestore.instance
+            .collection('recipes_ar')
+            .doc(recipeId)
+            .update({
+          "fans_ids":
+              FieldValue.arrayRemove([FirebaseAuth.instance.currentUser?.uid])
+        });
+        await FirebaseFirestore.instance
+            .collection('recipes')
+            .doc(recipeId)
+            .update({
+          "fans_ids":
+              FieldValue.arrayRemove([FirebaseAuth.instance.currentUser?.uid])
+        });
         // await FirebaseFirestore.instance
         //     .collection('recipes')
         //     .doc(recipeId)
@@ -475,7 +465,6 @@ class RecipeController extends ChangeNotifier {
       }
     }
   }
-
 
   Future<void> getUserIngredients() async {
     try {
@@ -544,7 +533,7 @@ class RecipeController extends ChangeNotifier {
   void runFilter(String? value, String? screen) {
     List<Recipe> results = [];
     if (screen == AppRoutes.favoriteRecipesScreen) {
-        if (value!.isEmpty) {
+      if (value!.isEmpty) {
         results = _favoriteList!;
       } else {
         results = _favoriteList!
@@ -570,6 +559,4 @@ class RecipeController extends ChangeNotifier {
     _foundRecipes = results;
     notifyListeners();
   }
-
-
 }

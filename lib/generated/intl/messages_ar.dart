@@ -132,6 +132,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("تأكيد كلمة المرور"),
         "repasswordRequired":
             MessageLookupByLibrary.simpleMessage("اعادة كلمة المرور مطلوبة"),
+        "reset": MessageLookupByLibrary.simpleMessage("إعادة ضبط"),
         "resetMsg": MessageLookupByLibrary.simpleMessage(
             "تم إرسال كلمة المرور الجديدة إلى البريد الإلكتروني"),
         "resetPassword":

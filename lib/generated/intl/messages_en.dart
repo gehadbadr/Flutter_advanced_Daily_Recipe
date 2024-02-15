@@ -129,6 +129,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Confirm Password"),
         "repasswordRequired":
             MessageLookupByLibrary.simpleMessage("RePassword is required"),
+        "reset": MessageLookupByLibrary.simpleMessage("Reset"),
         "resetMsg": MessageLookupByLibrary.simpleMessage(
             "New Password have been sent to email"),
         "resetPassword": MessageLookupByLibrary.simpleMessage("Reset Password"),

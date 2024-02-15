@@ -96,6 +96,7 @@
   "viewProfile" : "view profile",
   "profile":"Your profile",
   "update" :"Update",
-  "noDataFound":"No Data Found"
+  "noDataFound":"No Data Found",
+  "reset":"Reset"
 
 }

@@ -64,6 +64,18 @@ class _FilterScreenState extends State<FilterScreen> {
                             fontWeight: FontWeight.w500, fontSize: 25),
                       ),
                     ),
+                    InkWell(
+                      onTap: () {
+                        recipeController.disposeFilter();
+                      },
+                      child: Text(
+                        S.of(context).reset,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: ColorsApp.PKColor,
+                            fontSize: 16),
+                      ),
+                    )
                   ],
                 ),
                 const SizedBox(
@@ -84,66 +96,33 @@ class _FilterScreenState extends State<FilterScreen> {
                     children: [
                       InkWell(
                         onTap: () {
-                            if (recipeController.isArabic()) {
+                          if (recipeController.isArabic()) {
                             recipeController.selectedUserValueUpdate(
-                              'mealType', 'فطار');
+                                'mealType', 'فطار');
                           } else {
-                          recipeController.selectedUserValueUpdate(
-                              'mealType', 'breakfast');
+                            recipeController.selectedUserValueUpdate(
+                                'mealType', 'breakfast');
                           }
-                        
                         },
                         child: Chip(
                           label: Text(S.of(context).breakfast,
                               style: TextStyle(
                                 fontSize: 16,
-                                color: recipeController
-                                            .selectedUserValue['mealType'] ==
-                                        "breakfast"|| recipeController
-                                            .selectedUserValue['mealType'] ==
-                                        "فطار"
+                                color: recipeController.selectedUserValue[
+                                                'mealType'] ==
+                                            "breakfast" ||
+                                        recipeController.selectedUserValue[
+                                                'mealType'] ==
+                                            "فطار"
                                     ? ColorsApp.PKColor
                                     : ColorsApp.fontGrey,
                               )),
                           backgroundColor:
                               recipeController.selectedUserValue['mealType'] ==
-                                      "breakfast"|| recipeController
-                                            .selectedUserValue['mealType'] ==
-                                        "فطار"
-                                  ? ColorsApp.chips
-                                  : ColorsApp.lightGrey,
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 10),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                            if (recipeController.isArabic()) {
-                            recipeController.selectedUserValueUpdate(
-                              'mealType', 'غداء');
-                          } else {
-                          recipeController.selectedUserValueUpdate(
-                              'mealType', 'lunch');
-                          }
-                          
-                        },
-                        child: Chip(
-                          label: Text(S.of(context).lunch,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: recipeController
-                                            .selectedUserValue['mealType'] ==
-                                        "lunch"|| recipeController
-                                            .selectedUserValue['mealType'] ==
-                                        "غداء"
-                                    ? ColorsApp.PKColor
-                                    : ColorsApp.fontGrey,
-                              )),
-                          backgroundColor:
-                              recipeController.selectedUserValue['mealType'] ==
-                                      "lunch"|| recipeController
-                                            .selectedUserValue['mealType'] ==
-                                        "غداء"
+                                          "breakfast" ||
+                                      recipeController
+                                              .selectedUserValue['mealType'] ==
+                                          "فطار"
                                   ? ColorsApp.chips
                                   : ColorsApp.lightGrey,
                           padding: const EdgeInsets.symmetric(
@@ -154,30 +133,66 @@ class _FilterScreenState extends State<FilterScreen> {
                         onTap: () {
                           if (recipeController.isArabic()) {
                             recipeController.selectedUserValueUpdate(
-                              'mealType', 'عشاء');
+                                'mealType', 'غداء');
                           } else {
                             recipeController.selectedUserValueUpdate(
-                              'mealType', 'dinner');
+                                'mealType', 'lunch');
                           }
-                          
                         },
                         child: Chip(
-                          label: Text(S.of(context).dinner,
+                          label: Text(S.of(context).lunch,
                               style: TextStyle(
                                 fontSize: 16,
-                                color: recipeController
-                                            .selectedUserValue['mealType'] ==
-                                        "dinner"|| recipeController
-                                            .selectedUserValue['mealType'] ==
-                                        "عشاء"
+                                color: recipeController.selectedUserValue[
+                                                'mealType'] ==
+                                            "lunch" ||
+                                        recipeController.selectedUserValue[
+                                                'mealType'] ==
+                                            "غداء"
                                     ? ColorsApp.PKColor
                                     : ColorsApp.fontGrey,
                               )),
                           backgroundColor:
                               recipeController.selectedUserValue['mealType'] ==
-                                      "dinner"|| recipeController
-                                            .selectedUserValue['mealType'] ==
-                                        "عشاء"
+                                          "lunch" ||
+                                      recipeController
+                                              .selectedUserValue['mealType'] ==
+                                          "غداء"
+                                  ? ColorsApp.chips
+                                  : ColorsApp.lightGrey,
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 10),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          if (recipeController.isArabic()) {
+                            recipeController.selectedUserValueUpdate(
+                                'mealType', 'عشاء');
+                          } else {
+                            recipeController.selectedUserValueUpdate(
+                                'mealType', 'dinner');
+                          }
+                        },
+                        child: Chip(
+                          label: Text(S.of(context).dinner,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: recipeController.selectedUserValue[
+                                                'mealType'] ==
+                                            "dinner" ||
+                                        recipeController.selectedUserValue[
+                                                'mealType'] ==
+                                            "عشاء"
+                                    ? ColorsApp.PKColor
+                                    : ColorsApp.fontGrey,
+                              )),
+                          backgroundColor:
+                              recipeController.selectedUserValue['mealType'] ==
+                                          "dinner" ||
+                                      recipeController
+                                              .selectedUserValue['mealType'] ==
+                                          "عشاء"
                                   ? ColorsApp.chips
                                   : ColorsApp.lightGrey,
                           padding: const EdgeInsets.symmetric(
