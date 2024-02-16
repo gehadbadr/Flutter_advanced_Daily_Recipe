@@ -30,7 +30,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void init() async {
     Provider.of<ProfileController>(context, listen: false)
         .getFirstLetter(widget.profileDetails);
-  //  isArabic = Provider.of<LangController>(context, listen: false).isArabic();
+    //  isArabic = Provider.of<LangController>(context, listen: false).isArabic();
   }
 
   @override
@@ -78,83 +78,172 @@ class _ProfileScreenState extends State<ProfileScreen> {
               //         } catch (e) {
               //           print(e.toString());
               //         }
-              child: Container(
-            height: 200,
-            color: ColorsApp.PKColor,
-            child: Column(
-              children: [
-                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Align(
-                      alignment:!Provider.of<LangController>(context, listen: false).isArabic()? Alignment.topRight:Alignment.centerLeft,
-                      child: const Icon(
-                        Icons.edit,
-                        color: ColorsApp.whiteColor,
-                      )),
-                ).onTap(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => EditProfileScreen(
-                            profileDetails: widget.profileDetails)),
-                  );
-                  //  Navigator.pushNamed(context, AppRoutes.editprofileScreen);
-                }),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Row(
-                    children: [
-                      widget.profileDetails.imageUrl == ''
-                          ? CircleAvatar(
-                              radius: 40,
-                              backgroundColor: ColorsApp.golden,
-                              child: Text(Provider.of<ProfileController>(
-                                      context,
+              child: Column(
+            children: [
+              Container(
+                height: 200,
+                color: ColorsApp.PKColor,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Align(
+                          alignment: !Provider.of<LangController>(context,
                                       listen: false)
-                                  .firstLetter),
-                            )
-                          : ClipRRect(
-                              borderRadius: BorderRadius.circular(50),
-                              child: CachedNetworkImage(
-                                imageUrl: widget.profileDetails.imageUrl!,
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error),
-                                width: 80,
-                                height: 80,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                      Expanded(
-                          child: Column(
+                                  .isArabic()
+                              ? Alignment.topRight
+                              : Alignment.centerLeft,
+                          child: const Icon(
+                            Icons.edit,
+                            color: ColorsApp.whiteColor,
+                          )),
+                    ).onTap(() {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EditProfileScreen(
+                                profileDetails: widget.profileDetails)),
+                      );
+                      //  Navigator.pushNamed(context, AppRoutes.editprofileScreen);
+                    }),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
                         children: [
-                          Text(widget.profileDetails.name!,
-                              style: const TextStyle(
-                                  color: ColorsApp.whiteColor,
-                                  fontWeight: FontWeight.w700)),
-                          Text(widget.profileDetails.email!,
-                              style: const TextStyle(
-                                  color: ColorsApp.whiteColor,
-                                  fontWeight: FontWeight.w600)),
+                          widget.profileDetails.imageUrl == ''
+                              ? CircleAvatar(
+                                  radius: 40,
+                                  backgroundColor: ColorsApp.golden,
+                                  child: Text(Provider.of<ProfileController>(
+                                          context,
+                                          listen: false)
+                                      .firstLetter),
+                                )
+                              : ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: CachedNetworkImage(
+                                    imageUrl: widget.profileDetails.imageUrl!,
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                    width: 80,
+                                    height: 80,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                          Expanded(
+                              child: Column(
+                            children: [
+                              Text(widget.profileDetails.name!,
+                                  style: const TextStyle(
+                                      color: ColorsApp.whiteColor,
+                                      fontWeight: FontWeight.w700)),
+                              Text(widget.profileDetails.email!,
+                                  style: const TextStyle(
+                                      color: ColorsApp.whiteColor,
+                                      fontWeight: FontWeight.w600)),
+                            ],
+                          )),
+                          OutlinedButton(
+                            onPressed: () async {
+                              final authController =
+                                  Provider.of<AuthController>(context,
+                                      listen: false);
+                              authController.signoutMethod(context);
+                            },
+                            child: Text(S.of(context).logout,
+                                style:  TextStyle(color: ColorsApp.whiteColor)),
+                            style: OutlinedButton.styleFrom(
+                                side: const BorderSide(
+                                    color: ColorsApp.whiteColor)),
+                          )
                         ],
-                      )),
-                      OutlinedButton(
-                        onPressed: () async {
-                          final authController = Provider.of<AuthController>(
-                              context,
-                              listen: false);
-                          authController.signoutMethod(context);
-                        },
-                        child: Text(S.of(context).logout,
-                            style: TextStyle(color: ColorsApp.whiteColor)),
-                        style: OutlinedButton.styleFrom(
-                            side:
-                                const BorderSide(color: ColorsApp.whiteColor)),
-                      )
-                    ],
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(
+                    height: 10,
+                  ),
+              Column(
+                children: [
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.favorite_border_outlined,
+                        color: ColorsApp.borderLine),
+                    title: Text(
+                      S.of(context).favorite,
+                      style: const TextStyle(color: ColorsApp.borderLine),
+                    ),
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, AppRoutes.favoriteRecipesScreen);
+                    },
+                  ),
+                  const Divider(
+                    color: ColorsApp.borderLine,
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.play_arrow_outlined,
+                        color: ColorsApp.borderLine),
+                    title: Text(
+                      S.of(context).recentlyViewed,
+                      style: const TextStyle(color: ColorsApp.borderLine),
+                    ),
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, AppRoutes.viewedRecipesScreen);
+                    },
+                  ),
+                  const Divider(
+                    color: ColorsApp.borderLine,
+                  ),
+                    const SizedBox(
+                    height: 5,
+                  ),
+                ListTile(
+                    leading: const Icon(Icons.food_bank,
+                        color: ColorsApp.borderLine),
+                    title: Text(
+                      S.of(context).ingredients,
+                      style: const TextStyle(color: ColorsApp.borderLine),
+                    ),
+                    onTap: () {
+                      Navigator.pushNamed(context, AppRoutes.ingredientsScreen);
+                    },
+                  ),
+                  const Divider(
+                    color: ColorsApp.borderLine,
+                  ),
+                    const SizedBox(
+                    height: 5,
+                  ),
+                ListTile(
+                    leading:
+                        const Icon(Icons.settings, color: ColorsApp.borderLine),
+                    title: Text(S.of(context).settings,
+                        style: const TextStyle(color: ColorsApp.borderLine)),
+                    onTap: () {
+                      Navigator.pushNamed(context, AppRoutes.settingsScreen);
+                    },
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),],
+              )
+                  .box
+                  .color(ColorsApp.lightGrey)
+                  .roundedSM
+                  .shadowSm
+                  .margin(const EdgeInsets.all(12))
+                  .padding(const EdgeInsets.symmetric(horizontal: 16))
+                  .make(),
+            ],
           )),
         ));
   }

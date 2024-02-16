@@ -3,6 +3,7 @@ import 'package:daily_recipe/models/recipes.models.dart';
 import 'package:daily_recipe/providers/recepie.providers.dart';
 import 'package:daily_recipe/widgets/appbar.widgets.dart';
 import 'package:daily_recipe/screens/recipes/components/recipes.components.dart';
+import 'package:daily_recipe/widgets/loadingCard.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -76,11 +77,31 @@ class _FilteredRecipesScreenState extends State<FilteredRecipesScreen> {
                   return Column(
                     children: [
                       recipeController.filteredRecipes == null
-                          ? const CircularProgressIndicator()
+                          ?  SingleChildScrollView(
+                                      padding: const EdgeInsets.all(0),
+                                      scrollDirection: Axis.horizontal,
+                                      child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: List.generate(
+                                  ListsApp.loadingCardList.length,
+                                  (index) => const LoadingListPage(
+                                        viewType: 5,
+                                      )),
+                            ))
                           : (widget.filteredRecipes.isEmpty ?? false)
                               ? const Text('No Data Found')
                               :widget.filteredRecipes.isEmpty
-                                  ? const CircularProgressIndicator()
+                                  ?  SingleChildScrollView(
+                                      padding: const EdgeInsets.all(0),
+                                      scrollDirection: Axis.horizontal,
+                                      child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: List.generate(
+                                  ListsApp.loadingCardList.length,
+                                  (index) => const LoadingListPage(
+                                        viewType: 5,
+                                      )),
+                            ))
                                   : SingleChildScrollView(
                                       padding: const EdgeInsets.all(0),
                                       scrollDirection: Axis.horizontal,

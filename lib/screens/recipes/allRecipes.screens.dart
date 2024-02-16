@@ -4,6 +4,7 @@ import 'package:daily_recipe/providers/recepie.providers.dart';
 import 'package:daily_recipe/screens/homePage/homepage.screens.dart';
 import 'package:daily_recipe/widgets/appbar.widgets.dart';
 import 'package:daily_recipe/screens/recipes/components/recipes.components.dart';
+import 'package:daily_recipe/widgets/loadingCard.dart';
 import 'package:flexible_grid_view/flexible_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -51,10 +52,19 @@ class _AllRecipesScreenState extends State<AllRecipesScreen> {
             builder: (ctx, recipeController, _) => recipeController
                         .recipesList ==
                     null
-                ? const CircularProgressIndicator()
+                ?  FlexibleGridView(
+                        axisCount: MediaQuery.of(context).size.width < 450
+                            ? GridLayoutEnum.twoElementsInRow
+                            : GridLayoutEnum.threeElementsInRow,
+                        crossAxisSpacing: 1,
+                        mainAxisSpacing: 1,
+                        children: ListsApp.loadingCardList
+                            .map((e) => LoadingListPage(viewType: 4))
+                            .toList(),
+                      )
                 : (recipeController.recipesList?.isEmpty ?? false)
                     ? const Text('No Data Found')
-                    : FlexibleGridView(
+                    :FlexibleGridView(
                         axisCount: MediaQuery.of(context).size.width < 450
                             ? GridLayoutEnum.twoElementsInRow
                             : GridLayoutEnum.threeElementsInRow,
@@ -70,8 +80,19 @@ class _AllRecipesScreenState extends State<AllRecipesScreen> {
                                       e, context, AppRoutes.homepageScreen);
                                 }))
                             .toList(),
-                      )),
-      ),
+                      )
+                    // :FlexibleGridView(
+                    //     axisCount: MediaQuery.of(context).size.width < 450
+                    //         ? GridLayoutEnum.twoElementsInRow
+                    //         : GridLayoutEnum.threeElementsInRow,
+                    //     crossAxisSpacing: 1,
+                    //     mainAxisSpacing: 1,
+                    //     children: ListsApp.loadingCardList
+                    //         .map((e) => LoadingListPage(viewType: 4))
+                    //         .toList(),
+                    //   )
+     ),
+     ),
     );
   }
 }

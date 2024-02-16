@@ -52,6 +52,7 @@ class _RecipesState extends State<Recipes> {
         return freshRecipes(context);
       case 5: //display recipes in horizontal card without favorite icon in FilteredRecipesScreen.
         return recommendedRecipes(context);
+    
     }
   }
 
@@ -452,7 +453,7 @@ class _RecipesState extends State<Recipes> {
         ));
   }
 
-  recipeImage(double width,double height, BuildContext context) {
+  Widget recipeImage(double width,double height, BuildContext context) {
     return SizedBox(
       height: height,
       width: width,

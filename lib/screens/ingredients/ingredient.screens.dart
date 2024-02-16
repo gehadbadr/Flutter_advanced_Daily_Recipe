@@ -1,8 +1,10 @@
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/providers/ingredient.providers.dart';
+import 'package:daily_recipe/providers/lang.providers.dart';
 import 'package:daily_recipe/providers/profile.providers.dart';
 import 'package:daily_recipe/screens/homePage/homepage.screens.dart';
 import 'package:daily_recipe/widgets/appbar.widgets.dart';
+import 'package:daily_recipe/widgets/loadingCard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -54,10 +56,22 @@ return Scaffold(
         child: Consumer<IngredientController>(
                     builder: (ctx, ingredientController, _) =>
                         ingredientController.ingredientsList == null
-                            ? const CircularProgressIndicator()
+                            ?  Align(
+                                  alignment: Provider.of<LangController>(context, listen: false).isArabic()?Alignment.topRight:Alignment.topLeft,
+                                  child: SizedBox(
+                                    width: 200,
+                                    child: ListView.builder(
+                                        itemCount: ListsApp.ingredientsList.length,
+                                        itemBuilder: (ctx, index) => const LoadingListPage(
+                                            viewType: 6,
+                                          )
+                                           ),
+                                  ),
+                                )
                             : (ingredientController.ingredientsList?.isEmpty ?? false)
                                 ? const Text('No Data Found')
-                                : ListView.builder(
+                                :
+                                ListView.builder(
                                     itemCount: ingredientController.ingredientsList!.length,
                                     itemBuilder: (ctx, index) => ListTile(
                                           leading: Checkbox(
@@ -75,7 +89,8 @@ return Scaffold(
                                           title: Text(ingredientController
                                                   .ingredientsList![index].name ??
                                               'No Name'),
-                                        ))),
+                                        ))
+                                        ),
       ),
             
         

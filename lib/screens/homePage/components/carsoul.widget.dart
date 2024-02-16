@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:daily_recipe/consts/consts.dart';
 import 'package:daily_recipe/providers/home.providers.dart';
 import 'package:daily_recipe/providers/lang.providers.dart';
+import 'package:daily_recipe/widgets/loadingCard.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -45,11 +46,14 @@ class _CarsoulWidgetState extends State<CarsoulWidget> {
     return Consumer<HomeController>(builder: (context, homeController, child) {
       homeController.getAds();
       if (homeController.adsList == null) {
-        return const CircularProgressIndicator();
+        return const LoadingListPage(
+          viewType: 7,
+        );
       } else if (homeController.adsList!.isEmpty /*?? false*/) {
         return Text(S.of(context).noDataFound);
       } else {
-        return Stack(
+        return
+        Stack(
           alignment: Alignment.centerLeft,
           children: [
             Positioned(

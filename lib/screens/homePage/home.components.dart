@@ -6,6 +6,7 @@ import 'package:daily_recipe/screens/homePage/components/carsoul.widget.dart';
 import 'package:daily_recipe/screens/recipes/components/recipes.components.dart';
 import 'package:daily_recipe/widgets/appbar.widgets.dart';
 import 'package:daily_recipe/widgets/filter_button.dart';
+import 'package:daily_recipe/widgets/loadingCard.dart';
 import 'package:daily_recipe/widgets/search_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
@@ -39,7 +40,6 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       backgroundColor: ColorsApp.whiteColor,
       appBar: PreferredSize(
@@ -58,20 +58,6 @@ class _HomeWidgetState extends State<HomeWidget> {
             physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
-                // Consumer<ProfileController>(
-                //     builder: (context, profileController, child) =>
-                //   profileController.profileDetails == null
-                //       ? const Text('No Data Found')
-                //       : profileController.profileDetails.docid!.isEmpty
-                //           ? const CircularProgressIndicator()
-                //           : Align(
-                //               alignment: Alignment.centerLeft,
-                //               child: Text(
-                //                   '${S.of(context).bonjour}, ${widget.profileDetails.name}',
-                //                   style: const TextStyle(
-                //                       fontSize: 20,
-                //                       color: ColorsApp.fontGrey)))
-                // ),
                 Align(
                     alignment: !widget.isArabic
                         ? Alignment.centerLeft
@@ -84,8 +70,9 @@ class _HomeWidgetState extends State<HomeWidget> {
                   height: 10,
                 ),
                 Align(
-                  alignment:
-                      !widget.isArabic ? Alignment.centerLeft : Alignment.centerRight,
+                  alignment: !widget.isArabic
+                      ? Alignment.centerLeft
+                      : Alignment.centerRight,
                   child: Text(
                     S.of(context).whatToCook,
                     style: const TextStyle(
@@ -127,8 +114,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                 ),
                 Consumer<RecipeController>(
                     builder: (context, recipeController, child) {
-                  //call here to add favorite
-                  //recipeController.getRecipes();
+              
                   return Column(
                     children: [
                       Row(
@@ -137,7 +123,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                           Expanded(
                             child: Text(
                               S.of(context).todayFreshRecipe,
-                              style:const TextStyle(
+                              style: const TextStyle(
                                   fontWeight: FontWeight.w700, fontSize: 20),
                             ),
                           ),
@@ -157,10 +143,20 @@ class _HomeWidgetState extends State<HomeWidget> {
                       const SizedBox(
                         height: 10,
                       ),
-                        recipeController.recipesList == null
-                      ?const CircularProgressIndicator()
+                      recipeController.recipesList == null
+                          ? SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  physics: const BouncingScrollPhysics(),
+                                  child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: List.generate(
+                                  ListsApp.loadingCardList.length,
+                                  (index) => const LoadingListPage(
+                                        viewType: 0,
+                                      )),
+                            ))
                           : recipeController.recipesList?.isEmpty ?? false
-                              ? Text( S.of(context).noDataFound)
+                              ? Text(S.of(context).noDataFound)
                               : SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   physics: const BouncingScrollPhysics(),
@@ -170,22 +166,6 @@ class _HomeWidgetState extends State<HomeWidget> {
                                     children: List.generate(
                                         recipeController.recipesList!.length,
                                         (index) => Recipes(
-                                            /*  id: recipeController
-                                                .recipesList![index].docId,
-                                            title: recipeController
-                                                .recipesList![index].title!,
-                                            image: recipeController
-                                                .recipesList![index].image,
-                                            mealType: recipeController
-                                                .recipesList![index].mealType,
-                                            rating: recipeController
-                                                .recipesList![index].rating,
-                                            calerios: recipeController
-                                                .recipesList![index].calerios,
-                                            serving: recipeController
-                                                .recipesList![index].serving,
-                                            prepTime: recipeController
-                                                .recipesList![index].prepTime,*/
                                             recipeDetails: recipeController
                                                 .recipesList![index],
                                             viewType: 0,
@@ -209,7 +189,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                           Expanded(
                             child: Text(
                               S.of(context).recomended,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontWeight: FontWeight.w700, fontSize: 20),
                             ),
                           ),
@@ -229,49 +209,46 @@ class _HomeWidgetState extends State<HomeWidget> {
                       const SizedBox(
                         height: 10,
                       ),
-                        recipeController.recommendedList == null
-                      ?const CircularProgressIndicator()
+                      recipeController.recommendedList == null
+                          ?SingleChildScrollView(
+                                      padding: const EdgeInsets.all(0),
+                                      scrollDirection: Axis.horizontal,
+                                      child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: List.generate(
+                                  ListsApp.loadingCardList.length,
+                                  (index) => const LoadingListPage(
+                                        viewType: 1,
+                                      )),
+                            ))
                           : recipeController.recommendedList?.isEmpty ?? false
-                              ? Text( S.of(context).noDataFound)
-                          : SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: List.generate(
-                                  recipeController.recommendedList!.length,
-                                  (index) => Recipes(
-                                      /*  id: recipeController
-                                          .recommendedList![index].docId,
-                                      title: recipeController
-                                          .recommendedList![index].title!,
-                                      image: recipeController
-                                          .recommendedList![index].image,
-                                      mealType: recipeController
-                                          .recommendedList![index].mealType,
-                                      rating: recipeController
-                                          .recommendedList![index].rating,
-                                      calerios: recipeController
-                                          .recommendedList![index].calerios,
-                                      serving: recipeController
-                                          .recommendedList![index].serving,
-                                      prepTime: recipeController
-                                          .recommendedList![index].prepTime,*/
-                                      recipeDetails: recipeController
-                                          .recommendedList![index],
-                                      viewType: 1,
-                                      isFavorite: recipeController
-                                          .isFavoriteById(recipeController
-                                              .recommendedList![index]),
-                                      onPressAction: () {
-                                        recipeController.addFavoriteMethodById(
+                              ? Text(S.of(context).noDataFound)
+                              : SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: List.generate(
+                                      recipeController.recommendedList!.length,
+                                      (index) => Recipes(
+                                          recipeDetails: recipeController
+                                              .recommendedList![index],
+                                          viewType: 1,
+                                          isFavorite: recipeController
+                                              .isFavoriteById(recipeController
+                                                  .recommendedList![index]),
+                                          onPressAction: () {
                                             recipeController
-                                                .recommendedList![index],
-                                            context,
-                                            AppRoutes.homepageScreen);
-                                      }),
+                                                .addFavoriteMethodById(
+                                                    recipeController
+                                                            .recommendedList![
+                                                        index],
+                                                    context,
+                                                    AppRoutes.homepageScreen);
+                                          }),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
                     ],
                   );
                   //}

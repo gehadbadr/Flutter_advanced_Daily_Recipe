@@ -5,7 +5,9 @@ import 'package:daily_recipe/screens/homePage/homepage.screens.dart';
 import 'package:daily_recipe/widgets/appbar.widgets.dart';
 import 'package:daily_recipe/screens/recipes/components/recipes.components.dart';
 import 'package:daily_recipe/widgets/filter_button.dart';
+import 'package:daily_recipe/widgets/loadingCard.dart';
 import 'package:daily_recipe/widgets/search_textfield.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -118,36 +120,88 @@ class _FavoriteRecipesScreenState extends State<FavoriteRecipesScreen> {
                   return Column(
                     children: [
                       recipeController.foundRecipes == null
-                          ? const CircularProgressIndicator()
+                          ? SingleChildScrollView(
+                              padding: const EdgeInsets.all(0),
+                              scrollDirection: Axis.horizontal,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: List.generate(
+                                    ListsApp.loadingCardList.length,
+                                    (index) => const LoadingListPage(
+                                          viewType: 1,
+                                        )),
+                              ),
+                            )
                           : (recipeController.foundRecipes!.isEmpty ?? false)
                               ? Text(S.of(context).noDataFound)
                               : recipeController.foundRecipes!.isEmpty
-                                  ? const CircularProgressIndicator()
+                                  ? SingleChildScrollView(
+                                      padding: const EdgeInsets.all(0),
+                                      scrollDirection: Axis.horizontal,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: List.generate(
+                                            ListsApp.loadingCardList.length,
+                                            (index) => const LoadingListPage(
+                                                  viewType: 1,
+                                                )),
+                                      ))
                                   : SingleChildScrollView(
                                       padding: const EdgeInsets.all(0),
                                       scrollDirection: Axis.horizontal,
                                       child: Column(
                                         children: List.generate(
                                           recipeController.foundRecipes!.length,
-                                          (index) => Recipes(
-                                              recipeDetails: recipeController
-                                                  .foundRecipes![index],
-                                              viewType: 1,
-                                              isFavorite: recipeController
-                                                  .isFavoriteById(
+                                          (index) => Dismissible(
+                                            key: UniqueKey(),
+                                            onDismissed: (direction) {
+                                              HapticFeedback.heavyImpact();
+                                              recipeController
+                                                  .addFavoriteMethodById(
                                                       recipeController
-                                                              .foundRecipes![
-                                                          index]),
-                                              onPressAction: () {
-                                                recipeController
-                                                    .addFavoriteMethodById(
+                                                          .foundRecipes![index],
+                                                      context,
+                                                      AppRoutes
+                                                          .favoriteRecipesScreen);
+                                            },
+                                            background: Container(
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 5),
+                                              decoration: BoxDecoration(
+                                                color: Colors.red,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              child: Center(
+                                                child: Icon(
+                                                  Icons.delete,
+                                                  color: Colors.red.shade700,
+                                                ),
+                                              ),
+                                            ),
+                                            child: Recipes(
+                                                recipeDetails: recipeController
+                                                    .foundRecipes![index],
+                                                viewType: 1,
+                                                isFavorite: recipeController
+                                                    .isFavoriteById(
                                                         recipeController
                                                                 .foundRecipes![
-                                                            index],
-                                                        context,
-                                                        AppRoutes
-                                                            .favoriteRecipesScreen);
-                                              }),
+                                                            index]),
+                                                onPressAction: () {
+                                                  recipeController
+                                                      .addFavoriteMethodById(
+                                                          recipeController
+                                                                  .foundRecipes![
+                                                              index],
+                                                          context,
+                                                          AppRoutes
+                                                              .favoriteRecipesScreen);
+                                                }),
+                                          ),
                                         ),
                                       ),
                                     ),
