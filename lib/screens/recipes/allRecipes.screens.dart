@@ -77,7 +77,7 @@ class _AllRecipesScreenState extends State<AllRecipesScreen> {
                                 isFavorite: recipeController.isFavoriteById(e),
                                 onPressAction: () {
                                   recipeController.addFavoriteMethodById(
-                                      e, context, AppRoutes.homepageScreen);
+                                      e, context, AppRoutes.allRecipesScreen);
                                 }))
                             .toList(),
                       )

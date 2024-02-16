@@ -140,12 +140,10 @@ class RecipeController extends ChangeNotifier {
       if (isArabic()) {
         result = await FirebaseFirestore.instance
             .collection('recipes_ar')
-            .limit(6)
             .get();
       } else {
         result = await FirebaseFirestore.instance
             .collection('recipes')
-            .limit(6)
             .get();
       }
 
@@ -452,6 +450,8 @@ class RecipeController extends ChangeNotifier {
         getOpenedRecipe(recipeId);
       } else if (screen == AppRoutes.favoriteRecipesScreen) {
         getFavoriteRecipes();
+      } else if (screen == AppRoutes.allRecipesScreen) {
+        getAllRecipes();
       } else {
         getRecipes();
       }
